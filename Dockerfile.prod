@@ -1,0 +1,16 @@
+FROM node:16-bullseye AS build
+
+WORKDIR /app
+
+COPY package* /app
+
+RUN npm i
+
+COPY . /app
+
+RUN npm run build
+
+FROM node:16-bullseye
+
+WORKDIR /app
+COPY --from=build /app .
