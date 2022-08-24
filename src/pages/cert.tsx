@@ -83,9 +83,10 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 
   if (!activity || !certificate) return redirect;
-  const domain  = process.env.EXTERNAL_SERVER_DOMAIN
+  const domain = process.env.EXTERNAL_SERVER_DOMAIN;
+
   if (!domain) {
-    throw new Error("EXTERNAL_DOMAIN undefined")
+    throw new Error("EXTERNAL_DOMAIN undefined");
   }
 
   const url = new URL(domain);
