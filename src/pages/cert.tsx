@@ -89,7 +89,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
     throw new Error("EXTERNAL_DOMAIN undefined");
   }
 
-  const url = new URL(domain);
+  const url = new URL(domain + "/cert");
   const query = new URLSearchParams({ activity, certificate });
   url.search = query.toString();
 
