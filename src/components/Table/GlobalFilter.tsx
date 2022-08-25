@@ -9,6 +9,6 @@ const GlobalFilter = memo((props: TextInputProps) => {
   );
 });
 
-GlobalFilter.displayName = "GlobalFilter"
+GlobalFilter.displayName = "GlobalFilter";
 
 export default GlobalFilter;

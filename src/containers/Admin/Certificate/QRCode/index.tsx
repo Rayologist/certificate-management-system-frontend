@@ -38,6 +38,7 @@ export default function QRCode({
     <Card p="lg" mt="xl">
       <Card.Section sx={{ display: "flex", justifyContent: "center" }}>
         <QRCodeCanvas
+          style={{ width: "250px", height: "250" }}
           id={uuid}
           value={url}
           size={size}
@@ -72,10 +73,7 @@ export default function QRCode({
         <Grid.Col span={2}>
           <CopyButton value={url} timeout={2000}>
             {({ copied, copy }) => (
-              <Tooltip
-                label={copied ? "已複製" : "複製網址"}
-                withArrow
-              >
+              <Tooltip label={copied ? "已複製" : "複製網址"} withArrow>
                 <ActionIcon color={copied ? "teal" : "gray"} onClick={copy}>
                   {copied ? <IconCheck size={20} /> : <IconLink size={20} />}
                 </ActionIcon>

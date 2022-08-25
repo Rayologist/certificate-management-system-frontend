@@ -28,8 +28,8 @@ export default function UpdateCertificate({
   certProps: Omit<Certificate, "activityUid" | "filename" | "url">;
 }) {
   const { mutate } = useCertificate();
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const { displayName, title, totalHour, dateString, id } = certProps;
   const initialValue: Values = {
     displayName,
@@ -45,7 +45,7 @@ export default function UpdateCertificate({
     const [_, error] = await updateCertificate(payload);
     if (error) {
       router.push("/500", { pathname: router.asPath });
-      return
+      return;
     }
     actions.setSubmitting(false);
     mutate();

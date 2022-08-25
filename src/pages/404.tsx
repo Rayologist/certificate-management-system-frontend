@@ -88,6 +88,4 @@ function NotFoundTitle() {
   );
 }
 
-
-
 export default NotFoundTitle;

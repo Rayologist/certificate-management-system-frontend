@@ -115,7 +115,10 @@ export type Participant = {
   updatedAt: Date;
 };
 export type CreateParticipantRequest = {
-  data: Omit<Participant, "id" | "createdAt" | "updatedAt" | "participantCertificate">[];
+  data: Omit<
+    Participant,
+    "id" | "createdAt" | "updatedAt" | "participantCertificate"
+  >[];
 };
 export type UpdateParticipantRequest = Omit<
   Participant,

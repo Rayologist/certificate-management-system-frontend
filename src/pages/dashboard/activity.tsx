@@ -39,6 +39,6 @@ const Activity = () => {
   );
 };
 
-Activity.auth = true
+Activity.auth = true;
 
 export default Activity;

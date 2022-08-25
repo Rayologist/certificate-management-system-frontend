@@ -1,7 +1,6 @@
 import { createParticipant } from "@services/participant";
-import { useRouter } from "next/router";
 import Papa from "papaparse";
-import { Participant } from "types";
+import { Participant, Response } from "types";
 
 const English: { [key: string]: string } = {
   姓名: "name",
@@ -18,47 +17,50 @@ const parseCSV = <T,>(str: string) => {
   });
 };
 
+type Data = Pick<Participant, "name" | "from" | "title" | "email" | "phone">;
+
 export default async function onCSVSubmit(
   file: File | null,
   activityUid: string,
   encoding = "big5"
 ) {
-  const router = useRouter();
-
-  let result;
   if (!file) return;
 
-  const reader = new FileReader();
-  reader.readAsText(file, encoding);
+  const data = await new Promise<Data[]>((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsText(file, encoding);
 
-  reader.onload = async (ev) => {
-    const { data, errors } = parseCSV<
-      Omit<Participant, "id" | "createdAt" | "updatedAt" | "activityUid">
-    >(reader.result as string);
+    reader.onload = async () => {
+      let { data, errors } = parseCSV<Data>(reader.result as string);
 
-    if (errors.length) {
-      for (const error of errors) {
-        data.splice(error.row, 1);
+      if (errors.length) {
+        for (const error of errors) {
+          data.splice(error.row, 1);
+        }
       }
+
+      resolve(data);
+    };
+  });
+
+  const invalids: Data[] = [];
+
+  data.forEach((value) => {
+    const allFilled = Object.values(value).every((value) => value !== "");
+    if (!allFilled) {
+      invalids.push(value);
     }
+  });
 
-    const reqestDate = data.map((data) => {
-      const newData = data as Omit<
-        Participant,
-        "id" | "createdAt" | "updatedAt"
-      >;
-      newData.activityUid = activityUid;
-      return newData;
-    });
+  if (invalids.length) {
+    return invalids;
+  }
 
-    const [res, error] = await createParticipant({ data: reqestDate });
-    
-    if (error) {
-      router.push("/500", { pathname: router.asPath });
-      return;
-    }
+  const reqestDate = data.map((data) => {
+    const newData = data as Data & Pick<Participant, "activityUid">;
+    newData.activityUid = activityUid;
+    return newData;
+  });
 
-    result = res;
-  };
-  return result;
+  await createParticipant({ data: reqestDate });
 }

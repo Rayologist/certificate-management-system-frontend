@@ -31,7 +31,7 @@ const UpdateActivity = ({
   mutate: KeyedMutator<any>;
   setOpened: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const initialValue: Values = {
     title: title,
@@ -44,7 +44,7 @@ const UpdateActivity = ({
     const [_, error] = await updateActivity(pauload);
     if (error) {
       router.push("/500", { pathname: router.asPath });
-      return
+      return;
     }
     actions.setSubmitting(false);
     mutate();

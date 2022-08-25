@@ -3,7 +3,7 @@ import { deleteActivity } from "@services/activity";
 import { KeyedMutator } from "swr";
 import DeleteModal from "@components/DeleteModal";
 import { SetStateAction, useCallback } from "react";
-import { useRouter } from "next/router"; 
+import { useRouter } from "next/router";
 
 export default function DeleteActivity({
   title,
@@ -19,7 +19,7 @@ export default function DeleteActivity({
   mutate: KeyedMutator<any>;
 }) {
   const handleClose = useCallback(() => setOpened(false), []);
-  const router = useRouter()
+  const router = useRouter();
 
   return (
     <DeleteModal
@@ -30,7 +30,7 @@ export default function DeleteActivity({
         const [_, error] = await deleteActivity({ auid });
         if (error) {
           router.push("/500", { pathname: router.asPath });
-          return
+          return;
         }
         mutate();
         handleClose();

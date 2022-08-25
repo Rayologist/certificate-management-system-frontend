@@ -103,7 +103,7 @@ export default function BadgeMenu(
         <QRCode
           url={`${window.location.origin}/cert?p=${activityUrl}&c=${url}`}
           displayName={displayName}
-          size={200}
+          size={1000}
         />
       </Modal>
 

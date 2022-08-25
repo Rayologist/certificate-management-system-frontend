@@ -3,7 +3,7 @@ import request from "src/utils/fetcher";
 
 async function login(payload: { account: string; password: string }) {
   try {
-    const data = request({ url: sessionUrl, payload, method: "POST" });
+    const data = await request({ url: sessionUrl, payload, method: "POST" });
     return [data, null];
   } catch (error) {
     return [null, error];

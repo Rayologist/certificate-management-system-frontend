@@ -26,8 +26,8 @@ export default function CreateCertificate({
   activityUid: string;
 }) {
   const { mutate } = useCertificate();
-  const router = useRouter()
-  
+  const router = useRouter();
+
   const initialValue: Values = {
     displayName: "",
     dummyName: "",
@@ -44,7 +44,7 @@ export default function CreateCertificate({
     const [_, error] = await createCertificate(payload);
     if (error) {
       router.push("/500", { pathname: router.asPath });
-      return
+      return;
     }
     actions.setSubmitting(false);
     mutate();

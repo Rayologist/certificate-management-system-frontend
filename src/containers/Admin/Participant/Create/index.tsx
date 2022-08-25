@@ -8,8 +8,8 @@ import { createParticipant } from "@services/participant";
 import { useRouter } from "next/router";
 
 type Values = Omit<
-Participant,
-"id" | "createdAt" | "updatedAt" | "activityUid" | "participantCertificate"
+  Participant,
+  "id" | "createdAt" | "updatedAt" | "activityUid" | "participantCertificate"
 >;
 
 const CreateParticipant = ({
@@ -21,7 +21,7 @@ const CreateParticipant = ({
   handleClose: () => void;
   mutate: KeyedMutator<any>;
 }) => {
-  const router = useRouter()
+  const router = useRouter();
 
   const initialValue: Values = {
     name: "",
@@ -38,7 +38,7 @@ const CreateParticipant = ({
     const [_, error] = await createParticipant({ data: [payload] });
     if (error) {
       router.push("/500", { pathname: router.asPath });
-      return
+      return;
     }
     actions.setSubmitting(false);
     mutate();

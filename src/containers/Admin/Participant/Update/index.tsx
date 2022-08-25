@@ -20,7 +20,7 @@ const UpdateParticipant = ({
   handleClose: () => void;
   mutate: KeyedMutator<any>;
 }) => {
-  const router = useRouter()
+  const router = useRouter();
   const { id, name, from, title, email, phone } = participantProps;
 
   const initialValue: Values = {
@@ -36,7 +36,7 @@ const UpdateParticipant = ({
     const [_, error] = await updateParticipant(values);
     if (error) {
       router.push("/500", { pathname: router.asPath });
-      return
+      return;
     }
     actions.setSubmitting(false);
     mutate();

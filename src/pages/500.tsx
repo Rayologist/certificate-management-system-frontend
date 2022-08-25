@@ -66,11 +66,7 @@ export default function ServerError() {
           development team was already notified. Try refreshing the page.
         </Text>
         <Group position="center">
-          <Button
-            variant="white"
-            size="md"
-            onClick={() => router.reload()}
-          >
+          <Button variant="white" size="md" onClick={() => router.reload()}>
             Refresh the page
           </Button>
         </Group>

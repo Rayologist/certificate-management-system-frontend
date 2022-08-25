@@ -12,7 +12,7 @@ const LoginForm = () => {
   const [notification, setNotification] = useState(false);
   const { setUser } = useUser();
   const router = useRouter();
-  
+
   interface Values {
     account: string;
     password: string;

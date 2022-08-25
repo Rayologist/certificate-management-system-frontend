@@ -1,8 +1,8 @@
 import urlJoin from "url-join";
 const domain = process.env.NEXT_PUBLIC_INTERNAL_SERVER_DOMAIN;
 
-if (!domain){
-    throw new Error("INTERNAL_DOMAIN undefined")
+if (!domain) {
+  throw new Error("INTERNAL_DOMAIN undefined");
 }
 const internals = "internals";
 

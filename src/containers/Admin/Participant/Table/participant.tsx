@@ -77,6 +77,7 @@ export const ParticipantTable = ({
                         size="xs"
                         mt={index && 10}
                         sx={{ display: "flex", alignItems: "center" }}
+                        key={`${value}-${index}`}
                       >
                         <ThemeIcon
                           color="teal"
@@ -170,6 +171,5 @@ export const ParticipantTable = ({
       },
     }),
   ];
-  console.log(data);
   return <Table data={data} columns={columns} />;
 };

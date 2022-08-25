@@ -4,7 +4,7 @@ import { useUser } from "src/contexts/UserContext";
 import Redirect from "@components/Redirect";
 
 export function Login() {
-  const { user } = useUser(); 
+  const { user } = useUser();
 
   if (user.data.role === "admin") return <Redirect url="/dashboard/activity" />;
 

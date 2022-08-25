@@ -1,9 +1,5 @@
 import Table from "@components/Table";
-import {
-  ActionIcon,
-  Group,
-  Text,
-} from "@mantine/core";
+import { ActionIcon, Group, Text } from "@mantine/core";
 import { IconWriting } from "@tabler/icons";
 import { createColumnHelper } from "@tanstack/react-table";
 import { ParticipantStatsResponse } from "types";

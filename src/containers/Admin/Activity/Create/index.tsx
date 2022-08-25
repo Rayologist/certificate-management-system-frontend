@@ -17,7 +17,7 @@ const CreateNewActivity = ({
   setOpened: Dispatch<SetStateAction<boolean>>;
   mutate: KeyedMutator<any>;
 }) => {
-  const router = useRouter()
+  const router = useRouter();
   const initialValue: Values = {
     title: "",
     startDate: null,

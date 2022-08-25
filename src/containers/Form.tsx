@@ -6,6 +6,7 @@ import * as Yup from "yup";
 import { useRouter } from "next/router";
 import { sendCert } from "@services/sendCert";
 import { useState } from "react";
+import { Response } from "types";
 
 function CertificateForm({
   certificateId,
@@ -30,11 +31,16 @@ function CertificateForm({
   };
 
   const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
-    const [data, error] = await sendCert({ ...values, certificateId, activityUid });
+    const [data, error] = (await sendCert({
+      ...values,
+      certificateId,
+      activityUid,
+    })) as [Response, any];
+
     if (data.status === "failed") return setNotification(true);
     if (error) {
       router.push("/500", { pathname: router.asPath });
-      return
+      return;
     }
     router.push(pushUrl);
   };
@@ -106,7 +112,7 @@ function CertificateForm({
                 loading={formik.isSubmitting}
                 fullWidth
               >
-                {formik.isSubmitting ? "正在送出..." : "送出"}
+                {formik.isSubmitting ? "正在製作證書..." : "送出"}
               </Button>
             </Grid.Col>
           </Grid>

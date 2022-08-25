@@ -7,22 +7,51 @@ import {
   FileButton,
   Text,
   Stack,
+  List,
+  ThemeIcon,
+  Space,
 } from "@mantine/core";
-import { useMemo, useCallback, useState, memo } from "react";
+import { useCallback, useState } from "react";
 import Loader from "@components/Loader";
 import { ParticipantTable } from "@containers/Admin/Participant/Table";
 import {
   IconArrowNarrowLeft,
   IconFileUpload,
   IconUserPlus,
+  IconX,
+  IconCheck,
 } from "@tabler/icons";
 import { useRouter } from "next/router";
 import onCSVSubmit from "@containers/Admin/Participant/Create/onCSVSubmit";
 import CreateParticipant from "@containers/Admin/Participant/Create";
 import { useParticipantByAuid } from "@services/participant";
+import { Participant } from "types";
+
+type ErrorData = Pick<
+  Participant,
+  "name" | "from" | "title" | "email" | "phone"
+>;
+
+function addPadding(word: string | undefined, padding: number): string {
+  if (word == undefined) {
+    word = "";
+  }
+
+  const pad = " ";
+  const wordLength = word.length;
+  const paddingToAdd = padding - wordLength;
+
+  if (paddingToAdd <= 0) {
+    return word;
+  }
+
+  return word + pad.repeat(paddingToAdd);
+}
 
 const Management = () => {
   const router = useRouter();
+  const [errorOpened, setErrorOpened] = useState(false);
+  const [errorData, setErrorData] = useState<ErrorData[]>();
 
   const [participantOpened, setParticipantOpened] = useState(false);
   const handleParticipantClose = useCallback(() => {
@@ -43,6 +72,49 @@ const Management = () => {
 
   return (
     <>
+      <Modal
+        opened={errorOpened}
+        onClose={() => setErrorOpened(false)}
+        title={<Title order={2}>錯誤資料</Title>}
+        size="lg"
+      >
+        {errorData ? (
+          <List withPadding type="ordered">
+            {errorData?.map((data, index) => {
+              return (
+                <List.Item key={`${data}-${index}`}>
+                  <List withPadding size="sm" center spacing="xs">
+                    {Object.entries(data).map((value) => {
+                      const Icon =
+                        value[1] === "" ? (
+                          <ThemeIcon color="red" size={18} radius="xl">
+                            <IconX size={12} />
+                          </ThemeIcon>
+                        ) : (
+                          <ThemeIcon color="teal" size={18} radius="xl">
+                            <IconCheck size={12} />
+                          </ThemeIcon>
+                        );
+                      return (
+                        <>
+                          <List.Item icon={Icon}>
+                            <Text weight="bold" transform="capitalize">
+                              {value[0]}:
+                            </Text>
+                          </List.Item>
+                          <Text pl={31}>{value[1]}</Text>
+                        </>
+                      );
+                    })}
+                  </List>
+                </List.Item>
+              );
+            })}
+          </List>
+        ) : (
+          <Text>找不到錯誤資料</Text>
+        )}
+      </Modal>
       <Button
         compact
         variant="light"
@@ -68,7 +140,13 @@ const Management = () => {
           </Button>
           <FileButton
             onChange={async (file) => {
-              await onCSVSubmit(file, auid);
+              const data = await onCSVSubmit(file, auid);
+              if (data?.length) {
+                setErrorData(data);
+                setErrorOpened(true);
+                return;
+              }
+
               mutate();
             }}
             accept="text/csv"

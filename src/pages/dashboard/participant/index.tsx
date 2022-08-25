@@ -20,6 +20,6 @@ const Participant = () => {
   );
 };
 
-Participant.auth = true
+Participant.auth = true;
 
 export default Participant;
