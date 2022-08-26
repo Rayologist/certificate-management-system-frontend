@@ -2,11 +2,18 @@ import { Title, Group, Paper } from "@mantine/core";
 import Loader from "@components/Loader";
 import { useParticipantStats } from "@services/participant";
 import { ParticipantStatsTable } from "@containers/Admin/Participant/Table";
+import { useRouter } from "next/router";
 
 const Participant = () => {
-  const { stats, isLoading } = useParticipantStats();
+  const { stats, isLoading, isError } = useParticipantStats();
+  const router = useRouter();
 
   if (isLoading) return <Loader />;
+
+  if (isError) {
+    router.push("/500", { pathname: router.asPath });
+    return null;
+  }
 
   return (
     <>

@@ -4,13 +4,20 @@ import { useState } from "react";
 import { CreateNewActivity, ActivityTable } from "@containers/Admin/Activity";
 import Loader from "@components/Loader";
 import { useActivity } from "@services/activity";
+import { useRouter } from "next/router";
 
 const Activity = () => {
   const [opened, setOpened] = useState(false);
   const { activity, isError, isLoading, mutate } = useActivity();
+  const router = useRouter();
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (isError) {
+    router.push("/500", { pathname: router.asPath });
+    return null;
   }
 
   return (

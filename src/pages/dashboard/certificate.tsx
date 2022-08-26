@@ -2,11 +2,18 @@ import Loader from "@components/Loader";
 import CertificateTable from "@containers/Admin/Certificate/Table";
 import { Title, Group, Paper } from "@mantine/core";
 import { useCertificate } from "@services/certificate";
+import { useRouter } from "next/router";
 
 const Certificate = () => {
-  const { certificate, isLoading, isError, mutate } = useCertificate();
+  const { certificate, isLoading, isError } = useCertificate();
+  const router = useRouter();
 
   if (isLoading) return <Loader />;
+
+  if (isError) {
+    router.push("/500", { pathname: router.asPath });
+    return null;
+  }
 
   return (
     <>

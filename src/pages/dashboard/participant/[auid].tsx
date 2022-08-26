@@ -9,7 +9,6 @@ import {
   Stack,
   List,
   ThemeIcon,
-  Space,
 } from "@mantine/core";
 import { useCallback, useState } from "react";
 import Loader from "@components/Loader";
@@ -32,37 +31,27 @@ type ErrorData = Pick<
   "name" | "from" | "title" | "email" | "phone"
 >;
 
-function addPadding(word: string | undefined, padding: number): string {
-  if (word == undefined) {
-    word = "";
-  }
-
-  const pad = " ";
-  const wordLength = word.length;
-  const paddingToAdd = padding - wordLength;
-
-  if (paddingToAdd <= 0) {
-    return word;
-  }
-
-  return word + pad.repeat(paddingToAdd);
-}
-
 const Management = () => {
   const router = useRouter();
   const [errorOpened, setErrorOpened] = useState(false);
   const [errorData, setErrorData] = useState<ErrorData[]>();
-
   const [participantOpened, setParticipantOpened] = useState(false);
+
   const handleParticipantClose = useCallback(() => {
     setParticipantOpened(false);
   }, []);
 
   let { auid } = router.query as { auid: string };
 
-  const { participant, isLoading, mutate } = useParticipantByAuid(auid);
+  const { participant, isLoading, mutate, isError } =
+    useParticipantByAuid(auid);
 
   if (isLoading) return <Loader />;
+
+  if (isError) {
+    router.push("/500", { pathname: router.asPath });
+    return null;
+  }
 
   if (!participant || participant?.status === "failed") return router.back();
 
@@ -74,7 +63,10 @@ const Management = () => {
     <>
       <Modal
         opened={errorOpened}
-        onClose={() => setErrorOpened(false)}
+        onClose={() => {
+          setErrorOpened(false);
+          setErrorData(undefined);
+        }}
         title={<Title order={2}>錯誤資料</Title>}
         size="lg"
       >
@@ -146,7 +138,6 @@ const Management = () => {
                 setErrorOpened(true);
                 return;
               }
-
               mutate();
             }}
             accept="text/csv"
