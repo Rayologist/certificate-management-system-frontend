@@ -15,6 +15,9 @@ const parseCookie = <T,>(text: string): T | false => {
 
 export default function HomePage({ data }: { data: SendCertificate }) {
   const { activityName, certificateName, certificateId, activityUid } = data;
+  const base64 = window.btoa(`p=${activityName}&c=${certificateName}`);
+  const e = encodeURIComponent(base64);
+  const pushUrl = `/success?e=${e}`;
 
   return (
     <>
@@ -34,33 +37,10 @@ export default function HomePage({ data }: { data: SendCertificate }) {
         <Text color="dimmed" align="center">
           {certificateName}
         </Text>
-        <Paper
-          shadow="lg"
-          p={30}
-          mt={30}
-          radius="md"
-          // sx={(theme) => ({
-          //   [`@media (max-width: ${theme.breakpoints.xs}px)`]: {
-          //     padding: "1rem 1rem",
-          //     width: "90%",
-          //   },
-          //   [`@media (max-width: ${theme.breakpoints.lg}px) and (min-width: ${theme.breakpoints.sm}px)`]:
-          //     {
-          //       padding: "2rem 1rem",
-          //       width: "50%",
-          //     },
-          //   [`@media (min-width: ${theme.breakpoints.lg}px)`]: {
-          //     padding: "2rem 1rem",
-          //     width: "30%",
-          //   },
-          // })}
-          withBorder
-        >
+        <Paper shadow="lg" p={30} mt={30} radius="md" withBorder>
           <CertificateForm
             {...{ certificateId, activityUid }}
-            pushUrl={`/success?e=${encodeURIComponent(
-              window.btoa(`p=${activityName}&c=${certificateName}`)
-            )}`}
+            pushUrl={pushUrl}
           />
         </Paper>
       </Container>
@@ -83,6 +63,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   };
 
   if (!activity || !certificate) return redirect;
+
   const domain = process.env.EXTERNAL_SERVER_DOMAIN;
 
   if (!domain) {
@@ -100,23 +81,26 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
   if (response.status === "failed") return redirect;
 
-  const cookie = req.cookies[response.data.activityUid];
+  const { activityName, activityUid, certificateId, certificateName } =
+    response.data;
+
+  const cookie = req.cookies[activityUid];
 
   if (cookie) {
     const array = parseCookie<number[]>(cookie);
-    if (Array.isArray(array)) {
-      if (array.includes(response.data.certificateId)) {
-        return {
-          redirect: {
-            permanent: false,
-            destination: `/success?e=${encodeURIComponent(
-              Buffer.from(
-                `p=${response.data.activityName}&c=${response.data.certificateName}`
-              ).toString("base64")
-            )}`,
-          },
-        };
-      }
+    const isArray = Array.isArray(array);
+
+    if (isArray && array.includes(certificateId)) {
+      const buffer = Buffer.from(`p=${activityName}&c=${certificateName}`);
+      const e = encodeURIComponent(buffer.toString("base64"));
+      const destination = `/success?e=${e}`;
+
+      return {
+        redirect: {
+          permanent: false,
+          destination,
+        },
+      };
     }
   }
 
