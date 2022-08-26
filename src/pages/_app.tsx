@@ -47,24 +47,24 @@ function App(props: AppPropsWithLayout & { colorScheme: ColorScheme }) {
           sizes="any"
         />
       </Head>
-      <UserProvider>
-        <ColorSchemeProvider
-          colorScheme={colorScheme}
-          toggleColorScheme={toggleColorScheme}
+      <ColorSchemeProvider
+        colorScheme={colorScheme}
+        toggleColorScheme={toggleColorScheme}
+      >
+        <MantineProvider
+          theme={{ colorScheme }}
+          withGlobalStyles
+          withNormalizeCSS
         >
-          <MantineProvider
-            theme={{ colorScheme }}
-            withGlobalStyles
-            withNormalizeCSS
-          >
-            <NotificationsProvider>
+          <NotificationsProvider>
+            <UserProvider>
               <Layout isAuth={isAuth}>
                 <Component {...pageProps} />
               </Layout>
-            </NotificationsProvider>
-          </MantineProvider>
-        </ColorSchemeProvider>
-      </UserProvider>
+            </UserProvider>
+          </NotificationsProvider>
+        </MantineProvider>
+      </ColorSchemeProvider>
     </>
   );
 }

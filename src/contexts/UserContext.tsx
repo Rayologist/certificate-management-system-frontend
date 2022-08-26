@@ -1,7 +1,4 @@
-import Loader from "@components/Loader";
-import Redirect from "@components/Redirect";
 import { refresh } from "@services/session";
-import { useRouter } from "next/router";
 import {
   createContext,
   SetStateAction,
@@ -14,7 +11,7 @@ import { Response } from "types";
 
 type State = {
   pending: boolean;
-  error: string;
+  error: boolean;
   data: {
     role: string;
   };
@@ -34,23 +31,23 @@ export const useUser = () => {
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const initialState: State = {
     pending: true,
-    error: "",
+    error: false,
     data: { role: "" },
   };
-  const router = useRouter();
+
   const [user, setUser] = useState(initialState);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     const refresher = async () => {
       const [result, error] = await refresh();
+
       if (error) {
-        setError(true);
-        setUser((prev) => ({ ...prev, pending: false }));
+        setUser((prev) => ({ ...prev, error: true, pending: false }));
         return;
       }
 
       const { data } = result as Response<{ role?: string }>;
+
       if (data?.role) {
         setUser((prev) => ({ ...prev, data: { role: data.role ?? "" } }));
       }
@@ -59,12 +56,6 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     };
     refresher();
   }, []);
-
-  if (user.pending) return <Loader />;
-
-  if (error) {
-    router.push("/500", { pathname: router.asPath });
-  }
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
