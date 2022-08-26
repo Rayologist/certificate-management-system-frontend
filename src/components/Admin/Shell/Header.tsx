@@ -47,7 +47,7 @@ const Header = ({
           />
         </MediaQuery>
 
-        <Link href="/dashboard" passHref>
+        <Link href="/dashboard/activity" passHref>
           <Box
             component="a"
             sx={{
