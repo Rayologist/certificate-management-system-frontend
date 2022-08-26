@@ -11,7 +11,15 @@ import {
 import { IconCheck } from "@tabler/icons";
 import { useRouter } from "next/router";
 
-export default function Demo() {
+const decode = (encoded: string): string | false => {
+  try {
+    return decodeURIComponent(window.atob(encoded));
+  } catch (error) {
+    return false;
+  }
+};
+
+export default function Success() {
   const router = useRouter();
   const { e } = router.query as { e: string };
 
@@ -20,8 +28,14 @@ export default function Demo() {
     return null;
   }
 
-  const str = decodeURIComponent(window.atob(e));
-  const params = new URLSearchParams(str);
+  const decoded = decode(e);
+
+  if (decoded === false) {
+    router.push("/404", { pathname: router.asPath });
+    return null;
+  }
+
+  const params = new URLSearchParams(decoded);
 
   return (
     <>
