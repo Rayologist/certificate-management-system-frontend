@@ -2,8 +2,12 @@ FROM node:16
 
 WORKDIR /app
 
+RUN npm install -g pnpm
+
+RUN pnpm config set auto-install-peers true
+
 COPY package* /app
 
-RUN npm i
+RUN pnpm i
 
 COPY . /app
