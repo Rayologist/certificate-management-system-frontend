@@ -5,6 +5,7 @@ import {
   ModalProps,
   Divider,
   Button,
+  ButtonProps,
 } from "@mantine/core";
 import { IconAlertTriangle } from "@tabler/icons";
 
@@ -13,8 +14,10 @@ type DeleteModalProps = Omit<ModalProps, "title"> & {
   title: string;
   onCancelText?: string;
   onConfirmText?: string;
+  onCancelButtonProps?: ButtonProps;
+  onConfirmButtonProps?: ButtonProps;
   onCancel?: () => void;
-  onConfirm: () => {};
+  onConfirm: () => void;
 };
 
 const DeleteModal = (props: DeleteModalProps) => {
@@ -24,6 +27,8 @@ const DeleteModal = (props: DeleteModalProps) => {
     onCancel,
     onConfirm,
     onClose,
+    onCancelButtonProps,
+    onConfirmButtonProps,
     onCancelText = "取消",
     onConfirmText = "確認",
     ...rest
@@ -51,10 +56,10 @@ const DeleteModal = (props: DeleteModalProps) => {
       <Divider mt="lg" mb="sm" />
 
       <Group position="right">
-        <Button variant="outline" onClick={onCancel}>
+        <Button variant="outline" onClick={onCancel} {...onCancelButtonProps}>
           {onCancelText}
         </Button>
-        <Button color="red" onClick={onConfirm}>
+        <Button color="red" onClick={onConfirm}  {...onConfirmButtonProps}>
           {onConfirmText}
         </Button>
       </Group>
