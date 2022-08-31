@@ -4,6 +4,7 @@ import {
   CreateCertificateRequest,
   UpdateCertificateRequest,
   DeleteCertificateRequest,
+  SendCertificateRequest
 } from "types";
 import request from "src/utils/fetcher";
 import { certificateUrl } from "@services/config";
@@ -12,6 +13,19 @@ async function createCertificate(payload: CreateCertificateRequest) {
   try {
     const data = await request({
       url: certificateUrl,
+      method: "POST",
+      payload,
+    });
+    return [data, null];
+  } catch (error) {
+    return [null, error];
+  }
+}
+
+async function sendCertificate(payload: SendCertificateRequest) {
+  try {
+    const data = await request({
+      url: certificateUrl + "/send",
       method: "POST",
       payload,
     });
@@ -48,4 +62,5 @@ export {
   createCertificate,
   updateCertificate,
   deleteCertificate,
+  sendCertificate
 };

@@ -91,6 +91,10 @@ export type CreateCertificateRequest = Pick<
   Certificate,
   "activityUid" | "displayName" | "title" | "dateString" | "totalHour"
 >;
+export type SendCertificateRequest = {
+  certificateId: number;
+  participantId: number;
+};
 
 export type UpdateCertificateRequest = Pick<
   Certificate,
@@ -110,7 +114,9 @@ export type Participant = {
   title: string;
   email: string;
   phone: string;
-  participantCertificate: { certificate: Pick<Certificate, "displayName"> }[];
+  participantCertificate: {
+    certificate: Pick<Certificate, "id" | "displayName">;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 };
@@ -131,7 +137,10 @@ export type ParticipantStatsResponse = Pick<Activity, "auid" | "title"> & {
   _count: { participant: number };
 };
 
-export type ParticipantResponse = Activity & { participant: Participant[] };
+export type ParticipantResponse = Pick<Activity, "title"> & {
+  participant: Participant[];
+  certificate: Pick<Certificate, "displayName" | "id">[];
+};
 
 // ------Formik Component types------
 export type OptionType = {

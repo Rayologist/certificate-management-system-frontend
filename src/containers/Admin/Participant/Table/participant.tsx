@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState, memo, MouseEventHandler } from "react";
+import { useMemo, useCallback, useState, memo } from "react";
 import Table from "@components/Table";
 import {
   ActionIcon,
@@ -6,18 +6,25 @@ import {
   Modal,
   Title,
   Text,
-  HoverCard,
   Button,
-  Box,
   ThemeIcon,
+  Divider,
+  Loader,
 } from "@mantine/core";
 import { createColumnHelper } from "@tanstack/react-table";
 import { format } from "date-fns";
-import { Participant } from "types";
+import { Certificate, Participant } from "types";
 import DeleteParticipant from "../Delete";
 import UpdateParticipant from "../Update";
 import { KeyedMutator } from "swr";
-import { IconCheck, IconPencil, IconTrash } from "@tabler/icons";
+import {
+  IconCheck,
+  IconCircleDashed,
+  IconMailForward,
+  IconPencil,
+  IconTrash,
+} from "@tabler/icons";
+import { sendCertificate } from "@services/certificate";
 
 const columnHelper = createColumnHelper<Participant>();
 
@@ -29,7 +36,6 @@ export const ParticipantTable = ({
   data: Participant[];
   certificates: Pick<Certificate, "id" | "displayName">[];
   mutate: KeyedMutator<any>;
-  title: string;
 }) => {
   const columns = [
     columnHelper.accessor("name", {
@@ -60,42 +66,125 @@ export const ParticipantTable = ({
       header: "取得證書數量",
       size: 150,
       cell: (props) => {
-        const array = props.getValue();
-        return (
-          <Group position="left">
-            <HoverCard shadow="md" width={300} openDelay={200} position="right">
-              <HoverCard.Target>
-                <Button variant="outline" compact radius="lg">
-                  {array.length}
-                </Button>
-              </HoverCard.Target>
+        const { original } = props.cell.row;
+        const participantCertificate = props
+          .getValue()
+          .map((value) => value.certificate.id);
+        const officialCertificate = certificates;
+        const [opened, setOpened] = useState(false);
 
-              {array.length !== 0 && (
-                <HoverCard.Dropdown>
-                  {array.map((value, index) => {
-                    return (
+        return (
+          <>
+            <Button
+              variant="outline"
+              compact
+              radius="lg"
+              onClick={() => setOpened(true)}
+            >
+              {participantCertificate.length}
+            </Button>
+
+            <Modal
+              onClose={() => {
+                setOpened(false);
+                mutate();
+              }}
+              opened={opened}
+              title={<Title order={2}>{`目前的證書 - ${original.name}`}</Title>}
+              size={500}
+            >
+              {officialCertificate.map((value, index) => {
+                const certClaimed = participantCertificate.includes(value.id);
+                const [opened, setOpened] = useState(false);
+                const [loading, setLoading] = useState(false);
+                const [claimed, setClaimed] = useState(false);
+
+                return (
+                  <>
+                    <Modal
+                      onClose={() => setOpened(false)}
+                      opened={opened}
+                      title={<Title order={2}>證書寄送確認</Title>}
+                      size="md"
+                      sx={{ fontSize: "18px" }}
+                    >
+                      <Group spacing={0}>
+                        <Text>證書：</Text>
+                        <Text weight={500}>{`${value.displayName}`}</Text>
+                      </Group>
+                      <Group spacing={0}>
+                        <Text>參與者：</Text>
+                        <Text weight={500}>{`${original.name}`}</Text>
+                      </Group>
+                      <Text mt={10}> 確定要寄出證書？</Text>
+
+                      <Divider my="md" />
+                      <Group position="right">
+                        <Button
+                          variant="outline"
+                          onClick={() => setOpened(false)}
+                        >
+                          取消
+                        </Button>
+                        <Button
+                          onClick={async () => {
+                            setOpened(false);
+                            setLoading(true);
+                            await sendCertificate({
+                              participantId: original.id,
+                              certificateId: value.id,
+                            });
+                            setClaimed(true);
+                            setLoading(false);
+                          }}
+                        >
+                          確定
+                        </Button>
+                      </Group>
+                    </Modal>
+
+                    <Group
+                      sx={{ display: "flex", alignItems: "center" }}
+                      position="apart"
+                      key={`${value.displayName}-${index}`}
+                    >
                       <Text
-                        size="xs"
+                        size="sm"
                         mt={index && 10}
                         sx={{ display: "flex", alignItems: "center" }}
                         key={`${value}-${index}`}
+                        mr={5}
                       >
                         <ThemeIcon
-                          color="teal"
+                          color={certClaimed || claimed ? "teal" : "blue"}
                           variant="light"
                           radius="xl"
-                          size="md"
+                          size="lg"
                         >
-                          <IconCheck size={16} />
+                          {loading ? (
+                            <Loader size="sm" color="blue" />
+                          ) : certClaimed || claimed ? (
+                            <IconCheck size={16} />
+                          ) : (
+                            <IconCircleDashed size={16} />
+                          )}
                         </ThemeIcon>
-                        <Box ml={10}>{value.certificate.displayName}</Box>
+                        <Text
+                          ml={14}
+                          sx={{ wordWrap: "break-word", width: "300px" }}
+                        >
+                          {value.displayName}
+                        </Text>
                       </Text>
-                    );
-                  })}
-                </HoverCard.Dropdown>
-              )}
-            </HoverCard>
-          </Group>
+                      <ActionIcon size="xl" onClick={() => setOpened(true)}>
+                        <IconMailForward size={20} />
+                      </ActionIcon>
+                    </Group>
+                  </>
+                );
+              })}
+            </Modal>
+          </>
         );
       },
     }),
