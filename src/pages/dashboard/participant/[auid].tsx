@@ -121,7 +121,7 @@ const Management = () => {
       <Group position="apart" mb={30}>
         <Stack spacing={0}>
           <Title>新增參與者</Title>
-          <Text color="dimmed">{data?.title}</Text>
+          <Text color="dimmed">{data.title}</Text>
         </Stack>
         <Group position="right">
           <Button
@@ -170,7 +170,6 @@ const Management = () => {
         <ParticipantTable
           data={data.participant}
           mutate={mutate}
-          title={data.title}
         />
       </Paper>
     </>
