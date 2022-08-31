@@ -169,6 +169,7 @@ const Management = () => {
       <Paper sx={{ padding: "1rem" }}>
         <ParticipantTable
           data={data.participant}
+          certificates={data.certificate}
           mutate={mutate}
         />
       </Paper>

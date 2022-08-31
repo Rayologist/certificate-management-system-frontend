@@ -23,10 +23,11 @@ const columnHelper = createColumnHelper<Participant>();
 
 export const ParticipantTable = ({
   data,
+  certificates,
   mutate,
-  title,
 }: {
   data: Participant[];
+  certificates: Pick<Certificate, "id" | "displayName">[];
   mutate: KeyedMutator<any>;
   title: string;
 }) => {
