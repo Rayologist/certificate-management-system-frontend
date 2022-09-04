@@ -9,8 +9,9 @@ import {
   Stack,
   List,
   ThemeIcon,
+  Box,
 } from '@mantine/core';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useRef } from 'react';
 import Loader from '@components/Loader';
 import { ParticipantTable } from '@containers/Admin/Participant/Table';
 import { IconArrowNarrowLeft, IconFileUpload, IconUserPlus, IconX, IconCheck } from '@tabler/icons';
@@ -24,9 +25,16 @@ type ErrorData = Pick<Participant, 'name' | 'from' | 'title' | 'email' | 'phone'
 
 const Management = () => {
   const router = useRouter();
+  const [file, setFile] = useState<File | null>(null);
+  const resetRef = useRef<() => void>(null);
   const [errorOpened, setErrorOpened] = useState(false);
-  const [errorData, setErrorData] = useState<ErrorData[]>();
+  const [errorData, setErrorData] = useState<ErrorData[] | string>();
   const [participantOpened, setParticipantOpened] = useState(false);
+
+  const clearFile = useCallback(() => {
+    setFile(null);
+    resetRef.current?.();
+  }, []);
 
   const handleParticipantClose = useCallback(() => {
     setParticipantOpened(false);
@@ -56,18 +64,22 @@ const Management = () => {
         onClose={() => {
           setErrorOpened(false);
           setErrorData(undefined);
+          if (file) clearFile();
         }}
         title={<Title order={2}>錯誤資料</Title>}
         size="lg"
       >
-        {errorData ? (
+        {typeof errorData === 'string' ? (
+          <Text color="red">{errorData}</Text>
+        ) : (
           <List withPadding type="ordered">
-            {errorData?.map((error, index) => (
-              <List.Item key={`${error}-${index}`}>
+            {errorData?.map((error, layerOneIndex) => (
+              <List.Item key={`${error}-${layerOneIndex}`}>
                 <List withPadding size="sm" center spacing="xs">
-                  {Object.entries(error).map((value) => {
+                  {Object.entries(error).map((errorObject, layerTwoIndex) => {
+                    const [field, text] = errorObject;
                     const Icon =
-                      value[1] === '' ? (
+                      text === '' ? (
                         <ThemeIcon color="red" size={18} radius="xl">
                           <IconX size={12} />
                         </ThemeIcon>
@@ -77,22 +89,20 @@ const Management = () => {
                         </ThemeIcon>
                       );
                     return (
-                      <>
+                      <Box key={`${text}-${layerOneIndex}-${layerTwoIndex}`}>
                         <List.Item icon={Icon}>
                           <Text weight="bold" transform="capitalize">
-                            {value[0]}:
+                            {field}:
                           </Text>
                         </List.Item>
-                        <Text pl={31}>{value[1]}</Text>
-                      </>
+                        <Text pl={31}>{text || <br />}</Text>
+                      </Box>
                     );
                   })}
                 </List>
               </List.Item>
             ))}
           </List>
-        ) : (
-          <Text>找不到錯誤資料</Text>
         )}
       </Modal>
       <Button
@@ -119,8 +129,10 @@ const Management = () => {
             新增
           </Button>
           <FileButton
-            onChange={async (file) => {
-              const errors = await onCSVSubmit(file, auid);
+            onChange={async (csvFile) => {
+              setFile(csvFile);
+              const errors = await onCSVSubmit(csvFile, auid);
+              if (file) clearFile();
               if (errors?.length) {
                 setErrorData(errors);
                 setErrorOpened(true);
@@ -128,6 +140,7 @@ const Management = () => {
               }
               mutate();
             }}
+            resetRef={resetRef}
             accept="text/csv"
           >
             {(props) => (
