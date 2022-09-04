@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "export": "next build && next export",
     "lint": "next lint",
-    "format": "prettier --write ./src"
+    "format": "prettier --write ./src",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@emotion/react": "^11.10.4",
@@ -55,6 +56,7 @@
     "eslint-plugin-jsx-a11y": "^6.6.1",
     "eslint-plugin-react": "^7.31.5",
     "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.1",
     "prettier": "^2.7.1",
     "typescript": "^4.8.2"
   }
