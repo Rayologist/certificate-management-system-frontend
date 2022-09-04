@@ -1,5 +1,5 @@
 import { createParticipant } from '@services/participant';
-import Papa from 'papaparse';
+import { parse, ParseResult } from 'papaparse';
 import { Participant } from 'types';
 
 const English: { [key: string]: string } = {
@@ -11,7 +11,7 @@ const English: { [key: string]: string } = {
 };
 
 const parseCSV = <T,>(str: string) =>
-  Papa.parse<T>(str, {
+  parse<T>(str, {
     header: true,
     transformHeader: (header) => English[header.trim()],
   });
@@ -25,37 +25,56 @@ export default async function onCSVSubmit(
 ) {
   if (!file) return null;
 
-  const data = await new Promise<Data[]>((resolve) => {
+  const { data, errors, meta } = await new Promise<ParseResult<Data>>((resolve) => {
     const reader = new FileReader();
     reader.readAsText(file, encoding);
 
     reader.onload = async () => {
-      const { data: parsedData, errors } = parseCSV<Data>(reader.result as string);
-
-      if (errors.length) {
-        errors.forEach((error) => {
-          parsedData.splice(error.row, 1);
-        });
-      }
-
-      resolve(parsedData);
+      resolve(parseCSV<Data>(reader.result as string));
     };
   });
 
-  const invalids: Data[] = [];
+  if (errors.length) {
+    errors.forEach((error) => {
+      data.splice(error.row, 1);
+    });
+  }
 
-  data.forEach((value) => {
-    const allFilled = Object.values(value).every((val) => val !== '');
-    if (!allFilled) {
-      invalids.push(value);
+  const { fields: submitFields } = meta;
+
+  const errorMessage = '請確認上傳的檔案是否包含以下欄位：姓名,單位,職稱,電子信箱,電話';
+
+  if (!submitFields) return errorMessage;
+
+  const participantFields = new Set(Object.values(English));
+
+  const filteredFields = submitFields.filter((field) => participantFields.has(field));
+
+  if (filteredFields.length !== participantFields.size) return errorMessage;
+
+  const invalids: Data[] = [];
+  const valids: Data[] = [];
+
+  data.forEach((participant) => {
+    const allFilled = Object.values(participant).every((value) => value !== '');
+    const allEmpty = Object.values(participant).every((value) => value === '');
+
+    if (allFilled) {
+      return valids.push(participant);
     }
+
+    if (!allEmpty) {
+      return invalids.push(participant);
+    }
+
+    return null;
   });
 
   if (invalids.length) {
     return invalids;
   }
 
-  const requestData = data.map((datum) => {
+  const requestData = valids.map((datum) => {
     const newData = datum as Data & Pick<Participant, 'activityUid'>;
     newData.activityUid = activityUid;
     return newData;
