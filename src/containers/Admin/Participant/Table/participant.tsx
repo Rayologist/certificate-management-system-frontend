@@ -10,6 +10,7 @@ import {
   ThemeIcon,
   Divider,
   Loader,
+  Box,
 } from '@mantine/core';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -86,7 +87,7 @@ export const ParticipantTable = ({
                 const handleConfirmClose = useCallback(() => setConfirmOpened(false), []);
 
                 return (
-                  <>
+                  <Box key={`${value.displayName}-${index}-modal`}>
                     <Modal
                       onClose={handleConfirmClose}
                       opened={confirmOpened}
@@ -94,48 +95,45 @@ export const ParticipantTable = ({
                       size="md"
                       sx={{ fontSize: '18px' }}
                     >
-                      <Group spacing={0}>
-                        <Text>證書：</Text>
-                        <Text weight={500}>{`${value.displayName}`}</Text>
-                      </Group>
-                      <Group spacing={0}>
-                        <Text>參與者：</Text>
-                        <Text weight={500}>{`${original.name}`}</Text>
-                      </Group>
-                      <Text mt={10}> 確定要寄出證書？</Text>
+                      <>
+                        <Group spacing={0}>
+                          <Text>證書：</Text>
+                          <Text weight={500}>{`${value.displayName}`}</Text>
+                        </Group>
+                        <Group spacing={0}>
+                          <Text>參與者：</Text>
+                          <Text weight={500}>{`${original.name}`}</Text>
+                        </Group>
+                        <Text mt={10}> 確定要寄出證書？</Text>
 
-                      <Divider my="md" />
-                      <Group position="right">
-                        <Button variant="outline" onClick={handleConfirmClose}>
-                          取消
-                        </Button>
-                        <Button
-                          onClick={async () => {
-                            handleConfirmClose();
-                            setLoading(true);
-                            await sendCertificate({
-                              participantId: original.id,
-                              certificateId: value.id,
-                            });
-                            setClaimed(true);
-                            setLoading(false);
-                          }}
-                        >
-                          確定
-                        </Button>
-                      </Group>
+                        <Divider my="md" />
+                        <Group position="right">
+                          <Button variant="outline" onClick={handleConfirmClose}>
+                            取消
+                          </Button>
+                          <Button
+                            onClick={async () => {
+                              handleConfirmClose();
+                              setLoading(true);
+                              await sendCertificate({
+                                participantId: original.id,
+                                certificateId: value.id,
+                              });
+                              setClaimed(true);
+                              setLoading(false);
+                            }}
+                          >
+                            確定
+                          </Button>
+                        </Group>
+                      </>
                     </Modal>
 
-                    <Group
-                      sx={{ display: 'flex', alignItems: 'center' }}
-                      position="apart"
-                      key={`${value.displayName}-${index}`}
-                    >
+                    <Group sx={{ display: 'flex', alignItems: 'center' }} position="apart">
                       <Text
                         size="sm"
                         mt={index && 10}
                         sx={{ display: 'flex', alignItems: 'center' }}
-                        key={`${value}-${index}`}
                         mr={5}
                       >
                         <ThemeIcon
@@ -160,7 +158,7 @@ export const ParticipantTable = ({
                         <IconMailForward size={20} />
                       </ActionIcon>
                     </Group>
-                  </>
+                  </Box>
                 );
               })}
             </Modal>
