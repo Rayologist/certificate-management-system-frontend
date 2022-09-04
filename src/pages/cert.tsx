@@ -1,9 +1,9 @@
-import CertificateForm from "@containers/Form";
-import { Paper, Container, Title, Text } from "@mantine/core";
-import { GetServerSideProps } from "next";
-import request from "src/utils/fetcher";
-import { URLSearchParams } from "url";
-import { Response, SendCertificate } from "types";
+import CertificateForm from '@containers/Form';
+import { Paper, Container, Title, Text } from '@mantine/core';
+import { GetServerSideProps } from 'next';
+import request from 'src/utils/fetcher';
+import { URLSearchParams } from 'url';
+import { Response, SendCertificate } from 'types';
 
 const parseCookie = <T,>(text: string): T | false => {
   try {
@@ -38,10 +38,7 @@ export default function HomePage({ data }: { data: SendCertificate }) {
           {certificateName}
         </Text>
         <Paper shadow="lg" p={30} mt={30} radius="md" withBorder>
-          <CertificateForm
-            {...{ certificateId, activityUid }}
-            pushUrl={pushUrl}
-          />
+          <CertificateForm {...{ certificateId, activityUid }} pushUrl={pushUrl} />
         </Paper>
       </Container>
     </>
@@ -52,7 +49,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
   const redirect = {
     redirect: {
-      destination: "https://cbe.ntu.edu.tw/",
+      destination: 'https://cbe.ntu.edu.tw/',
       permanent: false,
     },
   };
@@ -67,22 +64,21 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const domain = process.env.EXTERNAL_SERVER_DOMAIN;
 
   if (!domain) {
-    throw new Error("EXTERNAL_DOMAIN undefined");
+    throw new Error('EXTERNAL_DOMAIN undefined');
   }
 
-  const url = new URL(domain + "/cert");
+  const url = new URL(`${domain}/cert`);
   const query = new URLSearchParams({ activity, certificate });
   url.search = query.toString();
 
   const response: Response<SendCertificate> = await request({
     url: url.href,
-    method: "GET",
+    method: 'GET',
   });
 
-  if (response.status === "failed") return redirect;
+  if (response.status === 'failed') return redirect;
 
-  const { activityName, activityUid, certificateId, certificateName } =
-    response.data;
+  const { activityName, activityUid, certificateId, certificateName } = response.data;
 
   const cookie = req.cookies[activityUid];
 
@@ -92,7 +88,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
 
     if (isArray && array.includes(certificateId)) {
       const buffer = Buffer.from(`p=${activityName}&c=${certificateName}`);
-      const e = encodeURIComponent(buffer.toString("base64"));
+      const e = encodeURIComponent(buffer.toString('base64'));
       const destination = `/success?e=${e}`;
 
       return {

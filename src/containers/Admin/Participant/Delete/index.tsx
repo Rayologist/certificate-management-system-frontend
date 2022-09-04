@@ -1,9 +1,9 @@
-import { useCallback, Dispatch, SetStateAction, memo } from "react";
-import DeleteModal from "@components/DeleteModal";
-import { Stack, Text } from "@mantine/core";
-import { KeyedMutator } from "swr";
-import { deleteParticipant } from "@services/participant";
-import { useRouter } from "next/router";
+import { useCallback, Dispatch, SetStateAction } from 'react';
+import DeleteModal from '@components/DeleteModal';
+import { Stack, Text } from '@mantine/core';
+import { KeyedMutator } from 'swr';
+import { deleteParticipant } from '@services/participant';
+import { useRouter } from 'next/router';
 
 const DeleteParticipant = ({
   name,
@@ -26,9 +26,9 @@ const DeleteParticipant = ({
       opened={opened}
       onClose={handleClose}
       onConfirm={async () => {
-        const [_, error] = await deleteParticipant({ id });
+        const [, error] = await deleteParticipant({ id });
         if (error) {
-          router.push("/500", { pathname: router.asPath });
+          router.push('/500', { pathname: router.asPath });
           return;
         }
         mutate();

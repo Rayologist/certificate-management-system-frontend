@@ -1,9 +1,9 @@
-import { Stack, Text, Mark } from "@mantine/core";
-import { deleteActivity } from "@services/activity";
-import { KeyedMutator } from "swr";
-import DeleteModal from "@components/DeleteModal";
-import { SetStateAction, useCallback } from "react";
-import { useRouter } from "next/router";
+import { Stack, Text, Mark } from '@mantine/core';
+import { deleteActivity } from '@services/activity';
+import { KeyedMutator } from 'swr';
+import DeleteModal from '@components/DeleteModal';
+import { SetStateAction, useCallback } from 'react';
+import { useRouter } from 'next/router';
 
 export default function DeleteActivity({
   title,
@@ -27,9 +27,9 @@ export default function DeleteActivity({
       onClose={handleClose}
       opened={opened}
       onConfirm={async () => {
-        const [_, error] = await deleteActivity({ auid });
+        const [, error] = await deleteActivity({ auid });
         if (error) {
-          router.push("/500", { pathname: router.asPath });
+          router.push('/500', { pathname: router.asPath });
           return;
         }
         mutate();

@@ -7,9 +7,9 @@ import {
   Container,
   Text,
   Stack,
-} from "@mantine/core";
-import { IconCheck } from "@tabler/icons";
-import { useRouter } from "next/router";
+} from '@mantine/core';
+import { IconCheck } from '@tabler/icons';
+import { useRouter } from 'next/router';
 
 const decode = (encoded: string): string | false => {
   try {
@@ -24,14 +24,14 @@ export default function Success() {
   const { e } = router.query as { e: string };
 
   if (!e) {
-    router.push("/404", { pathname: router.asPath });
+    router.push('/404', { pathname: router.asPath });
     return null;
   }
 
   const decoded = decode(e);
 
   if (decoded === false) {
-    router.push("/404", { pathname: router.asPath });
+    router.push('/404', { pathname: router.asPath });
     return null;
   }
 
@@ -50,15 +50,15 @@ export default function Success() {
       </Title>
       <Container size={420} mt={10} mb={40}>
         <Text color="dimmed" align="center" weight="bold">
-          {params.get("p")}
+          {params.get('p')}
         </Text>
         <Text color="dimmed" align="center">
-          {params.get("c")}
+          {params.get('c')}
         </Text>
         <Paper shadow="lg" p={30} mt={30} radius="md" withBorder>
           <Stack align="center">
             <RingProgress
-              sections={[{ value: 100, color: "teal" }]}
+              sections={[{ value: 100, color: 'teal' }]}
               label={
                 <Center>
                   <ThemeIcon color="teal" variant="light" radius="xl" size="xl">

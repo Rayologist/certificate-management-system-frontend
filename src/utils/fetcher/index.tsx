@@ -1,13 +1,13 @@
 type HTTPMethods =
-  | "GET"
-  | "POST"
-  | "PUT"
-  | "PATCH"
-  | "DELETE"
-  | "OPTIONS"
-  | "HEAD"
-  | "CONNECT"
-  | "TRACE";
+  | 'GET'
+  | 'POST'
+  | 'PUT'
+  | 'PATCH'
+  | 'DELETE'
+  | 'OPTIONS'
+  | 'HEAD'
+  | 'CONNECT'
+  | 'TRACE';
 
 type Request = {
   url: string;
@@ -29,20 +29,21 @@ export default async function request({
   timeout = 5 * 1000,
 }: Request) {
   const _payload = payload ?? {};
-  const body = method !== "GET" ? JSON.stringify(_payload) : null;
+  const body = method !== 'GET' ? JSON.stringify(_payload) : null;
   const _headers = new Headers({
-    Accept: "application/json",
-    "Content-Type": "application/json",
+    Accept: 'application/json',
+    'Content-Type': 'application/json',
   });
 
   if (headers?.length) {
-    for (const header of headers) {
-      _headers.append(header[0], header[1]);
-    }
+    headers.forEach((header) => {
+      const [name, value] = header;
+      _headers.append(name, value);
+    });
   }
 
   if (authToken) {
-    _headers.append("Authorization", authToken);
+    _headers.append('Authorization', authToken);
   }
 
   // Request Timeout
@@ -50,7 +51,7 @@ export default async function request({
   const id = setTimeout(() => controller.abort(), timeout);
 
   const response = await fetch(url, {
-    credentials: "include",
+    credentials: 'include',
     method,
     body,
     headers: _headers,

@@ -1,19 +1,19 @@
-import useCertificate from "./useCertificate";
-import { useCertificatePreview } from "./preview";
 import {
   CreateCertificateRequest,
   UpdateCertificateRequest,
   DeleteCertificateRequest,
-  SendCertificateRequest
-} from "types";
-import request from "src/utils/fetcher";
-import { certificateUrl } from "@services/config";
+  SendCertificateRequest,
+} from 'types';
+import request from 'src/utils/fetcher';
+import { certificateUrl } from '@services/config';
+import { useCertificatePreview } from './preview';
+import useCertificate from './useCertificate';
 
 async function createCertificate(payload: CreateCertificateRequest) {
   try {
     const data = await request({
       url: certificateUrl,
-      method: "POST",
+      method: 'POST',
       payload,
     });
     return [data, null];
@@ -25,8 +25,8 @@ async function createCertificate(payload: CreateCertificateRequest) {
 async function sendCertificate(payload: SendCertificateRequest) {
   try {
     const data = await request({
-      url: certificateUrl + "/send",
-      method: "POST",
+      url: `${certificateUrl}/send`,
+      method: 'POST',
       payload,
     });
     return [data, null];
@@ -37,7 +37,7 @@ async function sendCertificate(payload: SendCertificateRequest) {
 
 async function updateCertificate(payload: UpdateCertificateRequest) {
   try {
-    const data = await request({ url: certificateUrl, method: "PUT", payload });
+    const data = await request({ url: certificateUrl, method: 'PUT', payload });
     return [data, null];
   } catch (error) {
     return [null, error];
@@ -48,7 +48,7 @@ async function deleteCertificate(payload: DeleteCertificateRequest) {
   try {
     const data = await request({
       url: certificateUrl,
-      method: "DELETE",
+      method: 'DELETE',
       payload,
     });
     return [data, null];
@@ -62,5 +62,5 @@ export {
   createCertificate,
   updateCertificate,
   deleteCertificate,
-  sendCertificate
+  sendCertificate,
 };

@@ -1,15 +1,15 @@
-import { Form, Formik, FormikHelpers } from "formik";
-import FormikController from "@components/Formik/FormikController";
-import { ControllerProps, Participant } from "types";
-import { Button, Grid } from "@mantine/core";
-import * as Yup from "yup";
-import { KeyedMutator } from "swr";
-import { updateParticipant } from "@services/participant";
-import { useRouter } from "next/router";
+import { Form, Formik, FormikHelpers } from 'formik';
+import { FormikController } from '@components/Form';
+import { ControllerProps, Participant } from 'types';
+import { Button, Grid } from '@mantine/core';
+import * as Yup from 'yup';
+import { KeyedMutator } from 'swr';
+import { updateParticipant } from '@services/participant';
+import { useRouter } from 'next/router';
 
 type Values = Omit<
   Participant,
-  "createdAt" | "updatedAt" | "activityUid" | "participantCertificate"
+  'createdAt' | 'updatedAt' | 'activityUid' | 'participantCertificate'
 >;
 const UpdateParticipant = ({
   participantProps,
@@ -33,9 +33,9 @@ const UpdateParticipant = ({
   };
 
   const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
-    const [_, error] = await updateParticipant(values);
+    const [, error] = await updateParticipant(values);
     if (error) {
-      router.push("/500", { pathname: router.asPath });
+      router.push('/500', { pathname: router.asPath });
       return;
     }
     actions.setSubmitting(false);
@@ -44,83 +44,66 @@ const UpdateParticipant = ({
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("必填"),
-    from: Yup.string().required("必填"),
-    title: Yup.string().required("必填"),
-    email: Yup.string().email("請確認 email 格式").required(),
-    phone: Yup.string().required("必填"),
+    name: Yup.string().required('必填'),
+    from: Yup.string().required('必填'),
+    title: Yup.string().required('必填'),
+    email: Yup.string().email('請確認 email 格式').required(),
+    phone: Yup.string().required('必填'),
   });
 
   const fields: ControllerProps[] = [
     {
-      control: "text-input",
-      name: "name",
-      label: "名字",
+      control: 'text-input',
+      name: 'name',
+      label: '名字',
       required: true,
     },
     {
-      control: "text-input",
-      name: "from",
-      label: "單位",
+      control: 'text-input',
+      name: 'from',
+      label: '單位',
       required: true,
     },
     {
-      control: "text-input",
-      name: "title",
-      label: "職稱",
+      control: 'text-input',
+      name: 'title',
+      label: '職稱',
       required: true,
     },
     {
-      control: "text-input",
-      name: "email",
-      label: "電子信箱",
+      control: 'text-input',
+      name: 'email',
+      label: '電子信箱',
       required: true,
     },
     {
-      control: "text-input",
-      name: "phone",
-      label: "聯絡電話",
+      control: 'text-input',
+      name: 'phone',
+      label: '聯絡電話',
       required: true,
     },
   ];
 
   return (
-    <Formik
-      initialValues={initialValue}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
+    <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
       {(formik) => (
         <Form>
           <Grid justify="center" gutter="xl">
-            {fields.map((field, index) => {
-              return (
-                <Grid.Col
-                  xs={10}
-                  sm={10}
-                  md={10}
-                  lg={10}
-                  key={`${field.name}-${index}`}
-                >
-                  <FormikController {...field} />
-                </Grid.Col>
-              );
-            })}
+            {fields.map((field, index) => (
+              <Grid.Col xs={10} sm={10} md={10} lg={10} key={`${field.name}-${index}`}>
+                <FormikController {...field} />
+              </Grid.Col>
+            ))}
 
             <Grid.Col
               xs={10}
               sm={10}
               md={10}
               lg={10}
-              sx={{ display: "flex", justifyContent: "center" }}
+              sx={{ display: 'flex', justifyContent: 'center' }}
             >
-              <Button
-                type="submit"
-                mt={25}
-                loading={formik.isSubmitting}
-                variant="outline"
-              >
-                {formik.isSubmitting ? "建立中..." : "確認"}
+              <Button type="submit" mt={25} loading={formik.isSubmitting} variant="outline">
+                {formik.isSubmitting ? '建立中...' : '確認'}
               </Button>
             </Grid.Col>
           </Grid>

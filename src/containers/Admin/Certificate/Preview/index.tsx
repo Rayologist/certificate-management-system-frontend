@@ -1,8 +1,8 @@
-import { useFormikContext } from "formik";
-import { Button, ButtonProps } from "@mantine/core";
-import { Values } from "../Create";
-import { SetStateAction, Dispatch } from "react";
-import { useCertificatePreview } from "@services/certificate";
+import { useFormikContext } from 'formik';
+import { Button, ButtonProps } from '@mantine/core';
+import { SetStateAction, Dispatch } from 'react';
+import { useCertificatePreview } from '@services/certificate';
+import { CertificateFormValues } from '../types';
 
 type PreviewButton = ButtonProps & {
   children?: React.ReactNode;
@@ -13,7 +13,7 @@ const PreviewButton = (props: PreviewButton) => {
   const { setObjectURL, children, ...rest } = props;
   const { setPayload, isLoading } = useCertificatePreview(setObjectURL);
 
-  const formik = useFormikContext<Values>();
+  const formik = useFormikContext<CertificateFormValues>();
   const { values, errors } = formik;
 
   const { title, totalHour: th, dateString, dummyName } = values;

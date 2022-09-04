@@ -1,14 +1,7 @@
-import { ReactNode, useState } from "react";
-import { AppShell, useMantineTheme } from "@mantine/core";
-import Header from "./Header";
-import Navbar from "./Navbar";
-import MainLink, { MainLinkProps } from "./MainLinks";
-import {
-  IconGitPullRequest,
-  IconAlertCircle,
-  IconMessages,
-  IconDatabase,
-} from "@tabler/icons";
+import { ReactNode, useState } from 'react';
+import { AppShell, useMantineTheme } from '@mantine/core';
+import Header from './Header';
+import Navbar from './Navbar';
 
 export default function Shell({
   children,
@@ -24,10 +17,7 @@ export default function Shell({
     <AppShell
       styles={{
         main: {
-          background:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[8]
-              : theme.colors.gray[0],
+          background: theme.colorScheme === 'dark' ? theme.colors.dark[8] : theme.colors.gray[0],
         },
       }}
       navbarOffsetBreakpoint="sm"

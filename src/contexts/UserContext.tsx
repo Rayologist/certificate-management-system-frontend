@@ -1,13 +1,6 @@
-import { refresh } from "@services/session";
-import {
-  createContext,
-  SetStateAction,
-  useContext,
-  useState,
-  Dispatch,
-  useEffect,
-} from "react";
-import { Response } from "types";
+import { refresh } from '@services/session';
+import { createContext, SetStateAction, useContext, useState, Dispatch, useEffect } from 'react';
+import { Response } from 'types';
 
 type State = {
   pending: boolean;
@@ -24,15 +17,13 @@ type Context = {
 
 const UserContext = createContext<Context | null>(null);
 
-export const useUser = () => {
-  return useContext(UserContext) as Context;
-};
+export const useUser = () => useContext(UserContext) as Context;
 
 const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const initialState: State = {
     pending: true,
     error: false,
-    data: { role: "" },
+    data: { role: '' },
   };
 
   const [user, setUser] = useState(initialState);
@@ -49,7 +40,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
       const { data } = result as Response<{ role?: string }>;
 
       if (data?.role) {
-        setUser((prev) => ({ ...prev, data: { role: data.role ?? "" } }));
+        setUser((prev) => ({ ...prev, data: { role: data.role ?? '' } }));
       }
 
       setUser((prev) => ({ ...prev, pending: false }));
@@ -57,11 +48,7 @@ const UserProvider = ({ children }: { children: React.ReactNode }) => {
     refresher();
   }, []);
 
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
+  return <UserContext.Provider value={{ user, setUser }}>{children}</UserContext.Provider>;
 };
 
 export default UserProvider;

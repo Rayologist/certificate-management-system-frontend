@@ -1,10 +1,10 @@
-import { Title, Group, Button, Modal, Paper } from "@mantine/core";
-import { IconPlus } from "@tabler/icons";
-import { useState } from "react";
-import { CreateNewActivity, ActivityTable } from "@containers/Admin/Activity";
-import Loader from "@components/Loader";
-import { useActivity } from "@services/activity";
-import { useRouter } from "next/router";
+import { Title, Group, Button, Modal, Paper } from '@mantine/core';
+import { IconPlus } from '@tabler/icons';
+import { useState } from 'react';
+import { CreateNewActivity, ActivityTable } from '@containers/Admin/Activity';
+import Loader from '@components/Loader';
+import { useActivity } from '@services/activity';
+import { useRouter } from 'next/router';
 
 const Activity = () => {
   const [opened, setOpened] = useState(false);
@@ -16,7 +16,7 @@ const Activity = () => {
   }
 
   if (isError) {
-    router.push("/500", { pathname: router.asPath });
+    router.push('/500', { pathname: router.asPath });
     return null;
   }
 
@@ -32,14 +32,11 @@ const Activity = () => {
 
       <Group position="apart" mb={50}>
         <Title>活動建立</Title>
-        <Button
-          leftIcon={<IconPlus size={16} />}
-          onClick={() => setOpened(true)}
-        >
+        <Button leftIcon={<IconPlus size={16} />} onClick={() => setOpened(true)}>
           新增
         </Button>
       </Group>
-      <Paper sx={{ padding: "1rem" }}>
+      <Paper sx={{ padding: '1rem' }}>
         <ActivityTable data={activity.data} />
       </Paper>
     </>

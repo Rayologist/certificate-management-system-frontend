@@ -1,14 +1,10 @@
-import { useMantineTheme } from "@mantine/core";
+import { useMantineTheme } from '@mantine/core';
 
 export function CBELogo({ size }: { size: number }) {
   const theme = useMantineTheme();
-  const color = theme.colorScheme === "dark" ? theme.white : theme.black;
+  const color = theme.colorScheme === 'dark' ? theme.white : theme.black;
   return (
-    <svg
-      height={`${size}`}
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 550 200"
-    >
+    <svg height={`${size}`} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 550 200">
       <g className="layer">
         <path
           d="m153.1,92.69c-0.06,3.49 -0.14,6.98 -0.2,10.46c-0.29,18.89 -11.92,32.39 -31.17,35.66c-5.81,0.99 -11.78,1.02 -17.98,1.52c0,-9.43 0,-18.01 0,-26.78c4.8,-0.41 9.44,-0.45 13.93,-1.29c6.86,-1.28 8.33,-3.36 8.37,-10.13c0.01,-2.82 -0.02,-5.65 -0.04,-9.4c-0.05,-9.55 -0.09,-18.18 -0.14,-26.82c0.06,-1.82 0.21,-3.65 0.16,-5.47c-0.18,-6.51 -4.02,-10.56 -10.61,-10.7c-8.81,-0.2 -17.63,0.1 -26.43,-0.21c-1.95,-0.06 -4.45,-1.31 -5.66,-2.84c-6.1,-7.67 -11.86,-15.62 -18.04,-23.57c-0.31,-0.1 -0.25,-0.08 -0.25,-0.08c-4.65,-6.62 -9.3,-13.24 -14.6,-20.78c7.51,0 14.29,0.65 20.9,-0.15c8.99,-1.09 15.17,1.7 19.35,9.81c4.02,7.8 9.54,12.35 19.61,11.21c25.64,-2.93 44.49,16.93 42.65,42.81c0.04,9.53 0.1,18.14 0.15,26.75z"

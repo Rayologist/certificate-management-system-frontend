@@ -11,6 +11,8 @@ import {
   ColProps,
 } from '@mantine/core';
 import { DatePickerProps as MantineDatePickerProps } from '@mantine/dates';
+import { NextPage } from 'next';
+import { AppProps } from 'next/app';
 
 export type PickAsOrNull<T, K extends keyof T> = Omit<T, K> & {
   [P in K]: T[P] | null;
@@ -35,7 +37,7 @@ export type AppPropsWithLayout = AppProps & {
 
 //
 export type Response<ResData = {}> = {
-  status: "success" | "failed";
+  status: 'success' | 'failed';
   data: ResData;
   msg?: string;
 };
@@ -52,15 +54,9 @@ export type Activity = {
 };
 
 export type GetActivityRespose = Response<Activity[]>;
-export type CreateActivityRequest = Pick<
-  Activity,
-  "title" | "startDate" | "endDate"
->;
-export type DeleteActivityRequest = Pick<Activity, "auid">;
-export type UpdateActivityRequest = Pick<
-  Activity,
-  "auid" | "title" | "startDate" | "endDate"
->;
+export type CreateActivityRequest = Pick<Activity, 'title' | 'startDate' | 'endDate'>;
+export type DeleteActivityRequest = Pick<Activity, 'auid'>;
+export type UpdateActivityRequest = Pick<Activity, 'auid' | 'title' | 'startDate' | 'endDate'>;
 
 // Certificate
 export interface Certificate {
@@ -90,7 +86,7 @@ export interface Title {
 
 export type CreateCertificateRequest = Pick<
   Certificate,
-  "activityUid" | "displayName" | "title" | "dateString" | "totalHour"
+  'activityUid' | 'displayName' | 'title' | 'dateString' | 'totalHour'
 >;
 export type SendCertificateRequest = {
   certificateId: number;
@@ -99,9 +95,9 @@ export type SendCertificateRequest = {
 
 export type UpdateCertificateRequest = Pick<
   Certificate,
-  "id" | "displayName" | "title" | "dateString" | "totalHour"
+  'id' | 'displayName' | 'title' | 'dateString' | 'totalHour'
 >;
-export type DeleteCertificateRequest = Pick<Certificate, "id">;
+export type DeleteCertificateRequest = Pick<Certificate, 'id'>;
 export type CertificateResponse = Activity & { certificate: Certificate[] };
 
 export type GetCertificateResponse = Response<CertificateResponse[]>;
@@ -116,31 +112,28 @@ export type Participant = {
   email: string;
   phone: string;
   participantCertificate: {
-    certificate: Pick<Certificate, "id" | "displayName">;
+    certificate: Pick<Certificate, 'id' | 'displayName'>;
   }[];
   createdAt: Date;
   updatedAt: Date;
 };
 export type CreateParticipantRequest = {
-  data: Omit<
-    Participant,
-    "id" | "createdAt" | "updatedAt" | "participantCertificate"
-  >[];
+  data: Omit<Participant, 'id' | 'createdAt' | 'updatedAt' | 'participantCertificate'>[];
 };
 export type UpdateParticipantRequest = Omit<
   Participant,
-  "activityUid" | "createdAt" | "updatedAt" | "participantCertificate"
+  'activityUid' | 'createdAt' | 'updatedAt' | 'participantCertificate'
 >;
 
-export type DeleteParticipantRequest = Pick<Participant, "id">;
+export type DeleteParticipantRequest = Pick<Participant, 'id'>;
 
-export type ParticipantStatsResponse = Pick<Activity, "auid" | "title"> & {
+export type ParticipantStatsResponse = Pick<Activity, 'auid' | 'title'> & {
   _count: { participant: number };
 };
 
-export type ParticipantResponse = Pick<Activity, "title"> & {
+export type ParticipantResponse = Pick<Activity, 'title'> & {
   participant: Participant[];
-  certificate: Pick<Certificate, "displayName" | "id">[];
+  certificate: Pick<Certificate, 'displayName' | 'id'>[];
 };
 
 // ------Formik Component types------
@@ -189,4 +182,3 @@ export type ControllerProps =
 export type ControllerPropsWithCol = {
   controllers: (ControllerProps & { col?: ColProps })[];
 };
-

@@ -1,12 +1,12 @@
-import { Button, Grid, Notification } from "@mantine/core";
-import { Form, Formik, FormikHelpers } from "formik";
-import FormikController from "@components/Formik/FormikController";
-import { ControllerProps, Response } from "types";
-import * as Yup from "yup";
-import { login } from "@services/session";
-import { useState } from "react";
-import { useRouter } from "next/router";
-import { useUser } from "src/contexts/UserContext";
+import { Button, Grid, Notification } from '@mantine/core';
+import { Form, Formik } from 'formik';
+import { FormikController } from '@components/Form';
+import { ControllerProps, Response } from 'types';
+import * as Yup from 'yup';
+import { login } from '@services/session';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useUser } from 'src/contexts/UserContext';
 
 const LoginForm = () => {
   const [notification, setNotification] = useState(false);
@@ -19,23 +19,21 @@ const LoginForm = () => {
   }
 
   const initialValue: Values = {
-    account: "",
-    password: "",
+    account: '',
+    password: '',
   };
 
-  const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
-    const [result, error] = (await login(values)) as [
-      Response<{ role?: string }>,
-      any
-    ];
+  const onSubmit = async (values: Values) => {
+    const [result, error] = (await login(values)) as [Response<{ role?: string }>, any];
 
     if (error) {
-      router.push("/500", { pathname: router.asPath });
-      return;
+      router.push('/500', { pathname: router.asPath });
+      return null;
     }
 
-    if (result.status !== "success") {
-      return setNotification(true);
+    if (result.status !== 'success') {
+      setNotification(true);
+      return null;
     }
 
     const role = result.data?.role;
@@ -44,57 +42,42 @@ const LoginForm = () => {
       setUser((prev) => ({ ...prev, data: { role } }));
     }
 
-    router.push("/dashboard/activity");
+    router.push('/dashboard/activity');
+    return null;
   };
 
   const validationSchema = Yup.object({
-    account: Yup.string().required("必填"),
-    password: Yup.string().required("必填"),
+    account: Yup.string().required('必填'),
+    password: Yup.string().required('必填'),
   });
 
   const fields: ControllerProps[] = [
     {
-      control: "text-input",
-      name: "account",
-      label: "帳號",
+      control: 'text-input',
+      name: 'account',
+      label: '帳號',
       required: true,
     },
     {
-      control: "password-input",
-      name: "password",
-      label: "密碼",
+      control: 'password-input',
+      name: 'password',
+      label: '密碼',
       required: true,
     },
   ];
   return (
-    <Formik
-      initialValues={initialValue}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
+    <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
       {(formik) => (
         <Form>
           <Grid justify="center" gutter="xl">
-            {fields.map((field, index) => {
-              return (
-                <Grid.Col
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  key={`${field.name}-${index}`}
-                >
-                  <FormikController {...field} />
-                </Grid.Col>
-              );
-            })}
+            {fields.map((field, index) => (
+              <Grid.Col xs={12} sm={12} md={12} lg={12} key={`${field.name}-${index}`}>
+                <FormikController {...field} />
+              </Grid.Col>
+            ))}
             {notification && (
               <Grid.Col xs={12} sm={12} md={12} lg={12}>
-                <Notification
-                  onClose={() => setNotification(false)}
-                  icon={"!"}
-                  color="red"
-                >
+                <Notification onClose={() => setNotification(false)} icon="!" color="red">
                   帳號或密碼錯誤
                 </Notification>
               </Grid.Col>
@@ -105,15 +88,10 @@ const LoginForm = () => {
               sm={12}
               md={12}
               lg={12}
-              sx={{ display: "flex", justifyContent: "center" }}
+              sx={{ display: 'flex', justifyContent: 'center' }}
             >
-              <Button
-                type="submit"
-                mt={5}
-                loading={formik.isSubmitting}
-                fullWidth
-              >
-                {formik.isSubmitting ? "登入中..." : "登入"}
+              <Button type="submit" mt={5} loading={formik.isSubmitting} fullWidth>
+                {formik.isSubmitting ? '登入中...' : '登入'}
               </Button>
             </Grid.Col>
           </Grid>

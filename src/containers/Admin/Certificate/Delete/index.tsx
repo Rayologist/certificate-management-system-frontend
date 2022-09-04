@@ -1,9 +1,9 @@
-import { useCallback, Dispatch, SetStateAction } from "react";
-import DeleteModal from "@components/DeleteModal";
-import { Stack, Text } from "@mantine/core";
-import { deleteCertificate } from "@services/certificate";
-import { KeyedMutator } from "swr";
-import { useRouter } from "next/router";
+import { useCallback, Dispatch, SetStateAction } from 'react';
+import DeleteModal from '@components/DeleteModal';
+import { Stack, Text } from '@mantine/core';
+import { deleteCertificate } from '@services/certificate';
+import { KeyedMutator } from 'swr';
+import { useRouter } from 'next/router';
 
 export default function DeleteCertificate({
   displayName,
@@ -27,9 +27,9 @@ export default function DeleteCertificate({
       opened={opened}
       onClose={handleClose}
       onConfirm={async () => {
-        const [_, error] = await deleteCertificate({ id });
+        const [, error] = await deleteCertificate({ id });
         if (error) {
-          router.push("/500", { pathname: router.asPath });
+          router.push('/500', { pathname: router.asPath });
           return;
         }
         mutate();

@@ -1,12 +1,12 @@
-import { Paper, Title, Text, Container } from "@mantine/core";
-import LoginForm from "@containers/Admin/Login";
-import { useUser } from "src/contexts/UserContext";
-import Redirect from "@components/Redirect";
+import { Paper, Title, Text, Container } from '@mantine/core';
+import LoginForm from '@containers/Admin/Login';
+import { useUser } from 'src/contexts/UserContext';
+import Redirect from '@components/Redirect';
 
 export function Login() {
   const { user } = useUser();
 
-  if (user.data.role === "admin") return <Redirect url="/dashboard/activity" />;
+  if (user.data.role === 'admin') return <Redirect url="/dashboard/activity" />;
 
   return (
     <Container size={420} my={40}>

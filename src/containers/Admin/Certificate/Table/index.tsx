@@ -1,48 +1,38 @@
-import { useCallback, useState } from "react";
-import BadgeMenu from "@containers/Admin/Certificate/BadgeMenu";
-import Table from "@components/Table";
-import {
-  ActionIcon,
-  Group,
-  Modal,
-  Image,
-  Grid,
-  Divider,
-  Title,
-} from "@mantine/core";
-import { IconCirclePlus } from "@tabler/icons";
-import { createColumnHelper } from "@tanstack/react-table";
-import { CertificateResponse } from "types";
-import CreateCertificate from "../Create";
-import { staticUrl } from "@services/config";
+import { useCallback, useState } from 'react';
+import BadgeMenu from '@containers/Admin/Certificate/BadgeMenu';
+import Table from '@components/Table';
+import { ActionIcon, Group, Modal, Image, Grid, Divider, Title } from '@mantine/core';
+import { IconCirclePlus } from '@tabler/icons';
+import { createColumnHelper } from '@tanstack/react-table';
+import { CertificateResponse } from 'types';
+import { staticUrl } from '@services/config';
+import CreateCertificate from '../Create';
 
 const columnHelper = createColumnHelper<CertificateResponse>();
 
 const columns = [
-  columnHelper.accessor("title", {
-    header: "活動名稱",
+  columnHelper.accessor('title', {
+    header: '活動名稱',
     minSize: 250,
   }),
 
   columnHelper.display({
-    id: "目前證書",
+    id: '目前證書',
     cell: (props) => {
       const { certificate, url: activityUrl } = props.cell.row.original;
 
       return (
         <Group spacing="xs">
-          {certificate.map((cert) => {
-            return (
-              <BadgeMenu {...cert} activityUrl={activityUrl} key={cert.id} />
-            );
-          })}
+          {certificate.map((cert) => (
+            <BadgeMenu {...cert} activityUrl={activityUrl} key={cert.id} />
+          ))}
         </Group>
       );
     },
     minSize: 500,
   }),
   columnHelper.display({
-    id: "新增證書",
+    id: '新增證書',
     maxSize: 50,
     cell: (props) => {
       const [opened, setOpened] = useState(false);
@@ -67,12 +57,7 @@ const columns = [
                 <Image src={objectURL} />
               </Grid.Col>
               <Grid.Col span={1}>
-                <Divider
-                  mx="lg"
-                  sx={{ height: "100%" }}
-                  orientation="vertical"
-                  size="md"
-                />
+                <Divider mx="lg" sx={{ height: '100%' }} orientation="vertical" size="md" />
               </Grid.Col>
               {/* Create */}
               <Grid.Col span={20}>
@@ -100,10 +85,6 @@ const columns = [
   }),
 ];
 
-export default function CertificateTable({
-  data,
-}: {
-  data: CertificateResponse[];
-}) {
+export default function CertificateTable({ data }: { data: CertificateResponse[] }) {
   return <Table data={data} columns={columns} />;
 }

@@ -1,12 +1,11 @@
-import { Form, Formik, FormikHelpers } from "formik";
-import FormikController from "@components/Formik/FormikController";
-import { ControllerProps } from "types";
-import { Button, Grid, Notification } from "@mantine/core";
-import * as Yup from "yup";
-import { useRouter } from "next/router";
-import { sendCert } from "@services/sendCert";
-import { useState } from "react";
-import { Response } from "types";
+import { Form, Formik } from 'formik';
+import { FormikController } from '@components/Form';
+import { ControllerProps, Response } from 'types';
+import { Button, Grid, Notification } from '@mantine/core';
+import * as Yup from 'yup';
+import { useRouter } from 'next/router';
+import { sendCert } from '@services/sendCert';
+import { useState } from 'react';
 
 function CertificateForm({
   certificateId,
@@ -26,75 +25,65 @@ function CertificateForm({
   }
 
   const initialValue: Values = {
-    name: "",
-    email: "",
+    name: '',
+    email: '',
   };
 
-  const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
+  const onSubmit = async (values: Values) => {
     const [data, error] = (await sendCert({
       ...values,
       certificateId,
       activityUid,
     })) as [Response, any];
 
-    if (data.status === "failed") return setNotification(true);
-    if (error) {
-      router.push("/500", { pathname: router.asPath });
-      return;
+    if (data.status === 'failed') {
+      setNotification(true);
+      return null;
     }
+
+    if (error) {
+      router.push('/500', { pathname: router.asPath });
+      return null;
+    }
+
     router.push(pushUrl);
+    return null;
   };
 
   const validationSchema = Yup.object({
-    name: Yup.string().required("必填"),
-    email: Yup.string().email("格式錯誤").required("必填"),
+    name: Yup.string().required('必填'),
+    email: Yup.string().email('格式錯誤').required('必填'),
   });
 
   const fields: ControllerProps[] = [
     {
-      control: "text-input",
-      name: "name",
-      label: "名字",
+      control: 'text-input',
+      name: 'name',
+      label: '名字',
       required: true,
     },
     {
-      control: "text-input",
-      type: "email",
-      name: "email",
-      label: "電子信箱",
+      control: 'text-input',
+      type: 'email',
+      name: 'email',
+      label: '電子信箱',
       required: true,
     },
   ];
 
   return (
-    <Formik
-      initialValues={initialValue}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
+    <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
       {(formik) => (
         <Form>
           <Grid justify="center" gutter="xl">
-            {fields.map((field, index) => {
-              return (
-                <Grid.Col
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  key={`${field.name}-${index}`}
-                >
-                  <FormikController {...field} />
-                </Grid.Col>
-              );
-            })}
+            {fields.map((field, index) => (
+              <Grid.Col xs={12} sm={12} md={12} lg={12} key={`${field.name}-${index}`}>
+                <FormikController {...field} />
+              </Grid.Col>
+            ))}
             {notification && (
               <Grid.Col xs={12} sm={12} md={12} lg={12}>
-                <Notification
-                  onClose={() => setNotification(false)}
-                  icon={"!"}
-                  color="red"
-                >
+                <Notification onClose={() => setNotification(false)} icon="!" color="red">
                   名字或信箱錯誤，請洽工作人員。
                 </Notification>
               </Grid.Col>
@@ -104,15 +93,10 @@ function CertificateForm({
               sm={12}
               md={12}
               lg={12}
-              sx={{ display: "flex", justifyContent: "center" }}
+              sx={{ display: 'flex', justifyContent: 'center' }}
             >
-              <Button
-                type="submit"
-                mt={10}
-                loading={formik.isSubmitting}
-                fullWidth
-              >
-                {formik.isSubmitting ? "正在製作證書..." : "送出"}
+              <Button type="submit" mt={10} loading={formik.isSubmitting} fullWidth>
+                {formik.isSubmitting ? '正在製作證書...' : '送出'}
               </Button>
             </Grid.Col>
           </Grid>

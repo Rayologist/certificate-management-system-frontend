@@ -1,4 +1,4 @@
-import { useMemo, useState, useRef, memo } from "react";
+import { useMemo, useState, useRef, memo } from 'react';
 import {
   useReactTable,
   flexRender,
@@ -9,7 +9,7 @@ import {
   SortDirection,
   getFilteredRowModel,
   RowData,
-} from "@tanstack/react-table";
+} from '@tanstack/react-table';
 import {
   Text,
   Table as MantineTable,
@@ -17,16 +17,11 @@ import {
   Group,
   Center,
   ScrollArea,
-} from "@mantine/core";
-import { useVirtualizer } from "@tanstack/react-virtual";
-import useStyles from "./styles";
-import {
-  IconChevronDown,
-  IconChevronUp,
-  IconSelector,
-  TablerIconProps,
-} from "@tabler/icons";
-import GlobalFilter from "./GlobalFilter";
+} from '@mantine/core';
+import { useVirtualizer } from '@tanstack/react-virtual';
+import { IconChevronDown, IconChevronUp, IconSelector, TablerIconProps } from '@tabler/icons';
+import useStyles from './styles';
+import GlobalFilter from './GlobalFilter';
 
 function SortingIcon({
   sorted,
@@ -49,15 +44,9 @@ function SortingIcon({
   return <IconSelector {...args} />;
 }
 
-function Table<T extends RowData>({
-  data,
-  columns,
-}: {
-  data: T[];
-  columns: ColumnDef<T, any>[];
-}) {
+function Table<T extends RowData>({ data, columns }: { data: T[]; columns: ColumnDef<T, any>[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useState('');
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const col = useMemo(() => columns, [columns]);
@@ -92,47 +81,36 @@ function Table<T extends RowData>({
 
   const paddingTop = virtualRows.length > 0 ? virtualRows?.[0]?.start || 0 : 0;
   const paddingBottom =
-    virtualRows.length > 0
-      ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0)
-      : 0;
+    virtualRows.length > 0 ? totalSize - (virtualRows?.[virtualRows.length - 1]?.end || 0) : 0;
 
   const TH = memo(() => (
     <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>
-          {headerGroup.headers.map((header) => {
-            return (
-              <th
-                className={classes.th}
-                key={header.id}
-                style={{ width: header.getSize() }}
+          {headerGroup.headers.map((header) => (
+            <th className={classes.th} key={header.id} style={{ width: header.getSize() }}>
+              <UnstyledButton
+                onClick={header.column.getToggleSortingHandler()}
+                className={classes.control}
               >
-                <UnstyledButton
-                  onClick={header.column.getToggleSortingHandler()}
-                  className={classes.control}
-                >
-                  <Group position="apart">
-                    <Text weight={500} size="sm">
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </Text>
-                    <Center>
-                      <SortingIcon
-                        sorted={header.column.getIsSorted()}
-                        canSort={header.column.getCanSort()}
-                        size={14}
-                        stroke={1.5}
-                      />
-                    </Center>
-                  </Group>
-                </UnstyledButton>
-              </th>
-            );
-          })}
+                <Group position="apart">
+                  <Text weight={500} size="sm">
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(header.column.columnDef.header, header.getContext())}
+                  </Text>
+                  <Center>
+                    <SortingIcon
+                      sorted={header.column.getIsSorted()}
+                      canSort={header.column.getCanSort()}
+                      size={14}
+                      stroke={1.5}
+                    />
+                  </Center>
+                </Group>
+              </UnstyledButton>
+            </th>
+          ))}
         </tr>
       ))}
     </thead>
@@ -149,13 +127,9 @@ function Table<T extends RowData>({
         const row = rows[virtualRow.index];
         return (
           <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => {
-              return (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              );
-            })}
+            {row.getVisibleCells().map((cell) => (
+              <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
+            ))}
           </tr>
         );
       })}
@@ -183,10 +157,7 @@ function Table<T extends RowData>({
 
   return (
     <>
-      <GlobalFilter
-        value={globalFilter ?? ""}
-        onChange={(e) => setGlobalFilter(e.target.value)}
-      />
+      <GlobalFilter value={globalFilter ?? ''} onChange={(e) => setGlobalFilter(e.target.value)} />
 
       <ScrollArea
         viewportRef={tableContainerRef}
@@ -196,7 +167,7 @@ function Table<T extends RowData>({
         <MantineTable
           horizontalSpacing="lg"
           verticalSpacing="xs"
-          sx={{ minWidth: 700, tableLayout: "fixed" }}
+          sx={{ minWidth: 700, tableLayout: 'fixed' }}
           highlightOnHover
         >
           <TH />
@@ -207,6 +178,6 @@ function Table<T extends RowData>({
   );
 }
 
-Table.displayName = "Table";
+Table.displayName = 'Table';
 
 export default Table;

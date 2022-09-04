@@ -1,4 +1,4 @@
-import { ThemeIcon, UnstyledButton, Group, Text } from "@mantine/core";
+import { ThemeIcon, UnstyledButton, Group, Text } from '@mantine/core';
 
 export interface MainLinkProps {
   icon: React.ReactNode;
@@ -10,18 +10,15 @@ export default function MainLink({ icon, color, label }: MainLinkProps) {
   return (
     <UnstyledButton
       sx={(theme) => ({
-        display: "block",
-        width: "100%",
+        display: 'block',
+        width: '100%',
         padding: theme.spacing.xs,
         borderRadius: theme.radius.sm,
-        color:
-          theme.colorScheme === "dark" ? theme.colors.dark[0] : theme.black,
+        color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.black,
 
-        "&:hover": {
+        '&:hover': {
           backgroundColor:
-            theme.colorScheme === "dark"
-              ? theme.colors.dark[6]
-              : theme.colors.gray[0],
+            theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
         },
       })}
     >

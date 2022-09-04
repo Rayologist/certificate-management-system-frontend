@@ -1,37 +1,26 @@
-import {
-  createStyles,
-  Header,
-  Group,
-  ActionIcon,
-  Container,
-  Box,
-} from "@mantine/core";
-import {
-  IconBrandYoutube,
-  IconBrandInstagram,
-  IconBrandFacebook,
-} from "@tabler/icons";
-import { CBELogo } from "@components/Logo";
-import ColorSchemeToggle from "@components/ColorSchemeToggle";
+import { createStyles, Header, Group, ActionIcon, Container, Box } from '@mantine/core';
+import { IconBrandYoutube, IconBrandInstagram, IconBrandFacebook } from '@tabler/icons';
+import { CBELogo } from '@components/Logo';
+import ColorSchemeToggle from '@components/ColorSchemeToggle';
 
 const useStyles = createStyles((theme) => ({
   inner: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     height: 56,
 
-    [theme.fn.smallerThan("sm")]: {
-      justifyContent: "flex-start",
+    [theme.fn.smallerThan('sm')]: {
+      justifyContent: 'flex-start',
     },
   },
 
   social: {
     width: 260,
 
-    [theme.fn.smallerThan("sm")]: {
-      width: "auto",
-      marginLeft: "auto",
+    [theme.fn.smallerThan('sm')]: {
+      width: 'auto',
+      marginLeft: 'auto',
     },
   },
 }));
@@ -40,9 +29,9 @@ export function UserHeader() {
   const { classes } = useStyles();
 
   const href = {
-    facebook: "https://www.facebook.com/NTUCBE",
-    youtube: "https://www.youtube.com/channel/UCqGbL2pwlrZI_dNBmEv6CRg",
-    instagram: "https://www.instagram.com/ntucbe",
+    facebook: 'https://www.facebook.com/NTUCBE',
+    youtube: 'https://www.youtube.com/channel/UCqGbL2pwlrZI_dNBmEv6CRg',
+    instagram: 'https://www.instagram.com/ntucbe',
   };
 
   return (
@@ -50,7 +39,7 @@ export function UserHeader() {
       <Container className={classes.inner}>
         <Box
           sx={{
-            display: "flex",
+            display: 'flex',
           }}
           component="a"
           href="https://cbe.ntu.edu.tw/"

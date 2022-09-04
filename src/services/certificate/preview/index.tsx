@@ -1,18 +1,13 @@
-import request from "src/utils/fetcher";
-import { previewUrl } from "@services/config";
-import { CreateCertificateRequest } from "types";
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import request from 'src/utils/fetcher';
+import { previewUrl } from '@services/config';
+import { CreateCertificateRequest } from 'types';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
-type PreviewRequest = Omit<
-  CreateCertificateRequest,
-  "displayName" | "activityUid"
-> & {
+type PreviewRequest = Omit<CreateCertificateRequest, 'displayName' | 'activityUid'> & {
   dummyName?: string;
 };
 
-export function useCertificatePreview(
-  setObjectURL: Dispatch<SetStateAction<string>>
-) {
+export function useCertificatePreview(setObjectURL: Dispatch<SetStateAction<string>>) {
   const [payload, setPayload] = useState<PreviewRequest>();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -20,8 +15,8 @@ export function useCertificatePreview(
     setIsLoading(true);
     const result = await request({
       url: previewUrl,
-      method: "POST",
-      payload: payload,
+      method: 'POST',
+      payload,
       toJson: false,
     });
     const blob = await result.blob();

@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import { useRouter } from "next/router";
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 type RedirectProps = { url: string; from?: string };
 

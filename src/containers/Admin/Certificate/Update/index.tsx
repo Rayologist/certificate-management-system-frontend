@@ -1,20 +1,15 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { Form, Formik, FormikHelpers } from "formik";
-import FormikController from "@components/Formik/FormikController";
-import {
-  Certificate,
-  ControllerProps,
-  CreateCertificateRequest,
-  PickAsOrNull,
-} from "types";
-import { Button, Grid, Group } from "@mantine/core";
-import * as Yup from "yup";
-import TextareaSelectArray from "../Create/TextareaSelect";
-import PreviewButton from "../Preview";
-import { updateCertificate, useCertificate } from "@services/certificate";
-import { useRouter } from "next/router";
+import React, { Dispatch, SetStateAction } from 'react';
+import { Form, Formik, FormikHelpers } from 'formik';
+import FormikController from '@components/Form/FormikController';
+import { Certificate, ControllerProps, CreateCertificateRequest } from 'types';
+import { Button, Grid, Group } from '@mantine/core';
+import * as Yup from 'yup';
+import { updateCertificate, useCertificate } from '@services/certificate';
+import { useRouter } from 'next/router';
+import TextareaSelectArray from '../Create/TextareaSelect';
+import PreviewButton from '../Preview';
 
-export type Values = Omit<CreateCertificateRequest, "activityUid"> & {
+export type Values = Omit<CreateCertificateRequest, 'activityUid'> & {
   dummyName?: string;
 };
 
@@ -25,7 +20,7 @@ export default function UpdateCertificate({
 }: {
   setObjectURL: Dispatch<SetStateAction<string>>;
   handleClose: { (updated?: boolean): void };
-  certProps: Omit<Certificate, "activityUid" | "filename" | "url">;
+  certProps: Omit<Certificate, 'activityUid' | 'filename' | 'url'>;
 }) {
   const { mutate } = useCertificate();
   const router = useRouter();
@@ -33,8 +28,8 @@ export default function UpdateCertificate({
   const { displayName, title, totalHour, dateString, id } = certProps;
   const initialValue: Values = {
     displayName,
-    dummyName: "",
-    title: title,
+    dummyName: '',
+    title,
     totalHour,
     dateString,
   };
@@ -42,9 +37,9 @@ export default function UpdateCertificate({
   const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
     const { dummyName, ...rest } = values;
     const payload = { id, ...rest };
-    const [_, error] = await updateCertificate(payload);
+    const [, error] = await updateCertificate(payload);
     if (error) {
-      router.push("/500", { pathname: router.asPath });
+      router.push('/500', { pathname: router.asPath });
       return;
     }
     actions.setSubmitting(false);
@@ -53,53 +48,49 @@ export default function UpdateCertificate({
   };
 
   const validationSchema = Yup.object({
-    displayName: Yup.string().required("必填"),
+    displayName: Yup.string().required('必填'),
     title: Yup.array()
       .of(
         Yup.object({
-          text: Yup.string().required("必填"),
+          text: Yup.string().required('必填'),
           weight: Yup.string(),
         })
       )
-      .required("必填")
+      .required('必填')
       .min(1)
       .max(3),
-    totalHour: Yup.number().required("必填").nullable(),
-    dateString: Yup.string().required("必填"),
+    totalHour: Yup.number().required('必填').nullable(),
+    dateString: Yup.string().required('必填'),
   });
 
   const fields: ControllerProps[] = [
     {
-      control: "text-input",
-      name: "totalHour",
-      label: "總時數",
-      type: "number",
+      control: 'text-input',
+      name: 'totalHour',
+      label: '總時數',
+      type: 'number',
       required: true,
     },
     {
-      control: "text-input",
-      name: "dateString",
-      label: "日期樣式",
+      control: 'text-input',
+      name: 'dateString',
+      label: '日期樣式',
       required: true,
     },
   ];
 
   return (
-    <Formik
-      initialValues={initialValue}
-      onSubmit={onSubmit}
-      validationSchema={validationSchema}
-    >
+    <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
       {(formik) => (
         <Form>
           <Grid justify="center" gutter="xl">
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <FormikController
                 {...{
-                  control: "text-input",
-                  name: "displayName",
-                  label: "顯示名稱",
-                  description: "顯示給使用者以及管理者的名稱。",
+                  control: 'text-input',
+                  name: 'displayName',
+                  label: '顯示名稱',
+                  description: '顯示給使用者以及管理者的名稱。',
                   required: true,
                 }}
               />
@@ -107,10 +98,10 @@ export default function UpdateCertificate({
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <FormikController
                 {...{
-                  control: "text-input",
-                  name: "dummyName",
-                  label: "測試姓名",
-                  description: "測試姓名不會儲存，預覽時可見。",
+                  control: 'text-input',
+                  name: 'dummyName',
+                  label: '測試姓名',
+                  description: '測試姓名不會儲存，預覽時可見。',
                 }}
               />
             </Grid.Col>
@@ -119,33 +110,25 @@ export default function UpdateCertificate({
               <TextareaSelectArray
                 name="title"
                 textareaProps={{
-                  label: "證書文字",
+                  label: '證書文字',
                 }}
                 selectProps={{
-                  label: "字體",
+                  label: '字體',
                   options: [
-                    { label: "無", value: "" },
-                    { label: "斜體", value: "italic" },
-                    { label: "粗體", value: "bold" },
+                    { label: '無', value: '' },
+                    { label: '斜體', value: 'italic' },
+                    { label: '粗體', value: 'bold' },
                   ],
                   allowDeselect: false,
                 }}
               />
             </Grid.Col>
 
-            {fields.map((field, index) => {
-              return (
-                <Grid.Col
-                  xs={10}
-                  sm={10}
-                  md={10}
-                  lg={10}
-                  key={`${field.name}-${index}`}
-                >
-                  <FormikController {...field} />
-                </Grid.Col>
-              );
-            })}
+            {fields.map((field, index) => (
+              <Grid.Col xs={10} sm={10} md={10} lg={10} key={`${field.name}-${index}`}>
+                <FormikController {...field} />
+              </Grid.Col>
+            ))}
 
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <Group position="center">
@@ -153,7 +136,7 @@ export default function UpdateCertificate({
                   預覽
                 </PreviewButton>
                 <Button type="submit" loading={formik.isSubmitting}>
-                  {formik.isSubmitting ? "建立中..." : "確認"}
+                  {formik.isSubmitting ? '建立中...' : '確認'}
                 </Button>
               </Group>
             </Grid.Col>

@@ -6,21 +6,18 @@ import {
   useMantineTheme,
   Container,
   createStyles,
-} from "@mantine/core";
-import { Dispatch, SetStateAction } from "react";
-import Link from "next/link";
-import { CBELogo } from "@components/Logo";
-import ColorSchemeToggle from "@components/ColorSchemeToggle";
+} from '@mantine/core';
+import { Dispatch, SetStateAction } from 'react';
+import Link from 'next/link';
+import { CBELogo } from '@components/Logo';
+import ColorSchemeToggle from '@components/ColorSchemeToggle';
 
-const useStyles = createStyles((theme) => ({
+const useStyles = createStyles(() => ({
   inner: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "center",
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     height: 60,
-    // [theme.fn.smallerThan("sm")]: {
-    //   justifyContent: "flex-start",
-    // },
   },
 }));
 
@@ -37,7 +34,7 @@ const Header = ({
   return (
     <MantineHeader height={60}>
       <Container className={classes.inner} fluid>
-        <MediaQuery largerThan="sm" styles={{ display: "none" }}>
+        <MediaQuery largerThan="sm" styles={{ display: 'none' }}>
           <Burger
             opened={opened}
             onClick={() => setOpened((o) => !o)}
@@ -51,7 +48,7 @@ const Header = ({
           <Box
             component="a"
             sx={{
-              display: "flex",
+              display: 'flex',
             }}
           >
             <CBELogo size={40} />

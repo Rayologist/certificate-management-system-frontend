@@ -1,21 +1,13 @@
-import {
-  CopyButton,
-  ActionIcon,
-  Tooltip,
-  Button,
-  Card,
-  Text,
-  Grid,
-} from "@mantine/core";
-import { useId } from "@mantine/hooks";
-import { IconCheck, IconLink } from "@tabler/icons";
-import { QRCodeCanvas } from "qrcode.react";
+import { CopyButton, ActionIcon, Tooltip, Button, Card, Text, Grid } from '@mantine/core';
+import { useId } from '@mantine/hooks';
+import { IconCheck, IconLink } from '@tabler/icons';
+import { QRCodeCanvas } from 'qrcode.react';
 
 const downloadQRCode = (id: string, displayName: string) => () => {
   const canvas = document.getElementById(id) as HTMLCanvasElement;
 
-  const pngFile = canvas.toDataURL("image/png");
-  const downloadLink = document.createElement("a");
+  const pngFile = canvas.toDataURL('image/png');
+  const downloadLink = document.createElement('a');
   downloadLink.download = displayName;
   downloadLink.href = pngFile;
   downloadLink.click();
@@ -36,16 +28,16 @@ export default function QRCode({
 
   return (
     <Card p="lg" mt="xl">
-      <Card.Section sx={{ display: "flex", justifyContent: "center" }}>
+      <Card.Section sx={{ display: 'flex', justifyContent: 'center' }}>
         <QRCodeCanvas
-          style={{ width: "250px", height: "250" }}
+          style={{ width: '250px', height: '250' }}
           id={uuid}
           value={url}
           size={size}
           fgColor="#104851"
           level="Q"
           imageSettings={{
-            src: "/favicon.svg",
+            src: '/favicon.svg',
             width: SVGSize,
             height: SVGSize,
             excavate: true,
@@ -73,8 +65,8 @@ export default function QRCode({
         <Grid.Col span={2}>
           <CopyButton value={url} timeout={2000}>
             {({ copied, copy }) => (
-              <Tooltip label={copied ? "已複製" : "複製網址"} withArrow>
-                <ActionIcon color={copied ? "teal" : "gray"} onClick={copy}>
+              <Tooltip label={copied ? '已複製' : '複製網址'} withArrow>
+                <ActionIcon color={copied ? 'teal' : 'gray'} onClick={copy}>
                   {copied ? <IconCheck size={20} /> : <IconLink size={20} />}
                 </ActionIcon>
               </Tooltip>

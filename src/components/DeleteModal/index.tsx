@@ -1,15 +1,7 @@
-import {
-  Modal,
-  Title,
-  Group,
-  ModalProps,
-  Divider,
-  Button,
-  ButtonProps,
-} from "@mantine/core";
-import { IconAlertTriangle } from "@tabler/icons";
+import { Modal, Title, Group, ModalProps, Divider, Button, ButtonProps } from '@mantine/core';
+import { IconAlertTriangle } from '@tabler/icons';
 
-type DeleteModalProps = Omit<ModalProps, "title"> & {
+type DeleteModalProps = Omit<ModalProps, 'title'> & {
   children: React.ReactNode;
   title: string;
   onCancelText?: string;
@@ -21,7 +13,7 @@ type DeleteModalProps = Omit<ModalProps, "title"> & {
 };
 
 const DeleteModal = (props: DeleteModalProps) => {
-  let {
+  const {
     title,
     children,
     onCancel,
@@ -29,21 +21,19 @@ const DeleteModal = (props: DeleteModalProps) => {
     onClose,
     onCancelButtonProps,
     onConfirmButtonProps,
-    onCancelText = "取消",
-    onConfirmText = "確認",
+    onCancelText = '取消',
+    onConfirmText = '確認',
     ...rest
   } = props;
 
-  if (!onCancel) {
-    onCancel = onClose;
-  }
+  const handleOnCancel = onCancel || onClose;
 
   return (
     <Modal
       onClose={onClose}
       title={
         <Title order={2}>
-          <Group sx={{ display: "flex" }}>
+          <Group sx={{ display: 'flex' }}>
             <IconAlertTriangle color="red" />
             {title}
           </Group>
@@ -56,10 +46,10 @@ const DeleteModal = (props: DeleteModalProps) => {
       <Divider mt="lg" mb="sm" />
 
       <Group position="right">
-        <Button variant="outline" onClick={onCancel} {...onCancelButtonProps}>
+        <Button variant="outline" onClick={handleOnCancel} {...onCancelButtonProps}>
           {onCancelText}
         </Button>
-        <Button color="red" onClick={onConfirm}  {...onConfirmButtonProps}>
+        <Button color="red" onClick={onConfirm} {...onConfirmButtonProps}>
           {onConfirmText}
         </Button>
       </Group>

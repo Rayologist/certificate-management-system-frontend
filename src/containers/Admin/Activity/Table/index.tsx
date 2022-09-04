@@ -1,49 +1,46 @@
-import { useState } from "react";
+import { useState } from 'react';
 
-import Table from "@components/Table";
-import { createColumnHelper } from "@tanstack/react-table";
+import Table from '@components/Table';
+import { createColumnHelper } from '@tanstack/react-table';
 
-import { format } from "date-fns";
-import { Group, Modal, Title, ActionIcon } from "@mantine/core";
-import { IconPencil, IconTrash } from "@tabler/icons";
+import { format } from 'date-fns';
+import { Group, Modal, Title, ActionIcon } from '@mantine/core';
+import { IconPencil, IconTrash } from '@tabler/icons';
 
-import UpdateActivity from "../Update";
-import DeleteActivity from "../Delete";
-
-import { Activity } from "types";
-import { useActivity } from "src/services/activity";
+import { Activity } from 'types';
+import { useActivity } from 'src/services/activity';
+import UpdateActivity from '../Update';
+import DeleteActivity from '../Delete';
 
 const columnHelper = createColumnHelper<Activity>();
 
 const columns = [
-  columnHelper.accessor("title", {
-    header: "活動名稱",
+  columnHelper.accessor('title', {
+    header: '活動名稱',
     minSize: 250,
   }),
-  columnHelper.accessor("startDate", {
-    header: "開始日期",
-    cell: (props) => {
-      return format(new Date(props.getValue()), "yyyy-MM-dd");
-    },
+  columnHelper.accessor('startDate', {
+    header: '開始日期',
+    cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd'),
     minSize: 50,
   }),
-  columnHelper.accessor("endDate", {
-    header: "結束日期",
-    cell: (props) => format(new Date(props.getValue()), "yyyy-MM-dd"),
+  columnHelper.accessor('endDate', {
+    header: '結束日期',
+    cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd'),
     minSize: 50,
   }),
-  columnHelper.accessor("createdAt", {
-    header: "建立時間",
-    cell: (props) => format(new Date(props.getValue()), "yyyy-MM-dd HH:mm:ss"),
+  columnHelper.accessor('createdAt', {
+    header: '建立時間',
+    cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd HH:mm:ss'),
     minSize: 100,
   }),
-  columnHelper.accessor("updatedAt", {
-    header: "更新時間",
-    cell: (props) => format(new Date(props.getValue()), "yyyy-MM-dd HH:mm:ss"),
+  columnHelper.accessor('updatedAt', {
+    header: '更新時間',
+    cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd HH:mm:ss'),
     minSize: 100,
   }),
   columnHelper.display({
-    id: "modify",
+    id: 'modify',
     size: 100,
     cell: (props) => {
       const [opened, setOpened] = useState(false);

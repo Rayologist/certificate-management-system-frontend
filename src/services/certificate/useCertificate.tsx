@@ -1,11 +1,9 @@
-import request from "src/utils/fetcher";
-import useSWR from "swr";
-import { certificateUrl } from "../config";
+import request from 'src/utils/fetcher';
+import useSWR from 'swr';
+import { certificateUrl } from '../config';
 
 export default function useCertificate() {
-  const { data, error, mutate } = useSWR(certificateUrl, (url) =>
-    request({ url, method: "GET" })
-  );
+  const { data, error, mutate } = useSWR(certificateUrl, (url) => request({ url, method: 'GET' }));
 
   return {
     certificate: data,

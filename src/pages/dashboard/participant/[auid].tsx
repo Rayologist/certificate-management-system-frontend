@@ -9,27 +9,18 @@ import {
   Stack,
   List,
   ThemeIcon,
-} from "@mantine/core";
-import { useCallback, useState } from "react";
-import Loader from "@components/Loader";
-import { ParticipantTable } from "@containers/Admin/Participant/Table";
-import {
-  IconArrowNarrowLeft,
-  IconFileUpload,
-  IconUserPlus,
-  IconX,
-  IconCheck,
-} from "@tabler/icons";
-import { useRouter } from "next/router";
-import onCSVSubmit from "@containers/Admin/Participant/Create/onCSVSubmit";
-import CreateParticipant from "@containers/Admin/Participant/Create";
-import { useParticipantByAuid } from "@services/participant";
-import { Participant } from "types";
+} from '@mantine/core';
+import { useCallback, useState } from 'react';
+import Loader from '@components/Loader';
+import { ParticipantTable } from '@containers/Admin/Participant/Table';
+import { IconArrowNarrowLeft, IconFileUpload, IconUserPlus, IconX, IconCheck } from '@tabler/icons';
+import { useRouter } from 'next/router';
+import onCSVSubmit from '@containers/Admin/Participant/Create/onCSVSubmit';
+import CreateParticipant from '@containers/Admin/Participant/Create';
+import { useParticipantByAuid } from '@services/participant';
+import { Participant } from 'types';
 
-type ErrorData = Pick<
-  Participant,
-  "name" | "from" | "title" | "email" | "phone"
->;
+type ErrorData = Pick<Participant, 'name' | 'from' | 'title' | 'email' | 'phone'>;
 
 const Management = () => {
   const router = useRouter();
@@ -41,19 +32,18 @@ const Management = () => {
     setParticipantOpened(false);
   }, []);
 
-  let { auid } = router.query as { auid: string };
+  const { auid } = router.query as { auid: string };
 
-  const { participant, isLoading, mutate, isError } =
-    useParticipantByAuid(auid);
+  const { participant, isLoading, mutate, isError } = useParticipantByAuid(auid);
 
   if (isLoading) return <Loader />;
 
   if (isError) {
-    router.push("/500", { pathname: router.asPath });
+    router.push('/500', { pathname: router.asPath });
     return null;
   }
 
-  if (!participant || participant?.status === "failed") return router.back();
+  if (!participant || participant?.status === 'failed') return router.back();
 
   const { data } = participant;
 
@@ -72,36 +62,34 @@ const Management = () => {
       >
         {errorData ? (
           <List withPadding type="ordered">
-            {errorData?.map((data, index) => {
-              return (
-                <List.Item key={`${data}-${index}`}>
-                  <List withPadding size="sm" center spacing="xs">
-                    {Object.entries(data).map((value) => {
-                      const Icon =
-                        value[1] === "" ? (
-                          <ThemeIcon color="red" size={18} radius="xl">
-                            <IconX size={12} />
-                          </ThemeIcon>
-                        ) : (
-                          <ThemeIcon color="teal" size={18} radius="xl">
-                            <IconCheck size={12} />
-                          </ThemeIcon>
-                        );
-                      return (
-                        <>
-                          <List.Item icon={Icon}>
-                            <Text weight="bold" transform="capitalize">
-                              {value[0]}:
-                            </Text>
-                          </List.Item>
-                          <Text pl={31}>{value[1]}</Text>
-                        </>
+            {errorData?.map((error, index) => (
+              <List.Item key={`${error}-${index}`}>
+                <List withPadding size="sm" center spacing="xs">
+                  {Object.entries(error).map((value) => {
+                    const Icon =
+                      value[1] === '' ? (
+                        <ThemeIcon color="red" size={18} radius="xl">
+                          <IconX size={12} />
+                        </ThemeIcon>
+                      ) : (
+                        <ThemeIcon color="teal" size={18} radius="xl">
+                          <IconCheck size={12} />
+                        </ThemeIcon>
                       );
-                    })}
-                  </List>
-                </List.Item>
-              );
-            })}
+                    return (
+                      <>
+                        <List.Item icon={Icon}>
+                          <Text weight="bold" transform="capitalize">
+                            {value[0]}:
+                          </Text>
+                        </List.Item>
+                        <Text pl={31}>{value[1]}</Text>
+                      </>
+                    );
+                  })}
+                </List>
+              </List.Item>
+            ))}
           </List>
         ) : (
           <Text>找不到錯誤資料</Text>
@@ -113,7 +101,7 @@ const Management = () => {
         mb="sm"
         leftIcon={<IconArrowNarrowLeft size={16} stroke={1.5} />}
         onClick={() => {
-          router.push("/dashboard/participant");
+          router.push('/dashboard/participant');
         }}
       >
         Go Back
@@ -132,9 +120,9 @@ const Management = () => {
           </Button>
           <FileButton
             onChange={async (file) => {
-              const data = await onCSVSubmit(file, auid);
-              if (data?.length) {
-                setErrorData(data);
+              const errors = await onCSVSubmit(file, auid);
+              if (errors?.length) {
+                setErrorData(errors);
                 setErrorOpened(true);
                 return;
               }
@@ -143,10 +131,7 @@ const Management = () => {
             accept="text/csv"
           >
             {(props) => (
-              <Button
-                leftIcon={<IconFileUpload size={16} stroke={1.5} />}
-                {...props}
-              >
+              <Button leftIcon={<IconFileUpload size={16} stroke={1.5} />} {...props}>
                 CSV
               </Button>
             )}
@@ -166,12 +151,8 @@ const Management = () => {
         />
       </Modal>
 
-      <Paper sx={{ padding: "1rem" }}>
-        <ParticipantTable
-          data={data.participant}
-          certificates={data.certificate}
-          mutate={mutate}
-        />
+      <Paper sx={{ padding: '1rem' }}>
+        <ParticipantTable data={data.participant} certificates={data.certificate} mutate={mutate} />
       </Paper>
     </>
   );

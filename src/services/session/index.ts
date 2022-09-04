@@ -1,9 +1,9 @@
-import { sessionUrl } from "@services/config";
-import request from "src/utils/fetcher";
+import { sessionUrl } from '@services/config';
+import request from 'src/utils/fetcher';
 
 async function login(payload: { account: string; password: string }) {
   try {
-    const data = await request({ url: sessionUrl, payload, method: "POST" });
+    const data = await request({ url: sessionUrl, payload, method: 'POST' });
     return [data, null];
   } catch (error) {
     return [null, error];
@@ -14,7 +14,7 @@ async function refresh() {
   try {
     const data = await request({
       url: sessionUrl,
-      method: "GET",
+      method: 'GET',
     });
     return [data, null];
   } catch (error) {
@@ -23,7 +23,7 @@ async function refresh() {
 }
 
 async function logout() {
-  return request({ url: sessionUrl, method: "DELETE", toJson: false });
+  return request({ url: sessionUrl, method: 'DELETE', toJson: false });
 }
 
 export { login, logout, refresh };

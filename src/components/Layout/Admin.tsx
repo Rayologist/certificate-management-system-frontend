@@ -1,5 +1,5 @@
-import { ReactNode } from "react";
-import Shell from "@components/Admin/Shell";
+import { ReactNode } from 'react';
+import Shell from '@components/Admin/Shell';
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
