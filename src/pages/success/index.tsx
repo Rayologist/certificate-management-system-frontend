@@ -67,7 +67,10 @@ export default function Success() {
                 </Center>
               }
             />
-            <Title order={2}>發送成功！</Title>
+            <Title order={2}>已經收到您的請求！</Title>
+            <Text color="dimmed" align="center">
+              證書寄送時間視參與者人數而定，至多可能需等待 30 分鐘至 1 小時。
+            </Text>
           </Stack>
         </Paper>
       </Container>
