@@ -17,7 +17,7 @@ function CertificateForm({
   pushUrl: string;
 }) {
   const router = useRouter();
-  const [notification, setNotification] = useState(false);
+  const [notification, setNotification] = useState('');
 
   interface Values {
     name: string;
@@ -37,12 +37,22 @@ function CertificateForm({
     })) as [Response, any];
 
     if (data.status === 'failed') {
-      setNotification(true);
+      switch (data.msg) {
+        case 'unauthorized':
+          setNotification('名字或信箱錯誤，請洽工作人員。');
+          return null;
+        case 'unavaliable':
+          router.push('/500', { pathname: router.basePath, query: router.query });
+          return null;
+        case 'mail server error':
+          router.push('/500', { pathname: router.basePath, query: router.query });
+          return null;
+      }
       return null;
     }
 
     if (error) {
-      router.push('/500', { pathname: router.asPath });
+      router.push('/500', { pathname: router.basePath, query: router.query });
       return null;
     }
 
@@ -81,10 +91,10 @@ function CertificateForm({
                 <FormikController {...field} />
               </Grid.Col>
             ))}
-            {notification && (
+            {notification !== '' && (
               <Grid.Col xs={12} sm={12} md={12} lg={12}>
-                <Notification onClose={() => setNotification(false)} icon="!" color="red">
-                  名字或信箱錯誤，請洽工作人員。
+                <Notification onClose={() => setNotification('')} icon="!" color="red">
+                  {notification}
                 </Notification>
               </Grid.Col>
             )}
