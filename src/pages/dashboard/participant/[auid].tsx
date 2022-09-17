@@ -20,6 +20,7 @@ import onCSVSubmit from '@containers/Admin/Participant/Create/onCSVSubmit';
 import CreateParticipant from '@containers/Admin/Participant/Create';
 import { useParticipantByAuid } from '@services/participant';
 import { Participant } from 'types';
+import { Route } from '@config';
 
 type ErrorData = Pick<Participant, 'name' | 'from' | 'title' | 'email' | 'phone'>;
 
@@ -111,7 +112,7 @@ const Management = () => {
         mb="sm"
         leftIcon={<IconArrowNarrowLeft size={16} stroke={1.5} />}
         onClick={() => {
-          router.push('/dashboard/participant');
+          router.push(Route.Participant);
         }}
       >
         Go Back

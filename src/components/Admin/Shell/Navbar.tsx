@@ -3,6 +3,7 @@ import { NextLink } from '@mantine/next';
 import { createStyles, Navbar as MantineNavbar } from '@mantine/core';
 import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons';
 import Link from 'next/link';
+import { Route } from '@config';
 import { useRouter } from 'next/router';
 import urlJoin from 'url-join';
 
@@ -71,13 +72,13 @@ const useStyles = createStyles((theme, _params, getRef) => {
 });
 
 const data = [
-  { link: '/dashboard/activity', label: '建立活動', icon: IconNewSection },
+  { link: Route.Activity, label: '建立活動', icon: IconNewSection },
   {
-    link: '/dashboard/certificate',
+    link: Route.Certificate,
     label: '製作證書',
     icon: IconFileCertificate,
   },
-  { link: '/dashboard/participant', label: '管理參與者', icon: IconUsers },
+  { link: Route.Participant, label: '管理參與者', icon: IconUsers },
 ];
 
 export default function Navbar({ opened }: { opened: boolean }) {
@@ -117,7 +118,7 @@ export default function Navbar({ opened }: { opened: boolean }) {
       <MantineNavbar.Section grow>{links}</MantineNavbar.Section>
 
       <MantineNavbar.Section className={classes.footer}>
-        <Link href="/dashboard/logout">
+        <Link href={Route.Logout}>
           <a className={classes.link}>
             <IconLogout className={classes.linkIcon} stroke={1.5} />
             <span>登出</span>

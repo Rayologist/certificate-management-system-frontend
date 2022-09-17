@@ -1,6 +1,7 @@
 import { CopyButton, ActionIcon, Tooltip, Button, Card, Text, Grid } from '@mantine/core';
 import { useId } from '@mantine/hooks';
 import { IconCheck, IconLink } from '@tabler/icons';
+import { useRouter } from 'next/router';
 import { QRCodeCanvas } from 'qrcode.react';
 
 const downloadQRCode = (id: string, displayName: string) => () => {
@@ -24,6 +25,7 @@ export default function QRCode({
   displayName: string;
 }) {
   const uuid = useId();
+  const router = useRouter();
   const SVGSize = size / 5;
 
   return (
@@ -37,7 +39,7 @@ export default function QRCode({
           fgColor="#104851"
           level="Q"
           imageSettings={{
-            src: '/favicon.svg',
+            src: `${router.basePath}/favicon.svg`,
             width: SVGSize,
             height: SVGSize,
             excavate: true,

@@ -7,6 +7,7 @@ import { login } from '@services/session';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from 'src/contexts/UserContext';
+import { Route } from '@config';
 
 const LoginForm = () => {
   const [notification, setNotification] = useState(false);
@@ -42,7 +43,7 @@ const LoginForm = () => {
       setUser((prev) => ({ ...prev, data: { role } }));
     }
 
-    router.push('/dashboard/activity');
+    router.push(Route.Activity);
     return null;
   };
 

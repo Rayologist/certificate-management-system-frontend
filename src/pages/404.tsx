@@ -2,6 +2,7 @@ import { createStyles, Title, Text, Button, Container, Group } from '@mantine/co
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useUser } from 'src/contexts/UserContext';
+import { Route } from '@config';
 
 const useStyles = createStyles((theme) => ({
   root: {
@@ -47,7 +48,7 @@ function NotFoundTitle() {
   const router = useRouter();
   const isAdmin = user.data.role === 'admin';
 
-  const href = isAdmin ? '/dashboard/activity' : 'https://cbe.ntu.edu.tw/';
+  const href = isAdmin ? Route.Activity : 'https://cbe.ntu.edu.tw/';
 
   return (
     <Container className={classes.root}>

@@ -4,6 +4,8 @@ import { Certificate } from 'types';
 import { IconPencil, IconQrcode, IconChevronDown, IconTrash } from '@tabler/icons';
 import { staticUrl } from '@services/config';
 import { useCertificate } from '@services/certificate';
+import { useRouter } from 'next/router';
+import urlJoin from 'url-join';
 import UpdateCertificate from '../Update';
 import DeleteCertificate from '../Delete';
 import QRCode from '../QRCode';
@@ -14,6 +16,7 @@ function short(text: string, length: number) {
 }
 
 export default function BadgeMenu(props: Certificate & { activityUrl: string }) {
+  const router = useRouter();
   const { id, displayName, totalHour, updatedAt, dateString, title, createdAt, url, activityUrl } =
     props;
   const { mutate } = useCertificate();
@@ -70,7 +73,7 @@ export default function BadgeMenu(props: Certificate & { activityUrl: string }) 
         radius="md"
       >
         <QRCode
-          url={`${window.location.origin}/cert?p=${activityUrl}&c=${url}`}
+          url={urlJoin(window.location.origin, router.basePath, `?p=${activityUrl}&c=${url}`)}
           displayName={displayName}
           size={1000}
         />

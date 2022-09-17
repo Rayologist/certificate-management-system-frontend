@@ -11,6 +11,7 @@ import { Dispatch, SetStateAction } from 'react';
 import Link from 'next/link';
 import { CBELogo } from '@components/Logo';
 import ColorSchemeToggle from '@components/ColorSchemeToggle';
+import { Route } from '@config';
 
 const useStyles = createStyles(() => ({
   inner: {
@@ -44,7 +45,7 @@ const Header = ({
           />
         </MediaQuery>
 
-        <Link href="/dashboard/activity" passHref>
+        <Link href={Route.Activity} passHref>
           <Box
             component="a"
             sx={{
