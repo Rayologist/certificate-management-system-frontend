@@ -1,8 +1,10 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NextLink } from '@mantine/next';
 import { createStyles, Navbar as MantineNavbar } from '@mantine/core';
 import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
+import urlJoin from 'url-join';
 
 const useStyles = createStyles((theme, _params, getRef) => {
   const icon = getRef('icon');
@@ -80,16 +82,25 @@ const data = [
 
 export default function Navbar({ opened }: { opened: boolean }) {
   const { classes, cx } = useStyles();
-  const [active, setActive] = useState('Home');
+  const [active, setActive] = useState('');
+  const router = useRouter();
+  const currentLink = urlJoin(router.asPath);
+
+  useEffect(() => {
+    const linkArray = data.map((link) => link.link);
+    if (linkArray.includes(currentLink)) {
+      setActive(currentLink);
+    }
+  }, [currentLink]);
 
   const links = data.map((item) => (
     <NextLink
       href={item.link}
       key={item.label}
       className={cx(classes.link, {
-        [classes.linkActive]: item.label === active,
+        [classes.linkActive]: item.link === active,
       })}
-      onClick={() => setActive(item.label)}
+      onClick={() => setActive(item.link)}
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
