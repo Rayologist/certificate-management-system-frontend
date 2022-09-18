@@ -69,15 +69,17 @@ function CertificateForm({
     {
       control: 'text-input',
       name: 'name',
-      label: '名字',
-      required: true,
+      label: '姓名',
+      description: '報名時填寫之姓名',
+      withAsterisk: true,
     },
     {
       control: 'text-input',
       type: 'email',
       name: 'email',
       label: '電子信箱',
-      required: true,
+      description: '報名時填寫之電子信箱',
+      withAsterisk: true,
     },
   ];
 
