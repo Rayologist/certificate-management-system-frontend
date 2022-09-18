@@ -5,6 +5,7 @@ async function sendCert(payload: {
   activityUid: string;
   certificateId: number;
   name: string;
+  altName: string;
   email: string;
 }) {
   try {

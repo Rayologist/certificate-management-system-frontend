@@ -21,11 +21,13 @@ function CertificateForm({
 
   interface Values {
     name: string;
+    altName: string;
     email: string;
   }
 
   const initialValue: Values = {
     name: '',
+    altName: '',
     email: '',
   };
 
@@ -62,6 +64,7 @@ function CertificateForm({
 
   const validationSchema = Yup.object({
     name: Yup.string().required('必填'),
+    altName: Yup.string(),
     email: Yup.string().email('格式錯誤').required('必填'),
   });
 
@@ -80,6 +83,12 @@ function CertificateForm({
       label: '電子信箱',
       description: '報名時填寫之電子信箱',
       withAsterisk: true,
+    },
+    {
+      control: 'text-input',
+      name: 'altName',
+      description: '顯示於證書上之名稱，預設為報名時填寫的名字',
+      label: '證書顯示名稱',
     },
   ];
 

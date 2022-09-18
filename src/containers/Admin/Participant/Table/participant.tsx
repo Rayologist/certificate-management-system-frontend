@@ -11,12 +11,21 @@ import {
   Divider,
   Loader,
   Box,
+  Tooltip,
+  TextInput,
 } from '@mantine/core';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Certificate, Participant } from 'types';
 import { KeyedMutator } from 'swr';
-import { IconCheck, IconCircleDashed, IconMailForward, IconPencil, IconTrash } from '@tabler/icons';
+import {
+  IconCheck,
+  IconCircleDashed,
+  IconMailForward,
+  IconPencil,
+  IconRotate,
+  IconTrash,
+} from '@tabler/icons';
 import { sendCertificate } from '@services/certificate';
 import UpdateParticipant from '../Update';
 import DeleteParticipant from '../Delete';
@@ -63,6 +72,8 @@ export const ParticipantTable = ({
         const participantCertificate = props.getValue().map((value) => value.certificate.id);
         const officialCertificate = certificates;
         const [opened, setOpened] = useState(false);
+        const [name, setName] = useState(original.name);
+        const [isEditing, setIsEditing] = useState(false);
 
         return (
           <>
@@ -76,9 +87,37 @@ export const ParticipantTable = ({
                 mutate();
               }}
               opened={opened}
-              title={<Title order={2}>{`目前的證書 - ${original.name}`}</Title>}
+              title={<Title order={2}>目前證書</Title>}
               size={500}
             >
+              <Group spacing="lg" mb={10}>
+                <Text sx={{ display: 'flex', alignItems: 'center' }} weight={500} size="lg">
+                  證書顯示名稱:
+                </Text>
+                {isEditing ? (
+                  <Group>
+                    <TextInput value={name} onChange={(e) => setName(e.target.value)} />
+                    <ActionIcon onClick={() => setIsEditing(false)} color="teal" variant="filled">
+                      <IconCheck size={18} stroke={2} />
+                    </ActionIcon>
+                  </Group>
+                ) : (
+                  <>
+                    <Text size="lg">{name}</Text>
+                    <Group spacing={0}>
+                      <ActionIcon color="violet" onClick={() => setIsEditing(true)}>
+                        <IconPencil size={14} stroke={1.5} />
+                      </ActionIcon>
+                      <Tooltip label="reset" withArrow openDelay={200}>
+                        <ActionIcon color="red" onClick={() => setName(original.name)}>
+                          <IconRotate size={14} stroke={1.5} />
+                        </ActionIcon>
+                      </Tooltip>
+                    </Group>
+                  </>
+                )}
+              </Group>
+
               {officialCertificate.map((value, index) => {
                 const certClaimed = participantCertificate.includes(value.id);
                 const [confirmOpened, setConfirmOpened] = useState(false);
@@ -102,7 +141,7 @@ export const ParticipantTable = ({
                         </Group>
                         <Group spacing={0}>
                           <Text>參與者：</Text>
-                          <Text weight={500}>{`${original.name}`}</Text>
+                          <Text weight={500}>{name}</Text>
                         </Group>
                         <Text mt={10}> 確定要寄出證書？</Text>
 
@@ -118,6 +157,7 @@ export const ParticipantTable = ({
                               await sendCertificate({
                                 participantId: original.id,
                                 certificateId: value.id,
+                                altName: name,
                               });
                               setClaimed(true);
                               setLoading(false);
@@ -175,6 +215,7 @@ export const ParticipantTable = ({
     columnHelper.display({
       id: '管理',
       size: 150,
+      enableResizing: false,
       cell: (props) => {
         const { id, name, title, from, phone, email } = props.cell.row.original;
         const [trashOpened, setTrashOpened] = useState(false);
