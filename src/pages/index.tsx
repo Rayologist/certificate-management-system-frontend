@@ -28,7 +28,7 @@ export default function HomePage({ data }: { data: SendCertificate }) {
           fontWeight: 900,
         })}
       >
-        Certificate of Attendence
+        Certificate of Attendance
       </Title>
       <Container size={420} mt={10} mb={40}>
         <Text color="dimmed" align="center" weight="bold">
