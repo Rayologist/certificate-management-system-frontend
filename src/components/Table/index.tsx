@@ -1,4 +1,5 @@
 import { useMemo, useState, useRef, memo } from 'react';
+import { useVirtualizer } from '@tanstack/react-virtual';
 import {
   useReactTable,
   flexRender,
@@ -6,9 +7,12 @@ import {
   ColumnDef,
   getSortedRowModel,
   SortingState,
-  SortDirection,
   getFilteredRowModel,
   RowData,
+  ColumnFiltersState,
+  getFacetedUniqueValues,
+  getFacetedMinMaxValues,
+  getFacetedRowModel,
 } from '@tanstack/react-table';
 import {
   Text,
@@ -17,51 +21,70 @@ import {
   Group,
   Center,
   ScrollArea,
+  Divider,
+  ScrollAreaProps,
+  TableProps as MantineTableProps,
+  TextProps,
 } from '@mantine/core';
-import { useVirtualizer } from '@tanstack/react-virtual';
-import { IconChevronDown, IconChevronUp, IconSelector, TablerIconProps } from '@tabler/icons';
+
 import useStyles from './styles';
-import GlobalFilter from './GlobalFilter';
+import SortingIcon from './components/SortingIcon';
+import GlobalFilter from './components/GlobalFilter';
+import ColumnToggle from './components/ColumnToggle';
+import ColumnFilter from './components/ColumnFilter';
+import { inDateRange } from './components/ColumnFilter/FilterFn';
 
-function SortingIcon({
-  sorted,
-  canSort,
-  ...args
-}: { sorted: false | SortDirection; canSort: boolean } & TablerIconProps) {
-  const icon = {
-    asc: IconChevronUp,
-    desc: IconChevronDown,
-  };
+type TableProps<T extends RowData> = {
+  data: T[];
+  columns: ColumnDef<T, any>[];
+  width?: string | number;
+  height?: string | number;
+  scrollAreaProps?: ScrollAreaProps;
+  lineClamp?: TextProps['lineClamp'];
+} & MantineTableProps;
 
-  if (!canSort) {
-    return null;
-  }
+function Table<T extends RowData>(props: TableProps<T>) {
+  const {
+    data,
+    columns,
+    width,
+    height,
+    scrollAreaProps,
+    lineClamp = 1,
+    ...mantineTableProps
+  } = props;
 
-  if (sorted) {
-    const Icon = icon[sorted];
-    return <Icon {...args} />;
-  }
-  return <IconSelector {...args} />;
-}
-
-function Table<T extends RowData>({ data, columns }: { data: T[]; columns: ColumnDef<T, any>[] }) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [globalFilter, setGlobalFilter] = useState('');
+  const [columnVisibility, setColumnVisibility] = useState({});
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   const { classes, cx } = useStyles();
   const [scrolled, setScrolled] = useState(false);
   const col = useMemo(() => columns, [columns]);
   const table = useReactTable<T>({
     data,
     columns: col,
+    filterFns: {
+      inDateRange,
+    },
     state: {
       sorting,
       globalFilter,
+      columnVisibility,
+      columnFilters,
     },
+    columnResizeMode: 'onChange',
     onGlobalFilterChange: setGlobalFilter,
+    onColumnVisibilityChange: setColumnVisibility,
+    onSortingChange: setSorting,
+    onColumnFiltersChange: setColumnFilters,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
-    onSortingChange: setSorting,
     getFilteredRowModel: getFilteredRowModel(),
+    getFacetedRowModel: getFacetedRowModel(),
+    getFacetedMinMaxValues: getFacetedMinMaxValues(),
+    getFacetedUniqueValues: getFacetedUniqueValues(),
   });
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
@@ -87,30 +110,58 @@ function Table<T extends RowData>({ data, columns }: { data: T[]; columns: Colum
     <thead className={cx(classes.header, { [classes.scrolled]: scrolled })}>
       {table.getHeaderGroups().map((headerGroup) => (
         <tr key={headerGroup.id}>
-          {headerGroup.headers.map((header) => (
-            <th className={classes.th} key={header.id} style={{ width: header.getSize() }}>
-              <UnstyledButton
-                onClick={header.column.getToggleSortingHandler()}
-                className={classes.control}
-              >
-                <Group position="apart">
-                  <Text weight={500} size="sm">
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(header.column.columnDef.header, header.getContext())}
-                  </Text>
-                  <Center>
-                    <SortingIcon
-                      sorted={header.column.getIsSorted()}
-                      canSort={header.column.getCanSort()}
-                      size={14}
-                      stroke={1.5}
+          {headerGroup.headers.map((header) => {
+            const isResizing = header.column.getIsResizing();
+            return (
+              <th className={classes.th} key={header.id} style={{ width: header.getSize() }}>
+                <Group spacing={0}>
+                  <UnstyledButton
+                    onClick={header.column.getToggleSortingHandler()}
+                    className={classes.control}
+                    sx={{ flexGrow: 1 }}
+                  >
+                    <Group position="apart" spacing={0}>
+                      <Text weight={500} size="sm" lineClamp={lineClamp}>
+                        {header.isPlaceholder
+                          ? null
+                          : flexRender(header.column.columnDef.header, header.getContext())}
+                      </Text>
+                      {header.column.getCanSort() && (
+                        <Center>
+                          <SortingIcon
+                            sorted={header.column.getIsSorted()}
+                            canSort={header.column.getCanSort()}
+                            size={14}
+                            stroke={1.5}
+                          />
+                        </Center>
+                      )}
+                    </Group>
+                  </UnstyledButton>
+                  {header.column.getCanFilter() && <ColumnFilter column={header.column} />}
+                  {header.column.getCanResize() && (
+                    <Divider
+                      orientation="vertical"
+                      variant={isResizing ? 'solid' : 'dashed'}
+                      size={isResizing ? 'xl' : 'xs'}
+                      mx={10}
+                      onMouseDown={header.getResizeHandler()}
+                      onTouchStart={header.getResizeHandler()}
+                      sx={{
+                        userSelect: 'none',
+                        touchAction: 'none',
+                        cursor: 'col-resize',
+                        '&:hover': {
+                          borderLeftWidth: '4px',
+                          borderLeftStyle: 'solid',
+                        },
+                      }}
                     />
-                  </Center>
+                  )}
                 </Group>
-              </UnstyledButton>
-            </th>
-          ))}
+              </th>
+            );
+          })}
         </tr>
       ))}
     </thead>
@@ -118,57 +169,76 @@ function Table<T extends RowData>({ data, columns }: { data: T[]; columns: Colum
 
   const TB = memo(() => (
     <tbody>
-      {paddingTop > 0 && (
-        <tr>
-          <td style={{ height: `${paddingTop}px` }} />
-        </tr>
-      )}
-      {virtualRows.map((virtualRow) => {
-        const row = rows[virtualRow.index];
-        return (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => (
-              <td key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</td>
-            ))}
-          </tr>
-        );
-      })}
+      {table.getRowModel().rows.length > 0 ? (
+        <>
+          {paddingTop > 0 && (
+            <tr>
+              <td style={{ height: `${paddingTop}px` }} />
+            </tr>
+          )}
+          {virtualRows.map((virtualRow) => {
+            const row = rows[virtualRow.index];
+            return (
+              <tr key={row.id}>
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id}>
+                    <Text lineClamp={lineClamp}>
+                      {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                    </Text>
+                  </td>
+                ))}
+              </tr>
+            );
+          })}
 
-      {paddingBottom > 0 && (
+          {paddingBottom > 0 && (
+            <tr>
+              <td style={{ height: `${paddingBottom}px` }} />
+            </tr>
+          )}
+        </>
+      ) : (
         <tr>
-          <td style={{ height: `${paddingBottom}px` }} />
+          <td colSpan={table.getVisibleLeafColumns().length}>
+            <Text weight={500} align="center">
+              Nothing found
+            </Text>
+          </td>
         </tr>
       )}
-      {/* {table.getRowModel().rows.map((row) => {
-        return (
-          <tr key={row.id}>
-            {row.getVisibleCells().map((cell) => {
-              return (
-                <td key={cell.id}>
-                  {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                </td>
-              );
-            })}
-          </tr>
-        );
-      })} */}
     </tbody>
   ));
 
   return (
     <>
-      <GlobalFilter value={globalFilter ?? ''} onChange={(e) => setGlobalFilter(e.target.value)} />
+      <Group sx={{ display: 'flex', alignItems: 'center' }} mb="md">
+        <GlobalFilter
+          value={globalFilter ?? ''}
+          onChange={(e) => setGlobalFilter(e.target.value)}
+          sx={{ flexGrow: 1 }}
+        />
+
+        <ColumnToggle<T>
+          getIsAllColumnsVisible={table.getIsAllColumnsVisible}
+          getIsSomeColumnsVisible={table.getIsSomeColumnsVisible}
+          getAllLeafColumns={table.getAllLeafColumns}
+          toggleAllColumnsVisible={table.toggleAllColumnsVisible}
+        />
+      </Group>
 
       <ScrollArea
         viewportRef={tableContainerRef}
-        style={{ height: 500 }}
+        type="scroll"
+        style={{ height: height ?? 550 }}
         onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
+        {...scrollAreaProps}
       >
         <MantineTable
           horizontalSpacing="lg"
           verticalSpacing="xs"
-          sx={{ minWidth: 700, tableLayout: 'fixed' }}
+          sx={{ tableLayout: 'fixed' }}
           highlightOnHover
+          {...mantineTableProps}
         >
           <TH />
           <TB />

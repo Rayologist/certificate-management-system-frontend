@@ -6,9 +6,7 @@ const useStyles = createStyles((theme) => ({
   },
 
   control: {
-    width: '100%',
-    padding: `${theme.spacing.xs}px ${theme.spacing.md}px`,
-
+    padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
     '&:hover': {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
     },
@@ -19,6 +17,7 @@ const useStyles = createStyles((theme) => ({
     height: 21,
     borderRadius: 21,
   },
+
   header: {
     position: 'sticky',
     top: 0,
