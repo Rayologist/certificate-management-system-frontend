@@ -17,31 +17,37 @@ const columnHelper = createColumnHelper<Activity>();
 const columns = [
   columnHelper.accessor('title', {
     header: '活動名稱',
+    size: 300,
     minSize: 250,
   }),
   columnHelper.accessor('startDate', {
     header: '開始日期',
     cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd'),
-    minSize: 50,
+    size: 150,
+    minSize: 150,
   }),
   columnHelper.accessor('endDate', {
     header: '結束日期',
     cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd'),
-    minSize: 50,
+    size: 150,
+    minSize: 150,
   }),
   columnHelper.accessor('createdAt', {
     header: '建立時間',
     cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd HH:mm:ss'),
-    minSize: 100,
+    size: 200,
+    minSize: 150,
   }),
   columnHelper.accessor('updatedAt', {
     header: '更新時間',
     cell: (props) => format(new Date(props.getValue()), 'yyyy-MM-dd HH:mm:ss'),
-    minSize: 100,
+    size: 200,
+    minSize: 150,
   }),
   columnHelper.display({
     id: 'modify',
     size: 100,
+    enableResizing: false,
     cell: (props) => {
       const [opened, setOpened] = useState(false);
       const [trashOpened, setTrashOpened] = useState(false);

@@ -13,6 +13,7 @@ const columnHelper = createColumnHelper<CertificateResponse>();
 const columns = [
   columnHelper.accessor('title', {
     header: '活動名稱',
+    size: 300,
     minSize: 250,
   }),
 
@@ -29,11 +30,14 @@ const columns = [
         </Group>
       );
     },
-    minSize: 500,
+    size: 500,
+    minSize: 250,
   }),
   columnHelper.display({
     id: '新增證書',
-    maxSize: 50,
+    minSize: 30,
+    maxSize: 70,
+    enableResizing: false,
     cell: (props) => {
       const [opened, setOpened] = useState(false);
       const defaultUrl = `${staticUrl}/template`;

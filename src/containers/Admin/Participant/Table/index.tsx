@@ -11,11 +11,13 @@ const columnHelper = createColumnHelper<ParticipantStatsResponse>();
 const columns = [
   columnHelper.accessor('title', {
     header: '活動名稱',
-    minSize: 300,
+    size: 100,
+    minSize: 50,
   }),
 
   columnHelper.display({
     id: '目前使用者',
+    enableResizing: false,
     cell: (props) => {
       const { _count } = props.cell.row.original;
       return (
@@ -28,27 +30,26 @@ const columns = [
         </Text>
       );
     },
-    minSize: 500,
+    size: 100,
   }),
   columnHelper.display({
     id: '管理',
-    maxSize: 50,
+    size: 60,
+    enableResizing: false,
     cell: (props) => {
       const router = useRouter();
       const { auid } = props.cell.row.original;
 
       return (
-        <>
-          <Group position="right">
-            <ActionIcon
-              onClick={() => {
-                router.push(`${router.asPath}/${auid}`);
-              }}
-            >
-              <IconWriting stroke={1.5} />
-            </ActionIcon>
-          </Group>
-        </>
+        <Group position="right">
+          <ActionIcon
+            onClick={() => {
+              router.push(`${router.asPath}/${auid}`);
+            }}
+          >
+            <IconWriting stroke={1.5} />
+          </ActionIcon>
+        </Group>
       );
     },
   }),
