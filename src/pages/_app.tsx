@@ -8,9 +8,11 @@ import { NotificationsProvider } from '@mantine/notifications';
 import Layout from '@components/Layout';
 import UserProvider from 'src/contexts/UserContext';
 import withAuth from '@components/Admin/Auth';
+import { useRouter } from 'next/router';
 
 function App(props: AppPropsWithLayout & { colorScheme: ColorScheme }) {
   const { Component, pageProps } = props;
+  const router = useRouter();
 
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
 
@@ -30,8 +32,18 @@ function App(props: AppPropsWithLayout & { colorScheme: ColorScheme }) {
       <Head>
         <title>NTU CBE - Certificate Management System</title>
         <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width" />
-        <link rel="shortcut icon" href="/favicon.ico" type="image/png" sizes="32x32" />
-        <link rel="shortcut icon" href="/favicon.svg" type="image/svg+xml" sizes="any" />
+        <link
+          rel="shortcut icon"
+          href={`${router.basePath}/favicon.ico`}
+          type="image/png"
+          sizes="32x32"
+        />
+        <link
+          rel="shortcut icon"
+          href={`${router.basePath}/favicon.svg`}
+          type="image/svg+xml"
+          sizes="any"
+        />
       </Head>
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
