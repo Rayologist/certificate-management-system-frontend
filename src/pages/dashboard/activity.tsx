@@ -26,6 +26,9 @@ const Activity = () => {
         opened={opened}
         onClose={() => setOpened(false)}
         title={<Title order={2}>建立新活動</Title>}
+        size={700}
+        overflow="inside"
+        closeOnClickOutside={false}
       >
         <CreateNewActivity setOpened={setOpened} mutate={mutate} />
       </Modal>
