@@ -1,10 +1,13 @@
 import request from 'src/utils/fetcher';
 import useSWR from 'swr';
 import { ParticipantResponse, Response } from 'types';
-import { participantUrl } from '../config';
+import urlJoin from 'url-join';
+import API from '../config';
 
 export function useParticipantStats() {
-  const { data, error, mutate } = useSWR(participantUrl, (url) => request({ url, method: 'GET' }));
+  const { data, error, mutate } = useSWR(API.internals.participant, (url) =>
+    request({ url, method: 'GET' })
+  );
 
   return {
     stats: data,
@@ -15,7 +18,7 @@ export function useParticipantStats() {
 }
 export function useParticipantByAuid(auid: string) {
   const { data, error, mutate } = useSWR<Response<ParticipantResponse>>(
-    `${participantUrl}/${auid}`,
+    urlJoin(API.internals.participant, auid),
     (url) => request({ url, method: 'GET' })
   );
 

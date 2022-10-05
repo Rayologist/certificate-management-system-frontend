@@ -1,4 +1,4 @@
-import { certUrl } from '@services/config';
+import API from '@services/config';
 import request from 'src/utils/fetcher';
 
 async function sendCert(payload: {
@@ -9,7 +9,7 @@ async function sendCert(payload: {
   email: string;
 }) {
   try {
-    const data = await request({ url: certUrl, method: 'POST', payload });
+    const data = await request({ url: API.cert, method: 'POST', payload });
     return [data, null];
   } catch (error) {
     return [null, error];

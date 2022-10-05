@@ -1,5 +1,5 @@
 import request from 'src/utils/fetcher';
-import { previewUrl } from '@services/config';
+import API from '@services/config';
 import { CreateCertificateRequest } from 'types';
 import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 
@@ -14,7 +14,7 @@ export function useCertificatePreview(setObjectURL: Dispatch<SetStateAction<stri
   const fetchPreview = async () => {
     setIsLoading(true);
     const result = await request({
-      url: previewUrl,
+      url: API.internals.certificate.preview,
       method: 'POST',
       payload,
       toJson: false,

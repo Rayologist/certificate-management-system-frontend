@@ -5,14 +5,14 @@ import {
   SendCertificateRequest,
 } from 'types';
 import request from 'src/utils/fetcher';
-import { certificateUrl } from '@services/config';
+import API from '@services/config';
 import { useCertificatePreview } from './preview';
 import useCertificate from './useCertificate';
 
 async function createCertificate(payload: CreateCertificateRequest) {
   try {
     const data = await request({
-      url: certificateUrl,
+      url: API.internals.certificate.root,
       method: 'POST',
       payload,
     });
@@ -25,7 +25,7 @@ async function createCertificate(payload: CreateCertificateRequest) {
 async function sendCertificate(payload: SendCertificateRequest) {
   try {
     const data = await request({
-      url: `${certificateUrl}/send`,
+      url: API.internals.certificate.send,
       method: 'POST',
       payload,
     });
@@ -37,7 +37,7 @@ async function sendCertificate(payload: SendCertificateRequest) {
 
 async function updateCertificate(payload: UpdateCertificateRequest) {
   try {
-    const data = await request({ url: certificateUrl, method: 'PUT', payload });
+    const data = await request({ url: API.internals.certificate.root, method: 'PUT', payload });
     return [data, null];
   } catch (error) {
     return [null, error];
@@ -47,7 +47,7 @@ async function updateCertificate(payload: UpdateCertificateRequest) {
 async function deleteCertificate(payload: DeleteCertificateRequest) {
   try {
     const data = await request({
-      url: certificateUrl,
+      url: API.internals.certificate.root,
       method: 'DELETE',
       payload,
     });

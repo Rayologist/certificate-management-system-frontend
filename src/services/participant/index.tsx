@@ -1,4 +1,4 @@
-import { participantUrl } from '@services/config';
+import API from '@services/config';
 import request from 'src/utils/fetcher';
 import {
   CreateParticipantRequest,
@@ -10,7 +10,7 @@ import { useParticipantStats, useParticipantByAuid } from './useParticipant';
 async function createParticipant(payload: CreateParticipantRequest) {
   try {
     const data = await request({
-      url: participantUrl,
+      url: API.internals.participant,
       method: 'POST',
       payload,
     });
@@ -21,7 +21,7 @@ async function createParticipant(payload: CreateParticipantRequest) {
 }
 async function updateParticipant(payload: UpdateParticipantRequest) {
   try {
-    const data = await request({ url: participantUrl, method: 'PUT', payload });
+    const data = await request({ url: API.internals.participant, method: 'PUT', payload });
     return [data, null];
   } catch (error) {
     return [null, error];
@@ -30,7 +30,7 @@ async function updateParticipant(payload: UpdateParticipantRequest) {
 async function deleteParticipant(payload: DeleteParticipantRequest) {
   try {
     const data = await request({
-      url: participantUrl,
+      url: API.internals.participant,
       method: 'DELETE',
       payload,
     });
