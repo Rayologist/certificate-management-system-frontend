@@ -5,7 +5,8 @@ import { ActionIcon, Group, Modal, Image, Grid, Divider, Title } from '@mantine/
 import { IconCirclePlus } from '@tabler/icons';
 import { createColumnHelper } from '@tanstack/react-table';
 import { CertificateResponse } from 'types';
-import { staticUrl } from '@services/config';
+import API from '@services/config';
+import urlJoin from 'url-join';
 import CreateCertificate from '../Create';
 
 const columnHelper = createColumnHelper<CertificateResponse>();
@@ -40,7 +41,7 @@ const columns = [
     enableResizing: false,
     cell: (props) => {
       const [opened, setOpened] = useState(false);
-      const defaultUrl = `${staticUrl}/template`;
+      const defaultUrl = urlJoin(API.internals.static, 'template');
       const [objectURL, setObjectURL] = useState<string>(defaultUrl);
       const { auid } = props.cell.row.original;
       const handleClosed = useCallback(() => {

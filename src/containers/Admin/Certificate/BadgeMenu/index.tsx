@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import { Menu, Title, Badge, Modal, Group, Grid, Image, Divider } from '@mantine/core';
 import { Certificate } from 'types';
 import { IconPencil, IconQrcode, IconChevronDown, IconTrash } from '@tabler/icons';
-import { staticUrl } from '@services/config';
+import API from '@services/config';
 import { useCertificate } from '@services/certificate';
 import { useRouter } from 'next/router';
 import urlJoin from 'url-join';
@@ -22,7 +22,7 @@ export default function BadgeMenu(props: Certificate & { activityUrl: string }) 
   const { mutate } = useCertificate();
   const [editOpened, setEditOpened] = useState(false);
   const [qrcodeOpened, setQrcodeOpened] = useState(false);
-  const defaultUrl = `${staticUrl}/${url}`;
+  const defaultUrl = urlJoin(API.internals.static, url);
   const [objectURL, setObjectURL] = useState(defaultUrl);
   const [deleteOpened, setDeleteOpened] = useState(false);
   const handleCloseDelete = useCallback(() => setDeleteOpened(false), []);
