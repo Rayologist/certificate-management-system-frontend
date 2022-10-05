@@ -57,14 +57,22 @@ export type Activity = {
   startDate: Date;
   endDate: Date;
   url: string;
+  subject: string;
+  email: string;
   updatedAt: Date;
   createdAt: Date;
 };
 
 export type GetActivityRespose = Response<Activity[]>;
-export type CreateActivityRequest = Pick<Activity, 'title' | 'startDate' | 'endDate'>;
+export type CreateActivityRequest = Pick<
+  Activity,
+  'title' | 'startDate' | 'endDate' | 'email' | 'subject'
+>;
 export type DeleteActivityRequest = Pick<Activity, 'auid'>;
-export type UpdateActivityRequest = Pick<Activity, 'auid' | 'title' | 'startDate' | 'endDate'>;
+export type UpdateActivityRequest = Pick<
+  Activity,
+  'auid' | 'title' | 'startDate' | 'endDate' | 'email' | 'subject'
+>;
 
 // Certificate
 export interface Certificate {
