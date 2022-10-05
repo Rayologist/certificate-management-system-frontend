@@ -1,14 +1,12 @@
 import { useState } from 'react';
-
 import Table from '@components/Table';
 import { createColumnHelper } from '@tanstack/react-table';
-
 import { format } from 'date-fns';
-import { Group, Modal, Title, ActionIcon } from '@mantine/core';
-import { IconPencil, IconTrash } from '@tabler/icons';
-
+import { Group, Modal, Title, ActionIcon, Stack, TextInput, Button, Text } from '@mantine/core';
+import { IconMail, IconPencil, IconTrash } from '@tabler/icons';
 import { Activity } from 'types';
 import { useActivity } from 'src/services/activity';
+import RichTextEditor from '@components/RichTextEditor';
 import UpdateActivity from '../Update';
 import DeleteActivity from '../Delete';
 
@@ -19,6 +17,36 @@ const columns = [
     header: '活動名稱',
     size: 300,
     minSize: 250,
+  }),
+  columnHelper.accessor('email', {
+    header: '信件內容',
+    cell: (props) => {
+      const [opened, setOpened] = useState(false);
+      const { email, subject, title } = props.row.original;
+      return (
+        <>
+          <Modal
+            opened={opened}
+            onClose={() => setOpened(false)}
+            size={700}
+            title={<Title order={3}>{title}</Title>}
+          >
+            <Stack>
+              <TextInput value={subject} label="信件主旨" readOnly labelProps={{ size: 16 }} />
+              <Stack spacing={0}>
+                <Text weight={500} color="#212529" size={16}>
+                  信件內容
+                </Text>
+                <RichTextEditor id="rte" value={email} readOnly />
+              </Stack>
+            </Stack>
+          </Modal>
+          <Button compact fullWidth onClick={() => setOpened(true)} variant="light">
+            <IconMail stroke={2} size={18} />
+          </Button>
+        </>
+      );
+    },
   }),
   columnHelper.accessor('startDate', {
     header: '開始日期',
@@ -52,7 +80,7 @@ const columns = [
       const [opened, setOpened] = useState(false);
       const [trashOpened, setTrashOpened] = useState(false);
       const { mutate } = useActivity();
-      const { auid, title, startDate, endDate } = props.cell.row.original;
+      const { auid, title, startDate, endDate, email, subject } = props.cell.row.original;
 
       return (
         <>
@@ -60,12 +88,17 @@ const columns = [
             opened={opened}
             onClose={() => setOpened(false)}
             title={<Title order={2}>修改活動欄位</Title>}
+            size={700}
+            overflow="inside"
+            closeOnClickOutside={false}
           >
             <UpdateActivity
               auid={auid}
               title={title}
               startDate={new Date(startDate)}
               endDate={new Date(endDate)}
+              subject={subject}
+              email={email}
               mutate={mutate}
               setOpened={setOpened}
             />
