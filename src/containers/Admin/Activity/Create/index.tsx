@@ -3,7 +3,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { FormikController, ErrorMessage } from '@components/Form';
 import { ControllerProps, CreateActivityRequest, PickAsOrNull } from 'types';
 import { Button, Grid, Text, useMantineTheme } from '@mantine/core';
-import * as Yup from 'yup';
+import { object, string, date } from 'yup';
 import { KeyedMutator } from 'swr';
 import { createActivity } from '@services/activity';
 import { useRouter } from 'next/router';
@@ -47,11 +47,11 @@ const CreateNewActivity = ({
     return null;
   };
 
-  const validationSchema = Yup.object({
-    title: Yup.string().required('必填'),
-    startDate: Yup.date().required('必填').nullable(),
-    endDate: Yup.date().required('必填').nullable(),
-    subject: Yup.string().required('必填'),
+  const validationSchema = object({
+    title: string().required('必填'),
+    startDate: date().required('必填').nullable(),
+    endDate: date().required('必填').nullable(),
+    subject: string().required('必填'),
   });
 
   const fields: ControllerProps[] = [

@@ -2,7 +2,7 @@ import { Form, Formik } from 'formik';
 import { FormikController } from '@components/Form';
 import { ControllerProps, Response } from 'types';
 import { Button, Grid, Notification } from '@mantine/core';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 import { useRouter } from 'next/router';
 import { sendCert } from '@services/sendCert';
 import { useState } from 'react';
@@ -62,10 +62,10 @@ function CertificateForm({
     return null;
   };
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required('必填'),
-    altName: Yup.string(),
-    email: Yup.string().email('格式錯誤').required('必填'),
+  const validationSchema = object({
+    name: string().required('必填'),
+    altName: string(),
+    email: string().email('格式錯誤').required('必填'),
   });
 
   const fields: ControllerProps[] = [

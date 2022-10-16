@@ -2,7 +2,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { FormikController } from '@components/Form';
 import { ControllerProps, Participant } from 'types';
 import { Button, Grid } from '@mantine/core';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 import { KeyedMutator } from 'swr';
 import { createParticipant } from '@services/participant';
 import { useRouter } from 'next/router';
@@ -45,12 +45,12 @@ const CreateParticipant = ({
     handleClose();
   };
 
-  const validationSchema = Yup.object({
-    name: Yup.string().required('必填'),
-    from: Yup.string().required('必填'),
-    title: Yup.string().required('必填'),
-    email: Yup.string().email('請確認 email 格式').required(),
-    phone: Yup.string().required('必填'),
+  const validationSchema = object({
+    name: string().required('必填'),
+    from: string().required('必填'),
+    title: string().required('必填'),
+    email: string().email('請確認 email 格式').required(),
+    phone: string().required('必填'),
   });
 
   const fields: ControllerProps[] = [

@@ -3,7 +3,7 @@ import { Form, Formik, FormikHelpers } from 'formik';
 import { FormikController } from '@components/Form';
 import { ControllerProps, CreateCertificateRequest } from 'types';
 import { Button, Grid, Group } from '@mantine/core';
-import * as Yup from 'yup';
+import { object, string, array, number } from 'yup';
 import { createCertificate, useCertificate } from '@services/certificate';
 import { useRouter } from 'next/router';
 import TextareaSelectArray from './TextareaSelect';
@@ -48,20 +48,20 @@ export default function CreateCertificate({
     handleClosed();
   };
 
-  const validationSchema = Yup.object({
-    displayName: Yup.string().required('必填'),
-    title: Yup.array()
+  const validationSchema = object({
+    displayName: string().required('必填'),
+    title: array()
       .of(
-        Yup.object({
-          text: Yup.string().required('必填'),
-          weight: Yup.string(),
+        object({
+          text: string().required('必填'),
+          weight: string(),
         })
       )
       .required('必填')
       .min(1)
       .max(3),
-    totalHour: Yup.number().required('必填').nullable(),
-    dateString: Yup.string().required('必填'),
+    totalHour: number().required('必填').nullable(),
+    dateString: string().required('必填'),
   });
 
   const fields: ControllerProps[] = [

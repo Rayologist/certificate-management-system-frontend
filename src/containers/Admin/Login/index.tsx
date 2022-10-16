@@ -2,7 +2,7 @@ import { Button, Grid, Notification } from '@mantine/core';
 import { Form, Formik } from 'formik';
 import { FormikController } from '@components/Form';
 import { ControllerProps, Response } from 'types';
-import * as Yup from 'yup';
+import { object, string } from 'yup';
 import { login } from '@services/session';
 import { useState } from 'react';
 import { useRouter } from 'next/router';
@@ -47,9 +47,9 @@ const LoginForm = () => {
     return null;
   };
 
-  const validationSchema = Yup.object({
-    account: Yup.string().required('必填'),
-    password: Yup.string().required('必填'),
+  const validationSchema = object({
+    account: string().required('必填'),
+    password: string().required('必填'),
   });
 
   const fields: ControllerProps[] = [
