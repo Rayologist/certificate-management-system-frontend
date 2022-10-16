@@ -1,8 +1,10 @@
-import Loader from '@components/Loader';
-import CertificateTable from '@containers/Admin/Certificate/Table';
+import dynamic from 'next/dynamic';
 import { Title, Group, Paper } from '@mantine/core';
 import { useCertificate } from '@services/certificate';
 import { useRouter } from 'next/router';
+
+const CertificateTable = dynamic(() => import('@containers/Admin/Certificate/Table'));
+const Loader = dynamic(() => import('@components/Loader'));
 
 const Certificate = () => {
   const { certificate, isLoading, isError } = useCertificate();

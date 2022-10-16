@@ -1,9 +1,11 @@
-import CertificateForm from '@containers/Form';
+import dynamic from 'next/dynamic';
 import { Paper, Container, Title, Text } from '@mantine/core';
 import { GetServerSideProps } from 'next';
 import request from 'src/utils/fetcher';
 import { URLSearchParams } from 'url';
 import { Response, SendCertificate } from 'types';
+
+const CertificateForm = dynamic(() => import('@containers/Form'));
 
 const parseCookie = <T,>(text: string): T | false => {
   try {

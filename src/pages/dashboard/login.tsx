@@ -1,8 +1,10 @@
+import dynamic from 'next/dynamic';
 import { Paper, Title, Text, Container } from '@mantine/core';
-import LoginForm from '@containers/Admin/Login';
 import { useUser } from 'src/contexts/UserContext';
-import Redirect from '@components/Redirect';
 import { Route } from '@config';
+
+const LoginForm = dynamic(() => import('@containers/Admin/Login'));
+const Redirect = dynamic(() => import('@components/Redirect'));
 
 export function Login() {
   const { user } = useUser();

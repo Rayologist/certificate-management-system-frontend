@@ -1,8 +1,12 @@
+import dynamic from 'next/dynamic';
 import { Title, Group, Paper } from '@mantine/core';
-import Loader from '@components/Loader';
 import { useParticipantStats } from '@services/participant';
-import { ParticipantStatsTable } from '@containers/Admin/Participant/Table';
 import { useRouter } from 'next/router';
+
+const ParticipantStatsTable = dynamic(() =>
+  import('@containers/Admin/Participant/Table').then((module) => module.ParticipantStatsTable)
+);
+const Loader = dynamic(() => import('@components/Loader'));
 
 const Participant = () => {
   const { stats, isLoading, isError } = useParticipantStats();

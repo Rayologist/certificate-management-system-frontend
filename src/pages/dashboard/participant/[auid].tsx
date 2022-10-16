@@ -1,3 +1,4 @@
+import dynamic from 'next/dynamic';
 import {
   Title,
   Group,
@@ -11,16 +12,19 @@ import {
   ThemeIcon,
   Box,
 } from '@mantine/core';
-import { useCallback, useState, useRef } from 'react';
-import Loader from '@components/Loader';
-import { ParticipantTable } from '@containers/Admin/Participant/Table';
 import { IconArrowNarrowLeft, IconFileUpload, IconUserPlus, IconX, IconCheck } from '@tabler/icons';
+import { useCallback, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import onCSVSubmit from '@containers/Admin/Participant/Create/onCSVSubmit';
-import CreateParticipant from '@containers/Admin/Participant/Create';
 import { useParticipantByAuid } from '@services/participant';
 import { Participant } from 'types';
 import { Route } from '@config';
+
+const CreateParticipant = dynamic(() => import('@containers/Admin/Participant/Create'));
+const ParticipantTable = dynamic(() =>
+  import('@containers/Admin/Participant/Table').then((module) => module.ParticipantTable)
+);
+const Loader = dynamic(() => import('@components/Loader'));
 
 type ErrorData = Pick<Participant, 'name' | 'from' | 'title' | 'email' | 'phone'>;
 

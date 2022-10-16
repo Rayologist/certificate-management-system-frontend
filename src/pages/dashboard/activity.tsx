@@ -1,10 +1,17 @@
+import dynamic from 'next/dynamic';
 import { Title, Group, Button, Modal, Paper } from '@mantine/core';
 import { IconPlus } from '@tabler/icons';
 import { useState } from 'react';
-import { CreateNewActivity, ActivityTable } from '@containers/Admin/Activity';
-import Loader from '@components/Loader';
 import { useActivity } from '@services/activity';
 import { useRouter } from 'next/router';
+
+const CreateNewActivity = dynamic(() =>
+  import('@containers/Admin/Activity').then((module) => module.CreateNewActivity)
+);
+const ActivityTable = dynamic(() =>
+  import('@containers/Admin/Activity').then((module) => module.ActivityTable)
+);
+const Loader = dynamic(() => import('@components/Loader'));
 
 const Activity = () => {
   const [opened, setOpened] = useState(false);
