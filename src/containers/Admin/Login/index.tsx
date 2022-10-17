@@ -4,7 +4,6 @@ import { object, string } from 'yup';
 import { login } from '@services/session';
 import { useRouter } from 'next/router';
 import { useUser } from 'src/contexts/UserContext';
-import { Route } from '@config';
 
 const LoginForm = () => {
   const { setUser } = useUser();
@@ -51,7 +50,6 @@ const LoginForm = () => {
         setUser((prev) => ({ ...prev, data: { role } }));
       }
 
-      router.push(Route.Activity);
       return null;
     },
   });
