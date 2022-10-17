@@ -1,4 +1,3 @@
-import dynamic from 'next/dynamic';
 import { useMemo, useState, useRef, memo } from 'react';
 import { useVirtualizer } from '@tanstack/react-virtual';
 import {
@@ -22,6 +21,7 @@ import {
   Group,
   Center,
   Divider,
+  ScrollArea,
   ScrollAreaProps,
   TableProps as MantineTableProps,
   TextProps,
@@ -32,8 +32,6 @@ import GlobalFilter from './components/GlobalFilter';
 import ColumnToggle from './components/ColumnToggle';
 import ColumnFilter from './components/ColumnFilter';
 import { inDateRange } from './components/ColumnFilter/FilterFn';
-
-const ScrollArea = dynamic(() => import('@mantine/core').then((module) => module.ScrollArea));
 
 type TableProps<T extends RowData> = {
   data: T[];
