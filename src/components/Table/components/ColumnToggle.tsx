@@ -1,7 +1,16 @@
-import { Popover, Checkbox, ActionIcon, Text } from '@mantine/core';
+import { Checkbox, ActionIcon, Text } from '@mantine/core';
 import { IconLayoutColumns } from '@tabler/icons';
 import { Table } from '@tanstack/react-table';
+import dynamic from 'next/dynamic';
 import { ReactNode, memo } from 'react';
+
+const Popover = dynamic(() => import('@mantine/core').then((module) => module.Popover));
+const PopoverTarget = dynamic(() =>
+  import('@mantine/core').then((module) => module.Popover.Target)
+);
+const PopoverDropdown = dynamic(() =>
+  import('@mantine/core').then((module) => module.Popover.Dropdown)
+);
 
 type ColumnToggleProps<RowData> = Pick<
   Table<RowData>,
@@ -24,15 +33,15 @@ function ColumnToggle<RowData>(props: ColumnToggleProps<RowData>) {
   const indeterminate = getIsSomeColumnsVisible() && !allChecked;
 
   const Target = memo(() => (
-    <Popover.Target>
+    <PopoverTarget>
       <ActionIcon>
         <IconLayoutColumns stroke={1} size={25} />
       </ActionIcon>
-    </Popover.Target>
+    </PopoverTarget>
   ));
 
   const Dropdown = memo(() => (
-    <Popover.Dropdown sx={{ padding: '1rem' }}>
+    <PopoverDropdown sx={{ padding: '1rem' }}>
       <Text color="dimmed" weight={500} size="sm" mb="1rem">
         Column Toggle
       </Text>
@@ -54,7 +63,7 @@ function ColumnToggle<RowData>(props: ColumnToggleProps<RowData>) {
           onChange={column.getToggleVisibilityHandler()}
         />
       ))}
-    </Popover.Dropdown>
+    </PopoverDropdown>
   ));
 
   return (

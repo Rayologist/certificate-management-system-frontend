@@ -1,8 +1,17 @@
+import dynamic from 'next/dynamic';
 import { Column } from '@tanstack/react-table';
-import { Popover, ActionIcon, CloseButton, Group, Text, Button } from '@mantine/core';
+import { ActionIcon, CloseButton, Group, Text, Button } from '@mantine/core';
 import { IconCheckbox, IconFilter, IconRotate } from '@tabler/icons';
 import { memo, useState } from 'react';
 import getFilterInput from './FilterInput';
+
+const Popover = dynamic(() => import('@mantine/core').then((module) => module.Popover));
+const PopoverTarget = dynamic(() =>
+  import('@mantine/core').then((module) => module.Popover.Target)
+);
+const PopoverDropdown = dynamic(() =>
+  import('@mantine/core').then((module) => module.Popover.Dropdown)
+);
 
 type ColumnFilterProps = {
   column: Column<any, unknown>;
@@ -45,7 +54,7 @@ const ColumnFilter = (props: ColumnFilterProps) => {
   };
 
   const Target = memo(() => (
-    <Popover.Target>
+    <PopoverTarget>
       <ActionIcon
         size="md"
         onClick={() => setOpened((prev) => !prev)}
@@ -54,7 +63,7 @@ const ColumnFilter = (props: ColumnFilterProps) => {
       >
         <IconFilter size={14} stroke={1.5} />
       </ActionIcon>
-    </Popover.Target>
+    </PopoverTarget>
   ));
 
   return (
@@ -68,7 +77,7 @@ const ColumnFilter = (props: ColumnFilterProps) => {
       width="18rem"
     >
       <Target />
-      <Popover.Dropdown>
+      <PopoverDropdown>
         <Group position="apart" mb="sm">
           <Text size="sm" color="dimmed" weight={600}>{`${column.columnDef.header} Filter`}</Text>
           <CloseButton onClick={handleClose} />
@@ -93,7 +102,7 @@ const ColumnFilter = (props: ColumnFilterProps) => {
             Confirm
           </Button>
         </Group>
-      </Popover.Dropdown>
+      </PopoverDropdown>
     </Popover>
   );
 };
