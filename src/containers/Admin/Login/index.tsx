@@ -1,104 +1,69 @@
-import { Button, Grid, Notification } from '@mantine/core';
-import { Form, Formik } from 'formik';
-import { FormikController } from '@components/Form';
-import { ControllerProps, Response } from 'types';
+import useSimpleForm from '@components/Form';
+import { Response } from 'types';
 import { object, string } from 'yup';
 import { login } from '@services/session';
-import { useState } from 'react';
 import { useRouter } from 'next/router';
 import { useUser } from 'src/contexts/UserContext';
 import { Route } from '@config';
 
 const LoginForm = () => {
-  const [notification, setNotification] = useState(false);
   const { setUser } = useUser();
   const router = useRouter();
+  const Form = useSimpleForm({
+    initialValues: {
+      account: '',
+      password: '',
+    },
+    controllers: [
+      {
+        control: 'text-input',
+        name: 'account',
+        label: '帳號',
+        required: true,
+      },
+      {
+        control: 'password-input',
+        name: 'password',
+        label: '密碼',
+        required: true,
+      },
+    ],
+    validationSchema: object({
+      account: string().required('必填'),
+      password: string().required('必填'),
+    }),
+    onSubmit: async (values, actions) => {
+      const [result, error] = (await login(values)) as [Response<{ role?: string }>, any];
 
-  interface Values {
-    account: string;
-    password: string;
-  }
+      if (error) {
+        router.push('/500', { pathname: router.asPath });
+        return null;
+      }
 
-  const initialValue: Values = {
-    account: '',
-    password: '',
-  };
+      if (result.status !== 'success') {
+        actions.setFieldError('account', '帳號或密碼錯誤');
+        return null;
+      }
 
-  const onSubmit = async (values: Values) => {
-    const [result, error] = (await login(values)) as [Response<{ role?: string }>, any];
+      const role = result.data?.role;
 
-    if (error) {
-      router.push('/500', { pathname: router.asPath });
+      if (role) {
+        setUser((prev) => ({ ...prev, data: { role } }));
+      }
+
+      router.push(Route.Activity);
       return null;
-    }
-
-    if (result.status !== 'success') {
-      setNotification(true);
-      return null;
-    }
-
-    const role = result.data?.role;
-
-    if (role) {
-      setUser((prev) => ({ ...prev, data: { role } }));
-    }
-
-    router.push(Route.Activity);
-    return null;
-  };
-
-  const validationSchema = object({
-    account: string().required('必填'),
-    password: string().required('必填'),
+    },
   });
 
-  const fields: ControllerProps[] = [
-    {
-      control: 'text-input',
-      name: 'account',
-      label: '帳號',
-      required: true,
-    },
-    {
-      control: 'password-input',
-      name: 'password',
-      label: '密碼',
-      required: true,
-    },
-  ];
   return (
-    <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
+    <Form>
       {(formik) => (
-        <Form>
-          <Grid justify="center" gutter="xl">
-            {fields.map((field, index) => (
-              <Grid.Col xs={12} sm={12} md={12} lg={12} key={`${field.name}-${index}`}>
-                <FormikController {...field} />
-              </Grid.Col>
-            ))}
-            {notification && (
-              <Grid.Col xs={12} sm={12} md={12} lg={12}>
-                <Notification onClose={() => setNotification(false)} icon="!" color="red">
-                  帳號或密碼錯誤
-                </Notification>
-              </Grid.Col>
-            )}
-
-            <Grid.Col
-              xs={12}
-              sm={12}
-              md={12}
-              lg={12}
-              sx={{ display: 'flex', justifyContent: 'center' }}
-            >
-              <Button type="submit" mt={5} loading={formik.isSubmitting} fullWidth>
-                {formik.isSubmitting ? '登入中...' : '登入'}
-              </Button>
-            </Grid.Col>
-          </Grid>
-        </Form>
+        <Form.Button mt={30} loading={formik.isSubmitting} fullWidth>
+          {formik.isSubmitting ? '登入中...' : '登入'}
+        </Form.Button>
       )}
-    </Formik>
+    </Form>
   );
 };
 
