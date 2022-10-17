@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, ReactNode } from 'react';
 import {
   PasswordInputProps as MantinePasswordInputProps,
   RadioGroupProps as MantineRadioGroupProps,
@@ -250,4 +250,11 @@ export type ControllerProps =
 
 export type ControllerPropsWithCol = {
   controllers: (ControllerProps & { col?: ColProps })[];
+};
+
+export type SimpleFormControllerProps<FormikContextType> = {
+  controllers: (ControllerProps & {
+    col?: ColProps;
+    after?: ReactNode | ((formikContext: FormikContextType) => ReactNode);
+  })[];
 };
