@@ -47,7 +47,6 @@ const Header = ({
 
         <Link href={Route.Activity} passHref>
           <Box
-            component="a"
             sx={{
               display: 'flex',
             }}

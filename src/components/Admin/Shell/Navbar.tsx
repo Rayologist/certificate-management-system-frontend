@@ -118,11 +118,9 @@ export default function Navbar({ opened }: { opened: boolean }) {
       <MantineNavbar.Section grow>{links}</MantineNavbar.Section>
 
       <MantineNavbar.Section className={classes.footer}>
-        <Link href={Route.Logout}>
-          <a className={classes.link}>
-            <IconLogout className={classes.linkIcon} stroke={1.5} />
-            <span>登出</span>
-          </a>
+        <Link href={Route.Logout} className={classes.link}>
+          <IconLogout className={classes.linkIcon} stroke={1.5} />
+          <span>登出</span>
         </Link>
       </MantineNavbar.Section>
     </MantineNavbar>

@@ -65,7 +65,7 @@ function NotFoundTitle() {
           </Button>
         )}
         <Link href={href} passHref>
-          <Button variant="subtle" size="md" component="a">
+          <Button variant="subtle" size="md">
             Take me back to home page
           </Button>
         </Link>
