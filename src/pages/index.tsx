@@ -17,8 +17,7 @@ const parseCookie = <T,>(text: string): T | false => {
 
 export default function HomePage({ data }: { data: SendCertificate }) {
   const { activityName, certificateName, certificateId, activityUid } = data;
-  const base64 = window.btoa(`p=${activityName}&c=${certificateName}`);
-  const e = encodeURIComponent(base64);
+  const e = window.btoa(encodeURIComponent(`p=${activityName}&c=${certificateName}`));
   const pushUrl = `/success?e=${e}`;
 
   return (
