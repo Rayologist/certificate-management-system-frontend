@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { NextLink } from '@mantine/next';
 import { createStyles, Navbar as MantineNavbar } from '@mantine/core';
 import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons';
 import { Route } from '@config';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import urlJoin from 'url-join';
 
 const useStyles = createStyles((theme, _params, getRef) => {
@@ -94,7 +94,7 @@ export default function Navbar({ opened }: { opened: boolean }) {
   }, [currentLink]);
 
   const links = data.map((item) => (
-    <NextLink
+    <Link
       href={item.link}
       key={item.label}
       className={cx(classes.link, {
@@ -104,7 +104,7 @@ export default function Navbar({ opened }: { opened: boolean }) {
     >
       <item.icon className={classes.linkIcon} stroke={1.5} />
       <span>{item.label}</span>
-    </NextLink>
+    </Link>
   ));
 
   return (
@@ -117,10 +117,10 @@ export default function Navbar({ opened }: { opened: boolean }) {
       <MantineNavbar.Section grow>{links}</MantineNavbar.Section>
 
       <MantineNavbar.Section className={classes.footer}>
-        <NextLink href={Route.Logout} className={classes.link}>
+        <Link href={Route.Logout} className={classes.link}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>登出</span>
-        </NextLink>
+        </Link>
       </MantineNavbar.Section>
     </MantineNavbar>
   );
