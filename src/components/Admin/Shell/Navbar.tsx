@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { NextLink } from '@mantine/next';
 import { createStyles, Navbar as MantineNavbar } from '@mantine/core';
 import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons';
-import Link from 'next/link';
 import { Route } from '@config';
 import { useRouter } from 'next/router';
 import urlJoin from 'url-join';
@@ -118,10 +117,10 @@ export default function Navbar({ opened }: { opened: boolean }) {
       <MantineNavbar.Section grow>{links}</MantineNavbar.Section>
 
       <MantineNavbar.Section className={classes.footer}>
-        <Link href={Route.Logout} className={classes.link}>
+        <NextLink href={Route.Logout} className={classes.link}>
           <IconLogout className={classes.linkIcon} stroke={1.5} />
           <span>登出</span>
-        </Link>
+        </NextLink>
       </MantineNavbar.Section>
     </MantineNavbar>
   );
