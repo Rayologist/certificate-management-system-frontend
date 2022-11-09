@@ -29,8 +29,8 @@ export default function QRCode({
   const SVGSize = size / 5;
 
   return (
-    <Card p="lg" mt="xl">
-      <Card.Section sx={{ display: 'flex', justifyContent: 'center' }}>
+    <Card p="lg" mt="xl" withBorder radius="md" shadow="xs">
+      <Card.Section sx={{ display: 'flex', justifyContent: 'center' }} pt={50}>
         <QRCodeCanvas
           style={{ width: '250px', height: '250' }}
           id={uuid}
