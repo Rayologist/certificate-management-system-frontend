@@ -1,6 +1,6 @@
 import { useMantineTheme } from '@mantine/core';
 
-export function CBELogo({ size }: { size: number }) {
+export function Logo({ size }: { size: number }) {
   const theme = useMantineTheme();
   const color = theme.colorScheme === 'dark' ? theme.white : theme.black;
   return (

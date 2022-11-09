@@ -9,7 +9,7 @@ import {
 } from '@mantine/core';
 import { Dispatch, SetStateAction } from 'react';
 import Link from 'next/link';
-import { CBELogo } from '@components/Logo';
+import { Logo } from '@components/Logo';
 import ColorSchemeToggle from '@components/ColorSchemeToggle';
 import { Route } from '@config';
 
@@ -52,7 +52,7 @@ const Header = ({
               display: 'flex',
             }}
           >
-            <CBELogo size={40} />
+            <Logo size={40} />
           </Box>
         </Link>
         <ColorSchemeToggle />

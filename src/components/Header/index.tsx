@@ -1,6 +1,6 @@
 import { createStyles, Header, Group, ActionIcon, Container, Box } from '@mantine/core';
 import { IconBrandYoutube, IconBrandInstagram, IconBrandFacebook } from '@tabler/icons';
-import { CBELogo } from '@components/Logo';
+import { Logo } from '@components/Logo';
 import ColorSchemeToggle from '@components/ColorSchemeToggle';
 
 const useStyles = createStyles((theme) => ({
@@ -45,7 +45,7 @@ export function UserHeader() {
           href="https://cbe.ntu.edu.tw/"
           rel="noreferrer noopener"
         >
-          <CBELogo size={40} />
+          <Logo size={40} />
         </Box>
 
         <Group spacing={0} className={classes.social} position="right" noWrap>
