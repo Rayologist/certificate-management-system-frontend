@@ -2,6 +2,7 @@ import { createStyles, Header, Group, ActionIcon, Container, Box } from '@mantin
 import { IconBrandYoutube, IconBrandInstagram, IconBrandFacebook } from '@tabler/icons';
 import { Logo } from '@components/Logo';
 import ColorSchemeToggle from '@components/ColorSchemeToggle';
+import { Href } from '@config';
 
 const useStyles = createStyles((theme) => ({
   inner: {
@@ -28,12 +29,6 @@ const useStyles = createStyles((theme) => ({
 export function UserHeader() {
   const { classes } = useStyles();
 
-  const href = {
-    facebook: 'https://www.facebook.com/NTUCBE',
-    youtube: 'https://www.youtube.com/channel/UCqGbL2pwlrZI_dNBmEv6CRg',
-    instagram: 'https://www.instagram.com/ntucbe',
-  };
-
   return (
     <Header height={56} mb={30}>
       <Container className={classes.inner}>
@@ -42,7 +37,7 @@ export function UserHeader() {
             display: 'flex',
           }}
           component="a"
-          href="https://cbe.ntu.edu.tw/"
+          href={Href.home}
           rel="noreferrer noopener"
         >
           <Logo size={40} />
@@ -52,7 +47,7 @@ export function UserHeader() {
           <ActionIcon
             size="lg"
             component="a"
-            href={href.facebook}
+            href={Href.facebook}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -61,7 +56,7 @@ export function UserHeader() {
           <ActionIcon
             size="lg"
             component="a"
-            href={href.youtube}
+            href={Href.youtube}
             target="_blank"
             rel="noreferrer noopener"
           >
@@ -70,7 +65,7 @@ export function UserHeader() {
           <ActionIcon
             size="lg"
             component="a"
-            href={href.instagram}
+            href={Href.instagram}
             target="_blank"
             rel="noreferrer noopener"
           >

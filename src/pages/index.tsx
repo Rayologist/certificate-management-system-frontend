@@ -4,6 +4,7 @@ import { GetServerSideProps } from 'next';
 import request from 'src/utils/fetcher';
 import { URLSearchParams } from 'url';
 import { Response, SendCertificate } from 'types';
+import { Href } from '@config';
 
 const CertificateForm = dynamic(() => import('@containers/Form'));
 
@@ -50,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = async (context) => {
   const { req } = context;
   const redirect = {
     redirect: {
-      destination: 'https://cbe.ntu.edu.tw/',
+      destination: Href.home,
       permanent: false,
     },
   };

@@ -11,6 +11,13 @@ const Route = {
   Activity: dashbaord('activity'),
   Certificate: dashbaord('certificate'),
   Participant: dashbaord('participant'),
-};
+} as const;
 
-export { Route };
+const Href = {
+  home: 'https://cbe.ntu.edu.tw/',
+  facebook: 'https://www.facebook.com/NTUCBE',
+  youtube: 'https://www.youtube.com/channel/UCqGbL2pwlrZI_dNBmEv6CRg',
+  instagram: 'https://www.instagram.com/ntucbe',
+} as const;
+
+export { Route, Href };
