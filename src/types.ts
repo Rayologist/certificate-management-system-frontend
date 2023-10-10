@@ -79,9 +79,7 @@ export interface Certificate {
   id: number;
   activityUid: string;
   displayName: string;
-  title: Title[];
-  totalHour: number;
-  dateString: string;
+  content: Content[];
   filename: string;
   url: string;
   createdAt: Date;
@@ -95,25 +93,19 @@ export type SendCertificate = {
   activityUid: string;
 };
 
-export interface Title {
+export interface Content {
   text: string;
   weight: string;
 }
 
-export type CreateCertificateRequest = Pick<
-  Certificate,
-  'activityUid' | 'displayName' | 'title' | 'dateString' | 'totalHour'
->;
+export type CreateCertificateRequest = Pick<Certificate, 'activityUid' | 'displayName' | 'content'>;
 export type SendCertificateRequest = {
   certificateId: number;
   participantId: number;
   altName: string;
 };
 
-export type UpdateCertificateRequest = Pick<
-  Certificate,
-  'id' | 'displayName' | 'title' | 'dateString' | 'totalHour'
->;
+export type UpdateCertificateRequest = Pick<Certificate, 'id' | 'displayName' | 'content'>;
 export type DeleteCertificateRequest = Pick<Certificate, 'id'>;
 export type CertificateResponse = Activity & { certificate: Certificate[] };
 

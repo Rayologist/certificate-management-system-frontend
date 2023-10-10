@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import FormikController from '@components/Form/FormikController';
-import { Certificate, ControllerProps, CreateCertificateRequest } from 'types';
+import { Certificate, CreateCertificateRequest } from 'types';
 import { Button, Grid, Group } from '@mantine/core';
-import { object, string, array, number } from 'yup';
+import { object, string, array } from 'yup';
 import { updateCertificate, useCertificate } from '@services/certificate';
 import { useRouter } from 'next/router';
 import TextareaSelectArray from '../Create/TextareaSelect';
@@ -25,13 +25,11 @@ export default function UpdateCertificate({
   const { mutate } = useCertificate();
   const router = useRouter();
 
-  const { displayName, title, totalHour, dateString, id } = certProps;
+  const { displayName, content, id } = certProps;
   const initialValue: Values = {
     displayName,
     dummyName: '',
-    title,
-    totalHour,
-    dateString,
+    content,
   };
 
   const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
@@ -57,27 +55,8 @@ export default function UpdateCertificate({
         })
       )
       .required('必填')
-      .min(1)
-      .max(3),
-    totalHour: number().required('必填').nullable(),
-    dateString: string().required('必填'),
+      .min(1),
   });
-
-  const fields: ControllerProps[] = [
-    {
-      control: 'text-input',
-      name: 'totalHour',
-      label: '總時數',
-      type: 'number',
-      required: true,
-    },
-    {
-      control: 'text-input',
-      name: 'dateString',
-      label: '日期樣式',
-      required: true,
-    },
-  ];
 
   return (
     <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
@@ -108,7 +87,7 @@ export default function UpdateCertificate({
 
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <TextareaSelectArray
-                name="title"
+                name="content"
                 textareaProps={{
                   label: '證書文字',
                 }}
@@ -123,12 +102,6 @@ export default function UpdateCertificate({
                 }}
               />
             </Grid.Col>
-
-            {fields.map((field, index) => (
-              <Grid.Col xs={10} sm={10} md={10} lg={10} key={`${field.name}-${index}`}>
-                <FormikController {...field} />
-              </Grid.Col>
-            ))}
 
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <Group position="center">

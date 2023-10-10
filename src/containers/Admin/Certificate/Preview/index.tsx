@@ -16,17 +16,14 @@ const PreviewButton = (props: PreviewButton) => {
   const formik = useFormikContext<CertificateFormValues>();
   const { values, errors } = formik;
 
-  const { title, totalHour: th, dateString, dummyName } = values;
-  const totalHour = th as number;
-  const hasErrors = errors.dateString || errors.totalHour || errors.title;
-  const hasValues = title && totalHour && dateString;
+  const { content, dummyName } = values;
+  const hasErrors = errors.content;
+  const hasValues = content.length > 0;
 
   const onClick = () => {
     if (!hasErrors && hasValues) {
       setPayload({
-        title,
-        totalHour,
-        dateString,
+        content,
         dummyName,
       });
     }

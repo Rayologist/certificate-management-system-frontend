@@ -11,7 +11,7 @@ import {
 } from '@mantine/core';
 import { FieldArray } from 'formik';
 import { IconChevronDown, IconMinus, IconPlus, IconAlertCircle } from '@tabler/icons-react';
-import { Title } from 'types';
+import { Content } from 'types';
 import { useCustomFormik } from '@components/Form';
 
 function TextareaSelectArray({
@@ -27,7 +27,7 @@ function TextareaSelectArray({
   const theme = useMantineTheme();
 
   const [formik] = useCustomFormik(name);
-  const values = formik.values[name] as Title[];
+  const values = formik.values[name] as Content[];
   const errors = formik.errors[name] as { [index: number]: any };
   const touched = formik.touched[name] as { [index: number]: any };
 

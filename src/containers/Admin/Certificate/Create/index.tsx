@@ -1,9 +1,9 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
 import { FormikController } from '@components/Form';
-import { ControllerProps, CreateCertificateRequest } from 'types';
+import { CreateCertificateRequest } from 'types';
 import { Button, Grid, Group } from '@mantine/core';
-import { object, string, array, number } from 'yup';
+import { object, string, array } from 'yup';
 import { createCertificate, useCertificate } from '@services/certificate';
 import { useRouter } from 'next/router';
 import TextareaSelectArray from './TextareaSelect';
@@ -25,9 +25,11 @@ export default function CreateCertificate({
   const initialValue: CertificateFormValues = {
     displayName: '',
     dummyName: '',
-    title: [{ text: '', weight: '' }],
-    totalHour: null,
-    dateString: '',
+    content: [
+      { text: 'has attended the', weight: '' },
+      { text: '', weight: '' },
+      { text: 'With a total of  hour(s) on ', weight: '' },
+    ],
   };
 
   const onSubmit = async (
@@ -58,27 +60,8 @@ export default function CreateCertificate({
         })
       )
       .required('必填')
-      .min(1)
-      .max(3),
-    totalHour: number().required('必填').nullable(),
-    dateString: string().required('必填'),
+      .min(1),
   });
-
-  const fields: ControllerProps[] = [
-    {
-      control: 'text-input',
-      name: 'totalHour',
-      label: '總時數',
-      type: 'number',
-      required: true,
-    },
-    {
-      control: 'text-input',
-      name: 'dateString',
-      label: '日期樣式',
-      required: true,
-    },
-  ];
 
   return (
     <Formik initialValues={initialValue} onSubmit={onSubmit} validationSchema={validationSchema}>
@@ -109,7 +92,7 @@ export default function CreateCertificate({
 
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <TextareaSelectArray
-                name="title"
+                name="content"
                 textareaProps={{
                   label: '證書文字',
                 }}
@@ -124,12 +107,6 @@ export default function CreateCertificate({
                 }}
               />
             </Grid.Col>
-
-            {fields.map((field, index) => (
-              <Grid.Col xs={10} sm={10} md={10} lg={10} key={`${field.name}-${index}`}>
-                <FormikController {...field} />
-              </Grid.Col>
-            ))}
 
             <Grid.Col xs={10} sm={10} md={10} lg={10}>
               <Group position="center">

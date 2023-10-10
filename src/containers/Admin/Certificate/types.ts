@@ -1,8 +1,5 @@
-import { PickAsOrNull, CreateCertificateRequest } from 'types';
+import { CreateCertificateRequest } from 'types';
 
-export type CertificateFormValues = PickAsOrNull<
-  Omit<CreateCertificateRequest, 'activityUid'>,
-  'totalHour'
-> & {
+export type CertificateFormValues = Omit<CreateCertificateRequest, 'activityUid'> & {
   dummyName?: string;
 };
