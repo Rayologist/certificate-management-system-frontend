@@ -25,7 +25,7 @@ import {
   IconPencil,
   IconRotate,
   IconTrash,
-} from '@tabler/icons';
+} from '@tabler/icons-react';
 import { sendCertificate } from '@services/certificate';
 import UpdateParticipant from '../Update';
 import DeleteParticipant from '../Delete';

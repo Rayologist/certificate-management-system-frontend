@@ -1,6 +1,6 @@
 import { CopyButton, ActionIcon, Tooltip, Button, Card, Text, Grid } from '@mantine/core';
 import { useId } from '@mantine/hooks';
-import { IconCheck, IconLink } from '@tabler/icons';
+import { IconCheck, IconLink } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 import { QRCodeCanvas } from 'qrcode.react';
 

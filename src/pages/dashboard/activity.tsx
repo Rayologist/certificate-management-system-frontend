@@ -1,6 +1,6 @@
 import dynamic from 'next/dynamic';
 import { Title, Group, Button, Modal, Paper } from '@mantine/core';
-import { IconPlus } from '@tabler/icons';
+import { IconPlus } from '@tabler/icons-react';
 import { useState } from 'react';
 import { useActivity } from '@services/activity';
 import { useRouter } from 'next/router';

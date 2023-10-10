@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react';
 import { Menu, Title, Badge, Modal, Group, Grid, Image, Divider } from '@mantine/core';
 import { Certificate } from 'types';
-import { IconPencil, IconQrcode, IconChevronDown, IconTrash } from '@tabler/icons';
+import { IconPencil, IconQrcode, IconChevronDown, IconTrash } from '@tabler/icons-react';
 import API from '@services/config';
 import { useCertificate } from '@services/certificate';
 import { useRouter } from 'next/router';

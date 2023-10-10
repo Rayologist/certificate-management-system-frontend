@@ -1,5 +1,5 @@
 import { Modal, Title, Group, ModalProps, Divider, Button, ButtonProps } from '@mantine/core';
-import { IconAlertTriangle } from '@tabler/icons';
+import { IconAlertTriangle } from '@tabler/icons-react';
 
 type DeleteModalProps = Omit<ModalProps, 'title'> & {
   children: React.ReactNode;

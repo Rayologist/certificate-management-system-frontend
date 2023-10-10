@@ -1,5 +1,5 @@
 import { createStyles, Header, Group, ActionIcon, Container, Box } from '@mantine/core';
-import { IconBrandYoutube, IconBrandInstagram, IconBrandFacebook } from '@tabler/icons';
+import { IconBrandYoutube, IconBrandInstagram, IconBrandFacebook } from '@tabler/icons-react';
 import { Logo } from '@components/Logo';
 import ColorSchemeToggle from '@components/ColorSchemeToggle';
 import { Href } from '@config';

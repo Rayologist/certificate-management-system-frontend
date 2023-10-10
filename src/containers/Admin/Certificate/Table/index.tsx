@@ -2,7 +2,7 @@ import { useCallback, useState } from 'react';
 import BadgeMenu from '@containers/Admin/Certificate/BadgeMenu';
 import Table from '@components/Table';
 import { ActionIcon, Group, Modal, Image, Grid, Divider, Title } from '@mantine/core';
-import { IconCirclePlus } from '@tabler/icons';
+import { IconCirclePlus } from '@tabler/icons-react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { CertificateResponse } from 'types';
 import API from '@services/config';

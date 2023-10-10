@@ -1,6 +1,6 @@
 import Table from '@components/Table';
 import { ActionIcon, Group, Text } from '@mantine/core';
-import { IconWriting } from '@tabler/icons';
+import { IconWriting } from '@tabler/icons-react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { ParticipantStatsResponse } from 'types';
 import { useRouter } from 'next/router';

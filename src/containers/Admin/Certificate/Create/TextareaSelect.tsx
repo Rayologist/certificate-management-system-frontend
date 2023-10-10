@@ -10,7 +10,7 @@ import {
   useMantineTheme,
 } from '@mantine/core';
 import { FieldArray } from 'formik';
-import { IconChevronDown, IconMinus, IconPlus, IconAlertCircle } from '@tabler/icons';
+import { IconChevronDown, IconMinus, IconPlus, IconAlertCircle } from '@tabler/icons-react';
 import { Title } from 'types';
 import { useCustomFormik } from '@components/Form';
 

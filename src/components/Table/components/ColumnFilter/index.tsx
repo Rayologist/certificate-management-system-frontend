@@ -1,7 +1,7 @@
 import dynamic from 'next/dynamic';
 import { Column } from '@tanstack/react-table';
 import { ActionIcon, CloseButton, Group, Text, Button } from '@mantine/core';
-import { IconCheckbox, IconFilter, IconRotate } from '@tabler/icons';
+import { IconCheckbox, IconFilter, IconRotate } from '@tabler/icons-react';
 import { memo, useState } from 'react';
 import getFilterInput from './FilterInput';
 

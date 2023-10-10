@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createStyles, Navbar as MantineNavbar } from '@mantine/core';
-import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons';
+import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons-react';
 import { Route } from '@config';
 import { useRouter } from 'next/router';
 import Link from 'next/link';

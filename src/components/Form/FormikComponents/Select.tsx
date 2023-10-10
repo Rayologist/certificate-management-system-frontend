@@ -1,5 +1,5 @@
 import { Select as MantineSelect } from '@mantine/core';
-import { IconChevronDown } from '@tabler/icons';
+import { IconChevronDown } from '@tabler/icons-react';
 import { SelectProps } from 'types';
 import { useCustomFormik } from './Helper';
 

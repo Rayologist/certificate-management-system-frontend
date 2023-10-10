@@ -1,5 +1,5 @@
 import { Group, Text, TextProps } from '@mantine/core';
-import { IconAlertCircle } from '@tabler/icons';
+import { IconAlertCircle } from '@tabler/icons-react';
 
 const ErrorMessage = (props: { text: string; textProps?: TextProps }) => {
   const { text, textProps } = props;

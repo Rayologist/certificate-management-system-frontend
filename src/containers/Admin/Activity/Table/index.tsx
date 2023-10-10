@@ -3,7 +3,7 @@ import Table from '@components/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Group, Modal, Title, ActionIcon, Stack, TextInput, Button, Text } from '@mantine/core';
-import { IconMail, IconPencil, IconTrash } from '@tabler/icons';
+import { IconMail, IconPencil, IconTrash } from '@tabler/icons-react';
 import { Activity } from 'types';
 import { useActivity } from 'src/services/activity';
 import RichTextEditor from '@components/RichTextEditor';

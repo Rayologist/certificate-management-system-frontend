@@ -19,7 +19,7 @@ export function useParticipantStats() {
 export function useParticipantByAuid(auid: string) {
   const { data, error, mutate } = useSWR<Response<ParticipantResponse>>(
     urlJoin(API.internals.participant, auid),
-    (url) => request({ url, method: 'GET' })
+    (url: string) => request({ url, method: 'GET' })
   );
 
   return {

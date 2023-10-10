@@ -1,5 +1,5 @@
 import { Checkbox, ActionIcon, Text } from '@mantine/core';
-import { IconLayoutColumns } from '@tabler/icons';
+import { IconLayoutColumns } from '@tabler/icons-react';
 import { Table } from '@tanstack/react-table';
 import dynamic from 'next/dynamic';
 import { ReactNode, memo } from 'react';

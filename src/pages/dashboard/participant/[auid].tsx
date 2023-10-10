@@ -12,7 +12,13 @@ import {
   ThemeIcon,
   Box,
 } from '@mantine/core';
-import { IconArrowNarrowLeft, IconFileUpload, IconUserPlus, IconX, IconCheck } from '@tabler/icons';
+import {
+  IconArrowNarrowLeft,
+  IconFileUpload,
+  IconUserPlus,
+  IconX,
+  IconCheck,
+} from '@tabler/icons-react';
 import { useCallback, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import onCSVSubmit from '@containers/Admin/Participant/Create/onCSVSubmit';

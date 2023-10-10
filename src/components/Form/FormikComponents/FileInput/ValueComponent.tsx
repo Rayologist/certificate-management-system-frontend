@@ -1,5 +1,5 @@
 import { FileInputProps, Group, Center } from '@mantine/core';
-import { IconPhoto } from '@tabler/icons';
+import { IconPhoto } from '@tabler/icons-react';
 
 function Value({ file, single }: { file: File | null; single?: boolean }) {
   if (!file) return null;

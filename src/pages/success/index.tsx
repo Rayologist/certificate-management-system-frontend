@@ -8,7 +8,7 @@ import {
   Text,
   Stack,
 } from '@mantine/core';
-import { IconCheck } from '@tabler/icons';
+import { IconCheck } from '@tabler/icons-react';
 import { useRouter } from 'next/router';
 
 const decode = (encoded: string): string | false => {
