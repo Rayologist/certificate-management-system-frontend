@@ -52,7 +52,7 @@ export default function CreateCertificate({
 
   const validationSchema = object({
     displayName: string().required('必填'),
-    title: array()
+    content: array()
       .of(
         object({
           text: string().required('必填'),

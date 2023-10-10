@@ -47,7 +47,7 @@ export default function UpdateCertificate({
 
   const validationSchema = object({
     displayName: string().required('必填'),
-    title: array()
+    content: array()
       .of(
         object({
           text: string().required('必填'),
