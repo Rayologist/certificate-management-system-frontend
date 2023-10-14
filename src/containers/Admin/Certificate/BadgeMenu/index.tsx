@@ -27,8 +27,6 @@ export default function BadgeMenu(props: Certificate & { activityUrl: string }) 
   const handleCloseDelete = useCallback(() => setDeleteOpened(false), []);
   const handleCloseEditModal = useCallback(() => {
     setEditOpened(false);
-    const refetchUrl = `${url}?t=${Date.now()}`;
-    setObjectURL(refetchUrl);
   }, []);
 
   return (
@@ -106,7 +104,14 @@ export default function BadgeMenu(props: Certificate & { activityUrl: string }) 
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Label>{displayName}</Menu.Label>
-          <Menu.Item icon={<IconPencil size={14} />} onClick={() => setEditOpened(true)}>
+          <Menu.Item
+            icon={<IconPencil size={14} />}
+            onClick={() => {
+              const refetchUrl = urlJoin(defaultUrl, `?t=${Date.now()}`);
+              setObjectURL(refetchUrl);
+              setEditOpened(true);
+            }}
+          >
             編輯證書
           </Menu.Item>
           <Menu.Item icon={<IconQrcode size={14} />} onClick={() => setQrcodeOpened(true)}>
