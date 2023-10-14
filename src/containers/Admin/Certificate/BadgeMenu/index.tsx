@@ -17,7 +17,7 @@ function short(text: string, length: number) {
 
 export default function BadgeMenu(props: Certificate & { activityUrl: string }) {
   const router = useRouter();
-  const { id, displayName, updatedAt, content, createdAt, url, activityUrl } = props;
+  const { id, displayName, updatedAt, content, createdAt, url, activityUrl, templateId } = props;
   const { mutate } = useCertificate();
   const [editOpened, setEditOpened] = useState(false);
   const [qrcodeOpened, setQrcodeOpened] = useState(false);
@@ -50,6 +50,7 @@ export default function BadgeMenu(props: Certificate & { activityUrl: string }) 
               setObjectURL={setObjectURL}
               certProps={{
                 id,
+                templateId,
                 displayName,
                 updatedAt,
                 createdAt,

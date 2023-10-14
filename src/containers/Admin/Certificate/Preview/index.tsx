@@ -16,13 +16,14 @@ const PreviewButton = (props: PreviewButton) => {
   const formik = useFormikContext<CertificateFormValues>();
   const { values, errors } = formik;
 
-  const { content, dummyName } = values;
+  const { content, dummyName, templateId } = values;
   const hasErrors = errors.content;
   const hasValues = content.length > 0;
 
   const onClick = () => {
     if (!hasErrors && hasValues) {
       setPayload({
+        templateId,
         content,
         dummyName,
       });

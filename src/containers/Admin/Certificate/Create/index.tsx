@@ -25,6 +25,7 @@ export default function CreateCertificate({
   const initialValue: CertificateFormValues = {
     displayName: '',
     dummyName: '',
+    templateId: 2,
     content: [
       { text: 'has attended the', weight: '' },
       { text: '', weight: '' },

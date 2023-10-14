@@ -25,8 +25,9 @@ export default function UpdateCertificate({
   const { mutate } = useCertificate();
   const router = useRouter();
 
-  const { displayName, content, id } = certProps;
+  const { displayName, content, id, templateId } = certProps;
   const initialValue: Values = {
+    templateId,
     displayName,
     dummyName: '',
     content,

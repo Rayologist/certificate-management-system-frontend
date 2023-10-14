@@ -78,6 +78,7 @@ export type UpdateActivityRequest = Pick<
 export interface Certificate {
   id: number;
   activityUid: string;
+  templateId: number;
   displayName: string;
   content: Content[];
   filename: string;
@@ -98,14 +99,20 @@ export interface Content {
   weight: string;
 }
 
-export type CreateCertificateRequest = Pick<Certificate, 'activityUid' | 'displayName' | 'content'>;
+export type CreateCertificateRequest = Pick<
+  Certificate,
+  'activityUid' | 'displayName' | 'content' | 'templateId'
+>;
 export type SendCertificateRequest = {
   certificateId: number;
   participantId: number;
   altName: string;
 };
 
-export type UpdateCertificateRequest = Pick<Certificate, 'id' | 'displayName' | 'content'>;
+export type UpdateCertificateRequest = Pick<
+  Certificate,
+  'id' | 'displayName' | 'content' | 'templateId'
+>;
 export type DeleteCertificateRequest = Pick<Certificate, 'id'>;
 export type CertificateResponse = Activity & { certificate: Certificate[] };
 
