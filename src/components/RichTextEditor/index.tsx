@@ -7,11 +7,12 @@ import Superscript from '@tiptap/extension-superscript';
 import SubScript from '@tiptap/extension-subscript';
 import { Color } from '@tiptap/extension-color';
 import TextStyle from '@tiptap/extension-text-style';
-import { Tooltip } from '@mantine/core';
+import { Tooltip, useMantineTheme } from '@mantine/core';
 import { RichTextEditorProps } from 'types';
 import { ClearAll, Redo, Undo } from './controls';
 
 export default function TextEditor(props: RichTextEditorProps) {
+  const theme = useMantineTheme();
   const { readonly, value, deps, extensions = [], ...rest } = props;
   const editor = useEditor(
     {
@@ -40,7 +41,7 @@ export default function TextEditor(props: RichTextEditorProps) {
   if (readonly) {
     return (
       <RichTextEditor editor={editor}>
-        <RichTextEditor.Content />
+        <RichTextEditor.Content sx={{ fontSize: theme.fontSizes.sm }} />
       </RichTextEditor>
     );
   }
@@ -53,13 +54,13 @@ export default function TextEditor(props: RichTextEditorProps) {
           <RichTextEditor.Italic />
           <RichTextEditor.Underline />
           {/* <RichTextEditor.Strikethrough /> */}
-          <Tooltip label="Clear formatting" withArrow sx={{ fontSize: '12px' }}>
+          <Tooltip label="Clear formatting" withArrow sx={{ fontSize: theme.fontSizes.xs }}>
             <RichTextEditor.ClearFormatting />
           </Tooltip>
         </RichTextEditor.ControlsGroup>
 
         <RichTextEditor.ControlsGroup>
-          <Tooltip label="Text color" withArrow sx={{ fontSize: '12px' }}>
+          <Tooltip label="Text color" withArrow sx={{ fontSize: theme.fontSizes.xs }}>
             <RichTextEditor.ColorPicker
               colors={[
                 '#25262b',
@@ -97,7 +98,7 @@ export default function TextEditor(props: RichTextEditorProps) {
         </RichTextEditor.ControlsGroup>
 
         <RichTextEditor.ControlsGroup>
-          <Tooltip label="Hyperlink" withArrow sx={{ fontSize: '12px' }}>
+          <Tooltip label="Hyperlink" withArrow sx={{ fontSize: theme.fontSizes.xs }}>
             <RichTextEditor.Link />
           </Tooltip>
         </RichTextEditor.ControlsGroup>
@@ -117,7 +118,7 @@ export default function TextEditor(props: RichTextEditorProps) {
         </RichTextEditor.ControlsGroup>
       </RichTextEditor.Toolbar>
 
-      <RichTextEditor.Content />
+      <RichTextEditor.Content sx={{ fontSize: theme.fontSizes.sm }} />
     </RichTextEditor>
   );
 }
