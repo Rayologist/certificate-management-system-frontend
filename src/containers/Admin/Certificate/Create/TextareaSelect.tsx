@@ -104,8 +104,10 @@ function TextareaSelectArray({
                 sx={{ width: '22%' }}
               />
               <Group spacing={0} mt={20} sx={{ width: '1%' }}>
-                {values.length < 3 ? (
-                  <ActionIcon onClick={() => arrayHelper.push({ text: '', weight: '' })}>
+                {values.length < 5 ? (
+                  <ActionIcon
+                    onClick={() => arrayHelper.insert(index + 1, { text: '', weight: '' })}
+                  >
                     <IconPlus size={16} stroke={1.5} />
                   </ActionIcon>
                 ) : null}
