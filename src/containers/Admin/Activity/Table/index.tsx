@@ -6,7 +6,7 @@ import { Group, Modal, Title, ActionIcon, Stack, TextInput, Button, Text } from 
 import { IconMail, IconPencil, IconTrash } from '@tabler/icons-react';
 import { Activity } from 'types';
 import { useActivity } from 'src/services/activity';
-import RichTextEditor from '@components/RichTextEditor';
+import TextEditor from '@components/RichTextEditor';
 import UpdateActivity from '../Update';
 import DeleteActivity from '../Delete';
 
@@ -37,7 +37,7 @@ const columns = [
                 <Text weight={500} color="#212529" size={16}>
                   信件內容
                 </Text>
-                <RichTextEditor id="rte" value={email} readOnly />
+                <TextEditor value={email} readonly />
               </Stack>
             </Stack>
           </Modal>

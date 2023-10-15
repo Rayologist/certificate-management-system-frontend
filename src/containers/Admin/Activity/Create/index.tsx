@@ -1,15 +1,14 @@
-import React, { Dispatch, SetStateAction, useState } from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 import { Form, Formik, FormikHelpers } from 'formik';
-import { FormikController, ErrorMessage } from '@components/Form';
+import { FormikController } from '@components/Form';
 import { ControllerProps, CreateActivityRequest, PickAsOrNull } from 'types';
-import { Button, Grid, Text, useMantineTheme } from '@mantine/core';
+import { Button, Grid } from '@mantine/core';
 import { object, string, date } from 'yup';
 import { KeyedMutator } from 'swr';
 import { createActivity } from '@services/activity';
 import { useRouter } from 'next/router';
-import RichTextEditor from '@components/RichTextEditor';
 
-type Values = Omit<PickAsOrNull<CreateActivityRequest, 'startDate' | 'endDate'>, 'email'>;
+type Values = PickAsOrNull<CreateActivityRequest, 'startDate' | 'endDate'>;
 
 const CreateNewActivity = ({
   setOpened,
@@ -19,24 +18,21 @@ const CreateNewActivity = ({
   mutate: KeyedMutator<any>;
 }) => {
   const router = useRouter();
-  const theme = useMantineTheme();
-  const [mailContent, onChange] = useState('<p><br></p>');
-  const [rteError, setRteError] = useState(false);
   const initialValue: Values = {
     title: '',
     startDate: null,
     endDate: null,
     subject: '',
+    email: '',
   };
 
   const onSubmit = async (values: Values, actions: FormikHelpers<Values>) => {
-    if (mailContent === '<p><br></p>') {
-      setRteError(true);
+    const { startDate, endDate, ...rest } = values;
+    if (startDate == null || endDate == null) {
       return null;
     }
 
-    const payload = { ...values, email: mailContent } as CreateActivityRequest;
-    const [, error] = await createActivity(payload);
+    const [, error] = await createActivity({ startDate, endDate, ...rest });
     if (error) {
       router.push('/500', { pathname: router.asPath });
       return null;
@@ -52,6 +48,7 @@ const CreateNewActivity = ({
     startDate: date().required('必填').nullable(),
     endDate: date().required('必填').nullable(),
     subject: string().required('必填'),
+    email: string().required('必填'),
   });
 
   const fields: ControllerProps[] = [
@@ -83,6 +80,12 @@ const CreateNewActivity = ({
       label: '信件主旨',
       withAsterisk: true,
     },
+    {
+      control: 'text-editor',
+      name: 'email',
+      label: '信件內容',
+      withAsterisk: true,
+    },
   ];
 
   return (
@@ -95,45 +98,6 @@ const CreateNewActivity = ({
                 <FormikController {...field} />
               </Grid.Col>
             ))}
-
-            <Grid.Col>
-              <Text weight={500} color="#212529" size={14}>
-                信件內容
-                <span
-                  aria-hidden
-                  style={{
-                    color: theme.fn.variant({ variant: 'filled', color: 'red' }).background,
-                  }}
-                >
-                  {' *'}
-                </span>
-              </Text>
-
-              <RichTextEditor
-                id="rte"
-                value={mailContent}
-                onChange={onChange}
-                onBlur={() => {
-                  if (mailContent === '<p><br></p>') {
-                    setRteError(true);
-                    return null;
-                  }
-                  setRteError(false);
-                  return null;
-                }}
-                controls={[
-                  ['bold', 'italic', 'underline', 'strike', 'clean'],
-                  ['h1', 'h2', 'h3', 'h4'],
-                  ['unorderedList', 'orderedList'],
-                  ['alignLeft', 'alignCenter', 'alignRight'],
-                  ['link', 'blockquote'],
-                  ['sup', 'sub'],
-                ]}
-              />
-              {rteError && mailContent === '<p><br></p>' && (
-                <ErrorMessage text="必填" textProps={{ color: 'red' }} />
-              )}
-            </Grid.Col>
 
             <Grid.Col
               xs={10}

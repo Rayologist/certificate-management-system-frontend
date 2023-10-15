@@ -46,6 +46,10 @@ function FormikController(props: ControllerProps) {
       const FileInput = dynamic(() => import('./FormikComponents/FileInput'));
       return <FileInput {...props} />;
     }
+    case 'text-editor': {
+      const TextEditor = dynamic(() => import('./FormikComponents/TextEditor'));
+      return <TextEditor {...props} />;
+    }
     default:
       return null;
   }

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, ReactNode } from 'react';
+import { Dispatch, SetStateAction, ReactNode, DependencyList } from 'react';
 import {
   PasswordInputProps as MantinePasswordInputProps,
   RadioGroupProps as MantineRadioGroupProps,
@@ -10,6 +10,7 @@ import {
   MultiSelectProps as MantineMultiSelectProps,
   FileInputProps as MantineFileInputProps,
   ColProps,
+  InputWrapperProps,
 } from '@mantine/core';
 import {
   DatePickerProps as MantineDatePickerProps,
@@ -21,6 +22,7 @@ import { inDateRange } from '@components/Table/components/ColumnFilter/FilterFn'
 import FilterInput from '@components/Table/components/ColumnFilter/FilterInput';
 import { NextPage } from 'next';
 import { AppProps } from 'next/app';
+import { EditorOptions } from '@tiptap/react';
 
 export type PickAsOrNull<T, K extends keyof T> = Omit<T, K> & {
   [P in K]: T[P] | null;
@@ -235,6 +237,18 @@ export type MultiSelectProps = Controlled<
   }
 >;
 
+export type RichTextEditorProps = {
+  value: EditorOptions['content'];
+  readonly?: boolean;
+  deps?: DependencyList | undefined;
+} & Omit<Partial<EditorOptions>, 'content' | 'editable'>;
+
+export type TextEditorProps = Controlled<
+  Omit<InputWrapperProps, 'children'> & {
+    editor?: RichTextEditorProps;
+  }
+>;
+
 export type ControllerProps =
   | ({ control: 'text-input' } & TextInputProps)
   | ({ control: 'password-input' } & PasswordInputProps)
@@ -245,6 +259,7 @@ export type ControllerProps =
   | ({ control: 'date-picker' } & DatePickerProps)
   | ({ control: 'number-input' } & NumberInputProps)
   | ({ control: 'multi-select' } & MultiSelectProps)
+  | ({ control: 'text-editor' } & TextEditorProps)
   | ({ control: 'file-input' } & FileInputProps<boolean>);
 
 export type ControllerPropsWithCol = {
