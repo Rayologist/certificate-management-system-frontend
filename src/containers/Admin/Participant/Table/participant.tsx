@@ -1,5 +1,4 @@
 import { useMemo, useCallback, useState, memo } from 'react';
-import Table from '@components/Table';
 import {
   ActionIcon,
   Group,
@@ -13,6 +12,7 @@ import {
   Box,
   Tooltip,
   TextInput,
+  Checkbox,
 } from '@mantine/core';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
@@ -32,16 +32,32 @@ import DeleteParticipant from '../Delete';
 
 const columnHelper = createColumnHelper<Participant>();
 
-export const ParticipantTable = ({
-  data,
+export const useColumns = ({
   certificates,
   mutate,
 }: {
-  data: Participant[];
   certificates: Pick<Certificate, 'id' | 'displayName'>[];
   mutate: KeyedMutator<any>;
 }) => {
   const columns = [
+    columnHelper.display({
+      id: 'select-col',
+      header: ({ table }) => (
+        <Checkbox
+          checked={table.getIsAllRowsSelected()}
+          indeterminate={table.getIsSomeRowsSelected()}
+          onChange={table.getToggleAllRowsSelectedHandler()}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          checked={row.getIsSelected()}
+          disabled={!row.getCanSelect()}
+          onChange={row.getToggleSelectedHandler()}
+        />
+      ),
+      size: 50,
+    }),
     columnHelper.accessor('name', {
       header: '名字',
       size: 100,
@@ -88,7 +104,7 @@ export const ParticipantTable = ({
               }}
               opened={opened}
               title={<Title order={2}>目前證書</Title>}
-              size={500}
+              size="xl"
             >
               <Group spacing="lg" mb={10}>
                 <Text sx={{ display: 'flex', alignItems: 'center' }} weight={500} size="lg">
@@ -190,9 +206,13 @@ export const ParticipantTable = ({
                             <IconCircleDashed size={16} />
                           )}
                         </ThemeIcon>
-                        <Text ml={14} sx={{ wordWrap: 'break-word', width: '300px' }}>
-                          {value.displayName}
-                        </Text>
+                        {value.displayName.length > 80 ? (
+                          <Tooltip label={value.displayName}>
+                            <Text ml={14}>{value.displayName.slice(0, 80)}...</Text>
+                          </Tooltip>
+                        ) : (
+                          <Text ml={14}>{value.displayName}</Text>
+                        )}
                       </Text>
                       <ActionIcon size="xl" onClick={() => setConfirmOpened(true)}>
                         <IconMailForward size={20} />
@@ -279,5 +299,6 @@ export const ParticipantTable = ({
       },
     }),
   ];
-  return <Table data={data} columns={columns} />;
+
+  return columns;
 };

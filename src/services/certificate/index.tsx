@@ -22,6 +22,19 @@ async function createCertificate(payload: CreateCertificateRequest) {
   }
 }
 
+async function batchSendCertificates(payload: { participantIds: number[]; certificateId: number }) {
+  try {
+    const data = await request({
+      url: API.internals.certificate.batchSend,
+      method: 'POST',
+      payload,
+    });
+    return [data, null];
+  } catch (error) {
+    return [null, error];
+  }
+}
+
 async function sendCertificate(payload: SendCertificateRequest) {
   try {
     const data = await request({
@@ -63,4 +76,5 @@ export {
   updateCertificate,
   deleteCertificate,
   sendCertificate,
+  batchSendCertificates,
 };

@@ -16,6 +16,7 @@ const API = {
       root: certificate,
       preview: urlJoin(certificate, 'preview'),
       send: urlJoin(certificate, 'send'),
+      batchSend: urlJoin(certificate, 'batch-send'),
     },
     session: urlJoin(internals, 'session'),
     static: urlJoin(internals, 'f'),

@@ -11,6 +11,7 @@ import {
   List,
   ThemeIcon,
   Box,
+  Tooltip,
 } from '@mantine/core';
 import {
   IconArrowNarrowLeft,
@@ -18,6 +19,7 @@ import {
   IconUserPlus,
   IconX,
   IconCheck,
+  IconSend,
 } from '@tabler/icons-react';
 import { useCallback, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
@@ -25,11 +27,12 @@ import onCSVSubmit from '@containers/Admin/Participant/Create/onCSVSubmit';
 import { useParticipantByAuid } from '@services/participant';
 import { Participant } from 'types';
 import { Route } from '@config';
+import Table, { useTable } from '@components/Table';
+import { useColumns } from '@containers/Admin/Participant/Table/participant';
+import { Send } from '@containers/Admin/Participant/Send/Send';
+import { useDisclosure } from '@mantine/hooks';
 
 const CreateParticipant = dynamic(() => import('@containers/Admin/Participant/Create'));
-const ParticipantTable = dynamic(() =>
-  import('@containers/Admin/Participant/Table').then((module) => module.ParticipantTable)
-);
 const Loader = dynamic(() => import('@components/Loader'));
 
 type ErrorData = Pick<Participant, 'name' | 'from' | 'title' | 'email' | 'phone'>;
@@ -41,6 +44,7 @@ const Management = () => {
   const [errorOpened, setErrorOpened] = useState(false);
   const [errorData, setErrorData] = useState<ErrorData[] | string>();
   const [participantOpened, setParticipantOpened] = useState(false);
+  const [batchSendOpened, batchSendModal] = useDisclosure();
 
   const clearFile = useCallback(() => {
     setFile(null);
@@ -54,6 +58,12 @@ const Management = () => {
   const { auid } = router.query as { auid: string };
 
   const { participant, isLoading, mutate, isError } = useParticipantByAuid(auid);
+  const columns = useColumns({ certificates: participant?.data.certificate ?? [], mutate });
+  const table = useTable({
+    data: participant?.data.participant ?? [],
+    columns,
+    getRowId: (row) => String(row.id),
+  });
 
   if (isLoading) return <Loader />;
 
@@ -67,6 +77,8 @@ const Management = () => {
   const { data } = participant;
 
   if (!data) return router.back();
+
+  const selectedRow = table.getSelectedRowModel().rows;
 
   return (
     <>
@@ -130,9 +142,24 @@ const Management = () => {
       <Group position="apart" mb={30}>
         <Stack spacing={0}>
           <Title>新增參與者</Title>
-          <Text color="dimmed">{data.title}</Text>
+          {data.title.length > 80 ? (
+            <Tooltip label={data.title}>
+              <Text color="dimmed">{data.title.slice(0, 80)}...</Text>
+            </Tooltip>
+          ) : (
+            <Text color="dimmed">{data.title}</Text>
+          )}
         </Stack>
         <Group position="right">
+          {selectedRow.length > 0 && (
+            <Button
+              color="violet"
+              leftIcon={<IconSend size={16} stroke={1.5} />}
+              onClick={batchSendModal.open}
+            >
+              寄送信件
+            </Button>
+          )}
           <Button
             leftIcon={<IconUserPlus size={16} stroke={1.5} />}
             onClick={() => setParticipantOpened(true)}
@@ -175,8 +202,17 @@ const Management = () => {
         />
       </Modal>
 
+      <Modal
+        opened={batchSendOpened}
+        onClose={batchSendModal.close}
+        title={<Title order={2}>目前證書</Title>}
+        size="xl"
+      >
+        <Send ids={selectedRow.map((r) => r.original.id)} certificates={data.certificate} />
+      </Modal>
+
       <Paper sx={{ padding: '1rem' }}>
-        <ParticipantTable data={data.participant} certificates={data.certificate} mutate={mutate} />
+        <Table table={table} />
       </Paper>
     </>
   );
