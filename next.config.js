@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const nextConfig = {
   reactStrictMode: true,
-  basePath: '/certificate',
+  basePath: process.env.NODE_ENV === 'production' ? '/certificate' : '',
 };
 
 module.exports = withBundleAnalyzer(nextConfig);
