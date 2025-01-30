@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import Table from '@components/Table';
+import Table, { useTable } from '@components/Table';
 import { createColumnHelper } from '@tanstack/react-table';
 import { format } from 'date-fns';
 import { Group, Modal, Title, ActionIcon, Stack, TextInput, Button, Text } from '@mantine/core';
@@ -89,7 +89,6 @@ const columns = [
             onClose={() => setOpened(false)}
             title={<Title order={2}>修改活動欄位</Title>}
             size={700}
-            overflow="inside"
             closeOnClickOutside={false}
           >
             <UpdateActivity
@@ -127,5 +126,10 @@ const columns = [
 ];
 
 export default function ActivityTable({ data }: { data: Activity[] }) {
-  return <Table data={data} columns={columns} />;
+  const table = useTable({
+    data,
+    columns,
+  });
+
+  return <Table table={table} />;
 }

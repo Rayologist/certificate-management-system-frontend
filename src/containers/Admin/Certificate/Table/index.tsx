@@ -1,6 +1,6 @@
 import { useCallback, useState } from 'react';
 import BadgeMenu from '@containers/Admin/Certificate/BadgeMenu';
-import Table from '@components/Table';
+import Table, { useTable } from '@components/Table';
 import { ActionIcon, Group, Modal, Image, Grid, Divider, Title } from '@mantine/core';
 import { IconCirclePlus } from '@tabler/icons-react';
 import { createColumnHelper } from '@tanstack/react-table';
@@ -91,5 +91,10 @@ const columns = [
 ];
 
 export default function CertificateTable({ data }: { data: CertificateResponse[] }) {
-  return <Table data={data} columns={columns} />;
+  const table = useTable({
+    data,
+    columns,
+  });
+
+  return <Table table={table} />;
 }

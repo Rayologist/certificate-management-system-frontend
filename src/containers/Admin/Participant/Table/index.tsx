@@ -1,10 +1,9 @@
-import Table from '@components/Table';
+import Table, { useTable } from '@components/Table';
 import { ActionIcon, Group, Text } from '@mantine/core';
 import { IconWriting } from '@tabler/icons-react';
 import { createColumnHelper } from '@tanstack/react-table';
 import { ParticipantStatsResponse } from 'types';
 import { useRouter } from 'next/router';
-import { ParticipantTable } from './participant';
 
 const columnHelper = createColumnHelper<ParticipantStatsResponse>();
 
@@ -56,7 +55,11 @@ const columns = [
 ];
 
 function ParticipantStatsTable({ data }: { data: ParticipantStatsResponse[] }) {
-  return <Table data={data} columns={columns} />;
+  const table = useTable({
+    data,
+    columns,
+  });
+  return <Table table={table} />;
 }
 
-export { ParticipantStatsTable, ParticipantTable };
+export { ParticipantStatsTable };

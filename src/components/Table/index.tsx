@@ -13,6 +13,9 @@ import {
   getFacetedUniqueValues,
   getFacetedMinMaxValues,
   getFacetedRowModel,
+  Table as TanstackTable,
+  RowSelectionState,
+  TableOptions,
 } from '@tanstack/react-table';
 import {
   Text,
@@ -34,57 +37,65 @@ import ColumnFilter from './components/ColumnFilter';
 import { inDateRange } from './components/ColumnFilter/FilterFn';
 
 type TableProps<T extends RowData> = {
-  data: T[];
-  columns: ColumnDef<T, any>[];
+  table: TanstackTable<T>;
   width?: string | number;
   height?: string | number;
   scrollAreaProps?: ScrollAreaProps;
   lineClamp?: TextProps['lineClamp'];
 } & MantineTableProps;
 
-function Table<T extends RowData>(props: TableProps<T>) {
-  const {
-    data,
-    columns,
-    width,
-    height,
-    scrollAreaProps,
-    lineClamp = 1,
-    ...mantineTableProps
-  } = props;
+type UseTableProps<T extends RowData> = {
+  data: T[];
+  columns: ColumnDef<T, any>[];
+} & Partial<TableOptions<T>>;
+
+export function useTable<T extends RowData>(props: UseTableProps<T>) {
+  const { data, columns, ...rest } = props;
+  const { filterFns, state, ...tableOptions } = rest;
+  const col = useMemo(() => columns, [columns]);
 
   const [sorting, setSorting] = useState<SortingState>([]);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
   const [globalFilter, setGlobalFilter] = useState('');
   const [columnVisibility, setColumnVisibility] = useState({});
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
-  const { classes, cx } = useStyles();
-  const [scrolled, setScrolled] = useState(false);
-  const col = useMemo(() => columns, [columns]);
-  const table = useReactTable<T>({
+  return useReactTable<T>({
     data,
     columns: col,
     filterFns: {
       inDateRange,
+      ...filterFns,
     },
     state: {
       sorting,
       globalFilter,
       columnVisibility,
       columnFilters,
+      rowSelection,
+      ...state,
     },
     columnResizeMode: 'onChange',
     onGlobalFilterChange: setGlobalFilter,
     onColumnVisibilityChange: setColumnVisibility,
     onSortingChange: setSorting,
     onColumnFiltersChange: setColumnFilters,
-    getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedMinMaxValues: getFacetedMinMaxValues(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
+    getCoreRowModel: getCoreRowModel(),
+    ...tableOptions,
   });
+}
+
+function Table<T extends RowData>(props: TableProps<T>) {
+  const { table, width, height, scrollAreaProps, lineClamp = 1, ...mantineTableProps } = props;
+
+  const { classes, cx } = useStyles();
+  const [scrolled, setScrolled] = useState(false);
 
   const tableContainerRef = useRef<HTMLDivElement>(null);
 
@@ -211,8 +222,8 @@ function Table<T extends RowData>(props: TableProps<T>) {
     <>
       <Group sx={{ display: 'flex', alignItems: 'center' }} mb="md">
         <GlobalFilter
-          value={globalFilter ?? ''}
-          onChange={(e) => setGlobalFilter(e.target.value)}
+          value={table.getState().globalFilter ?? ''}
+          onChange={(e) => table.setGlobalFilter(e.target.value)}
           sx={{ flexGrow: 1 }}
         />
 
