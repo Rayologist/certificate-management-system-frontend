@@ -2,9 +2,9 @@ import Head from 'next/head';
 import { AppPropsWithLayout } from 'types';
 import { GetServerSidePropsContext } from 'next';
 import { useState } from 'react';
-import { getCookie, setCookie } from 'cookies-next';
+import { getCookie } from 'cookies-next';
 import { MantineProvider, ColorScheme, ColorSchemeProvider } from '@mantine/core';
-import { NotificationsProvider } from '@mantine/notifications';
+import { Notifications } from '@mantine/notifications';
 import Layout from '@components/Layout';
 import UserProvider from 'src/contexts/UserContext';
 import withAuth from '@components/Admin/Auth';
@@ -15,14 +15,8 @@ function App(props: AppPropsWithLayout & { colorScheme: ColorScheme }) {
   const router = useRouter();
 
   const [colorScheme, setColorScheme] = useState<ColorScheme>(props.colorScheme);
-
-  const toggleColorScheme = (value?: ColorScheme) => {
-    const nextColorScheme = value || colorScheme === 'dark' ? 'light' : 'dark';
-    setColorScheme(nextColorScheme);
-    setCookie('mantine-color-scheme', nextColorScheme, {
-      maxAge: 60 * 60 * 24 * 30,
-    });
-  };
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
 
   const isAuth = Component?.auth;
   const VerifiedComponent = isAuth ? withAuth(Component) : Component;
@@ -47,13 +41,12 @@ function App(props: AppPropsWithLayout & { colorScheme: ColorScheme }) {
       </Head>
       <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
         <MantineProvider theme={{ colorScheme }} withGlobalStyles withNormalizeCSS>
-          <NotificationsProvider>
-            <UserProvider>
-              <Layout isAuth={isAuth}>
-                <VerifiedComponent {...pageProps} />
-              </Layout>
-            </UserProvider>
-          </NotificationsProvider>
+          <Notifications />
+          <UserProvider>
+            <Layout isAuth={isAuth}>
+              <VerifiedComponent {...pageProps} />
+            </Layout>
+          </UserProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>

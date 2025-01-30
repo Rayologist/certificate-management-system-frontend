@@ -1,6 +1,6 @@
 import { FilterInput, InputFilterProps } from 'types';
 import { Column } from '@tanstack/react-table';
-import DateRangePickerFilter from './DateRangePickerFilter';
+// import DateRangePickerFilter from './DateRangePickerFilter';
 import SelectFilter from './SelectFilter';
 import TextInputFilter from './TextInputFilter';
 import MultiSelectFilter from './MultiSelectFilter';
@@ -24,23 +24,23 @@ export default function getFilterInput({ filterInput, state, column }: GetFilter
       const selectData = uniqueValue.map((value) => ({ label: value, value }));
       return <SelectFilter data={selectData} {...state} {...filterInputProps} />;
     }
-    case 'date': {
-      let minmax = column.getFacetedMinMaxValues() as unknown as [Date, Date] | undefined;
-      if (!minmax) {
-        minmax = [new Date(0), new Date()];
-      }
+    // case 'date': {
+    //   let minmax = column.getFacetedMinMaxValues() as unknown as [Date, Date] | undefined;
+    //   if (!minmax) {
+    //     minmax = [new Date(0), new Date()];
+    //   }
 
-      return (
-        <DateRangePickerFilter
-          filterValue={filterValue}
-          setFilterValue={setFilterValue}
-          allowSingleDateInRange
-          minDate={new Date(minmax[0])}
-          maxDate={new Date(minmax[1])}
-          {...filterInputProps}
-        />
-      );
-    }
+    //   return (
+    //     <DateRangePickerFilter
+    //       filterValue={filterValue}
+    //       setFilterValue={setFilterValue}
+    //       allowSingleDateInRange
+    //       minDate={new Date(minmax[0])}
+    //       maxDate={new Date(minmax[1])}
+    //       {...filterInputProps}
+    //     />
+    //   );
+    // }
     case 'multi-select': {
       const multiSelectData = uniqueValue.map((value) => ({ label: value, value }));
       return <MultiSelectFilter {...state} data={multiSelectData} {...filterInputProps} />;
@@ -50,4 +50,4 @@ export default function getFilterInput({ filterInput, state, column }: GetFilter
   }
 }
 
-export { DateRangePickerFilter, SelectFilter, TextInputFilter, MultiSelectFilter };
+export { SelectFilter, TextInputFilter, MultiSelectFilter };

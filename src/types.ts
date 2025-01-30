@@ -12,11 +12,7 @@ import {
   ColProps,
   InputWrapperProps,
 } from '@mantine/core';
-import {
-  DatePickerProps as MantineDatePickerProps,
-  DateRangePickerProps as MantineDateRangePickerProps,
-  DateRangePickerValue,
-} from '@mantine/dates';
+import { DateInputProps as MantineDateInputProps } from '@mantine/dates';
 import { RowData } from '@tanstack/react-table';
 import { inDateRange } from '@components/Table/components/ColumnFilter/FilterFn';
 import FilterInput from '@components/Table/components/ColumnFilter/FilterInput';
@@ -179,10 +175,6 @@ export type TextInputFilterProps = InputFilterProps<string> & TextInputFilter;
 export type SelectFilter = OmitValueAndOnChange<MantineSelectProps>;
 export type SelectFilterProps = InputFilterProps<string> & SelectFilter;
 
-export type DateRangePickerFilter = OmitValueAndOnChange<MantineDateRangePickerProps>;
-export type DateRangePickerFilterProps = InputFilterProps<DateRangePickerValue> &
-  DateRangePickerFilter;
-
 export type MultiSelectFilter = OmitValueAndOnChange<MantineMultiSelectProps>;
 export type MultiSelectFilterProps = InputFilterProps<string[]> & MultiSelectFilter;
 
@@ -194,10 +186,6 @@ export type FilterInput =
   | {
       type: 'select';
       props?: Partial<SelectFilter>;
-    }
-  | {
-      type: 'date';
-      props?: Partial<DateRangePickerFilter>;
     }
   | {
       type: 'multi-select';
@@ -216,13 +204,13 @@ export interface Options {
   options: Option[];
 }
 
-export type Controlled<T> = { label: string; name: string } & T;
+export type Controlled<T> = { label: React.ReactNode; name: string } & T;
 
 export type TextInputProps = Controlled<MantineTextInputProps>;
 export type PasswordInputProps = Controlled<MantinePasswordInputProps>;
 export type TextareaProps = Controlled<MantineTextareaProps>;
 export type NumberInputProps = Controlled<MantineNumberInputProps>;
-export type DatePickerProps = Controlled<MantineDatePickerProps>;
+export type DatePickerProps = Controlled<MantineDateInputProps>;
 export type FileInputProps<T extends boolean> = Controlled<MantineFileInputProps<T>>;
 export type SelectProps = Controlled<
   Omit<MantineSelectProps, 'data'> & {

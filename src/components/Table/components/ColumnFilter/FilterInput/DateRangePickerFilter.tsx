@@ -1,15 +1,15 @@
-import { DateRangePicker } from '@mantine/dates';
-import { DateRangePickerFilterProps } from 'types';
+// import { DateRangePicker } from '@mantine/dates';
+// import { DateRangePickerFilterProps } from 'types';
 
-const DateRangePickerFilter = (props: DateRangePickerFilterProps) => {
-  const { filterValue, setFilterValue, ...rest } = props;
-  return (
-    <DateRangePicker
-      value={filterValue ?? [null, null]}
-      onChange={(value) => setFilterValue(value)}
-      {...rest}
-    />
-  );
-};
+// const DateRangePickerFilter = (props: DateRangePickerFilterProps) => {
+//   const { filterValue, setFilterValue, ...rest } = props;
+//   return (
+//     <DateRangePicker
+//       value={filterValue ?? [null, null]}
+//       onChange={(value) => setFilterValue(value)}
+//       {...rest}
+//     />
+//   );
+// };
 
-export default DateRangePickerFilter;
+// export default DateRangePickerFilter;

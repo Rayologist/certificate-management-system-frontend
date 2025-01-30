@@ -1,4 +1,4 @@
-import { DatePicker as MantineDatePicker } from '@mantine/dates';
+import { DateInput } from '@mantine/dates';
 import { DatePickerProps } from 'types';
 import { useCustomFormik } from './Helper';
 
@@ -8,7 +8,7 @@ function DatePicker(props: DatePickerProps) {
   const dateValue = formik.values[name] as DatePickerProps['value'];
 
   return (
-    <MantineDatePicker
+    <DateInput
       label={label}
       value={dateValue}
       error={hasError}

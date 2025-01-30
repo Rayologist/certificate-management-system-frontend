@@ -80,7 +80,6 @@ const UpdateActivity = ({
       name: 'startDate',
       label: '開始日期',
       placeholder: '請點選或輸入時間',
-      allowFreeInput: true,
       withAsterisk: true,
     },
     {
@@ -88,7 +87,6 @@ const UpdateActivity = ({
       name: 'endDate',
       label: '結束日期',
       placeholder: '請點選或輸入時間',
-      allowFreeInput: true,
       withAsterisk: true,
     },
     {

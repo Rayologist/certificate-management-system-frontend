@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react';
-import { createStyles, Navbar as MantineNavbar } from '@mantine/core';
+import { createStyles, getStylesRef, Navbar as MantineNavbar, rem } from '@mantine/core';
 import { IconFileCertificate, IconNewSection, IconLogout, IconUsers } from '@tabler/icons-react';
 import { Route } from '@config';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
 import urlJoin from 'url-join';
 
-const useStyles = createStyles((theme, _params, getRef) => {
-  const icon = getRef('icon');
+const useStyles = createStyles((theme, _params) => {
+  const icon = getStylesRef('icon');
   return {
     header: {
       paddingBottom: theme.spacing.md,
-      marginBottom: theme.spacing.md * 1.5,
+      marginBottom: `calc(${theme.spacing.md} * ${rem(1.5)})`,
       borderBottom: `1px solid ${
         theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[2]
       }`,
@@ -32,7 +32,7 @@ const useStyles = createStyles((theme, _params, getRef) => {
       textDecoration: 'none',
       fontSize: theme.fontSizes.sm,
       color: theme.colorScheme === 'dark' ? theme.colors.dark[1] : theme.colors.gray[7],
-      padding: `${theme.spacing.xs}px ${theme.spacing.sm}px`,
+      padding: `${theme.spacing.xs} ${theme.spacing.sm}`,
       borderRadius: theme.radius.sm,
       fontWeight: 500,
 
@@ -85,12 +85,18 @@ export default function Navbar({ opened }: { opened: boolean }) {
   const [active, setActive] = useState('');
   const router = useRouter();
   const currentLink = urlJoin(router.asPath);
+  console.log(currentLink);
 
   useEffect(() => {
     const linkArray = data.map((link) => link.link);
-    if (linkArray.includes(currentLink)) {
-      setActive(currentLink);
-    }
+
+    linkArray.forEach((link) => {
+      const regex = new RegExp(`^${link}`);
+
+      if (regex.test(currentLink)) {
+        setActive(link);
+      }
+    });
   }, [currentLink]);
 
   const links = data.map((item) => (

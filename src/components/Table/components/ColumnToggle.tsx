@@ -67,7 +67,12 @@ function ColumnToggle<RowData>(props: ColumnToggleProps<RowData>) {
   ));
 
   return (
-    <Popover shadow="md" width={200} position="left-start" transition="slide-left">
+    <Popover
+      shadow="md"
+      width={200}
+      position="left-start"
+      transitionProps={{ transition: 'slide-left' }}
+    >
       <Target />
       <Dropdown />
     </Popover>

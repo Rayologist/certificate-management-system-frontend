@@ -71,7 +71,9 @@ const ColumnFilter = (props: ColumnFilterProps) => {
       opened={opened}
       onChange={setOpened}
       onClose={handleClose}
-      transition="scale-y"
+      transitionProps={{
+        transition: 'scale-x',
+      }}
       withinPortal
       withArrow
       width="18rem"
