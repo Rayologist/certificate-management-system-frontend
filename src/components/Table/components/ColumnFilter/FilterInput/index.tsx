@@ -12,7 +12,7 @@ type GetFilterInputProps = {
 };
 
 export default function getFilterInput({ filterInput, state, column }: GetFilterInputProps) {
-  const { filterValue, setFilterValue } = state;
+  // const { filterValue, setFilterValue } = state;
   const { type, props: filterInputProps } = filterInput;
 
   const uniqueValue = Array.from(column.getFacetedUniqueValues().keys());

@@ -6,7 +6,7 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import urlJoin from 'url-join';
 
-const useStyles = createStyles((theme, _params) => {
+const useStyles = createStyles((theme) => {
   const icon = getStylesRef('icon');
   return {
     header: {
@@ -85,7 +85,6 @@ export default function Navbar({ opened }: { opened: boolean }) {
   const [active, setActive] = useState('');
   const router = useRouter();
   const currentLink = urlJoin(router.asPath);
-  console.log(currentLink);
 
   useEffect(() => {
     const linkArray = data.map((link) => link.link);
